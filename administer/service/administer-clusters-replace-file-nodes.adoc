@@ -1,0 +1,78 @@
+---
+sidebar: sidebar 
+permalink: administer-clusters-replace-file-nodes.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, replace 
+summary: Sostituzione di un nodo di file se il server originale è guasto. 
+---
+= Sostituire i nodi del file
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Sostituzione di un nodo di file se il server originale è guasto.
+
+
+
+== Panoramica
+
+Di seguito viene fornita una panoramica dei passaggi necessari per sostituire un nodo di file nel cluster. Questi passaggi presumono che il nodo del file non sia riuscito a causa di un problema hardware ed è stato sostituito con un nuovo nodo del file identico.
+
+
+
+== Fasi:
+
+. Sostituire fisicamente il nodo del file e ripristinare tutti i cavi al nodo a blocchi e alla rete di storage.
+. Reinstallare il sistema operativo sul nodo di file, aggiungendo anche le sottoscrizioni Red Hat.
+. Configurare la gestione e la rete BMC sul nodo file.
+. Aggiornare l'inventario di Ansible se il nome host, l'IP, le mappature dell'interfaccia PCIe-to-logical o qualsiasi altra cosa è stata modificata in relazione al nuovo nodo del file. In genere, questo non è necessario se il nodo è stato sostituito con un hardware server identico e si sta utilizzando la configurazione di rete originale.
++
+.. Ad esempio, se il nome host è cambiato, creare (o rinominare) il file di inventario del nodo (`host_vars/<NEW_NODE>.yml``) Quindi nel file di inventario Ansible (`inventory.yml`), sostituire il nome del vecchio nodo con il nuovo nome del nodo:
++
+[source, console]
+----
+all:
+    ...
+    children:
+    ha_cluster:
+        children:
+        mgmt:
+            hosts:
+            node_h1_new:   # Replaced "node_h1" with "node_h1_new"
+            node_h2:
+----
+
+
+. Rimuovere il nodo precedente da uno degli altri nodi del cluster: `pcs cluster node remove <HOSTNAME>`.
++
+
+IMPORTANT: NON PROCEDERE PRIMA DI ESEGUIRE QUESTO PASSAGGIO.
+
+. Sul nodo di controllo Ansible:
++
+.. Rimuovere la vecchia chiave SSH con:
++
+[source, console]
+----
+`ssh-keygen -R <HOSTNAME_OR_IP>`
+----
+.. Configurare SSH senza password nel nodo di sostituzione con:
++
+[source, console]
+----
+ssh-copy-id <USER>@<HOSTNAME_OR_IP>
+----
+
+
+. Eseguire nuovamente il playbook Ansible per configurare il nodo e aggiungerlo al cluster:
++
+[source, console]
+----
+ansible-playbook -i <inventory>.yml <playbook>.yml
+----
+. A questo punto, eseguire `pcs status` e verificare che il nodo sostituito sia ora elencato e che i servizi siano in esecuzione.
+

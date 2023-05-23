@@ -1,0 +1,39 @@
+---
+indexpage:
+  lead: La soluzione BeeGFS su NetApp è una NetApp Verified Architecture (NVA), che
+    combina il file system parallelo BeeGFS con i sistemi storage NetApp EF600. Questa
+    soluzione è un'infrastruttura affidabile, scalabile e conveniente che tiene il
+    passo con i carichi di lavoro più estremi.
+  tiles:
+  - title: Inizia subito
+    links:
+    - title: Panoramica della soluzione
+      url: "/beegfs-solution-overview.html"
+    - title: Panoramica dell'architettura
+      url: "/beegfs-architecture-overview.html"
+    - title: Blog - ulteriori informazioni su BeeGFS ed e-Series
+      url: https://www.netapp.com/blog/solution-support-for-beegfs-and-e-series/
+    - title: Blog - BeeGFS per principianti
+      url: https://www.netapp.com/blog/beegfs-for-beginners/
+    - title: Blog - ha per BeeGFS
+      url: https://www.netapp.com/blog/high-availability-beegfs/
+    - title: Video - accelerazione dei carichi di lavoro ai con BeeGFS su NetApp
+      url: https://www.netapp.tv/details/28905?mcid=04158305605030681010298851103052321172
+  - title: Documenti aggiuntivi
+    links:
+    - title: Documentazione sui prodotti NetApp
+      url: https://www.netapp.com/support-and-training/documentation/
+    - title: Documentazione BeeGFS
+      url: https://doc.beegfs.io/
+    - title: TR-4915 - spostamento dei dati con e-Series e BeeGFS per l'ai
+      url: https://www.netapp.com/pdf.html?item=/media/65882-tr-4915.pdf
+  - title: Strumenti e supporto
+    links:
+    - title: NetApp e-Series Collections su Ansible Galaxy
+      url: https://galaxy.ansible.com/netapp_eseries
+    - title: Matrice di interoperabilità NetApp
+      url: http://mysupport.netapp.com/matrix/
+    - title: Knowledge base di NetApp
+      url: https://kb.netapp.com/
+    - title: Active IQ (accesso richiesto)
+      url: https://activeiq.netapp.com/?source=aiqnsspage

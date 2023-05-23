@@ -1,0 +1,79 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-setup-nodes.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: Operazioni manuali necessarie per impostare i nodi di file e blocchi prima di eseguire Ansible. 
+---
+= Impostare i nodi di file e blocchi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Operazioni manuali necessarie per impostare i nodi di file e blocchi prima di eseguire Ansible.
+
+
+
+== Nodi di file
+
+
+
+=== Configurare Baseboard Management Controller (BMC)
+
+Un BMC (Baseboard Management Controller), a volte chiamato Service Processor, è il nome generico della funzionalità di gestione out-of-band integrata in varie piattaforme server che possono fornire accesso remoto anche se il sistema operativo non è installato o accessibile. I vendor in genere commercializzano questa funzionalità con un proprio marchio. Ad esempio, su Lenovo SR665, BMC viene definito XCC (Lenovo XClarity Controller).
+
+Seguire la documentazione del vendor del server per abilitare le licenze necessarie per accedere a questa funzionalità e assicurarsi che il BMC sia connesso alla rete e configurato in modo appropriato per l'accesso remoto.
+
+
+NOTE: Se si desidera utilizzare Redfish per la scherma basata su BMC, assicurarsi che Redfish sia attivato e che l'interfaccia BMC sia accessibile dal sistema operativo installato nel nodo file. Potrebbe essere necessaria una configurazione speciale sullo switch di rete se BMC e il sistema operativo condividono la stessa interfaccia di rete fisica.
+
+
+
+=== Mettere a punto le impostazioni di sistema
+
+Utilizzando l'interfaccia del programma di configurazione del sistema (BIOS/UEFI), assicurarsi che le impostazioni siano impostate per massimizzare le prestazioni. Le impostazioni esatte e i valori ottimali variano in base al modello di server in uso. Vengono fornite indicazioni per link:beegfs-deploy-file-node-tuning.html["modelli di file node verificati"^], in caso contrario, fare riferimento alla documentazione del vendor del server e alle best practice in base al modello in uso.
+
+
+
+=== Installare un sistema operativo
+
+Installare un sistema operativo supportato in base ai requisiti del nodo file elencati link:beegfs-technology-requirements.html#file-node-requirements["qui"^]. Fare riferimento a eventuali passaggi aggiuntivi riportati di seguito in base alla distribuzione Linux.
+
+
+
+==== RedHat
+
+Utilizza RedHat Subscription Manager per registrare e sottoscrivere il sistema per consentire l'installazione dei pacchetti richiesti dai repository ufficiali Red Hat e per limitare gli aggiornamenti alla versione supportata di Red Hat: `subscription-manager release --set=<MAJOR_VERSION>.<MINOR_VERSION>`. Per istruzioni, vedere https://access.redhat.com/solutions/253273["Come registrarsi e sottoscrivere un sistema RHEL"^] e.  https://access.redhat.com/solutions/2761031["Come limitare gli aggiornamenti"^].
+
+Abilitare il repository Red Hat contenente i pacchetti richiesti per l'alta disponibilità:
+
+....
+subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+....
+
+
+=== Configurare la rete di gestione
+
+Configurare le interfacce di rete necessarie per consentire la gestione in banda del sistema operativo. I passaggi esatti dipendono dalla distribuzione e dalla versione di Linux in uso.
+
+
+NOTE: Assicurarsi che SSH sia attivato e che tutte le interfacce di gestione siano accessibili dal nodo di controllo Ansible.
+
+
+
+=== Aggiornare il firmware HCA e HBA
+
+Assicurarsi che tutti gli HBA e gli HCA eseguano le versioni firmware supportate elencate nella link:https://imt.netapp.com/matrix/["Matrice di interoperabilità NetApp"^] e, se necessario, eseguire l'upgrade. Ulteriori consigli per gli adattatori NVIDIA ConnectX sono disponibili link:beegfs-technology-requirements.html#file-node-requirements["qui"^].
+
+
+
+== Nodi a blocchi
+
+Seguire i passi da a. link:https://docs.netapp.com/us-en/e-series/getting-started/getup-run-concept.html["Inizia a lavorare con e-Series"^] per configurare la porta di gestione su ciascun controller di nodi a blocchi e, facoltativamente, impostare il nome dell'array di storage per ciascun sistema.
+
+
+NOTE: Non è necessaria alcuna configurazione aggiuntiva oltre a garantire che tutti i nodi a blocchi siano accessibili dal nodo di controllo Ansible. La configurazione di sistema rimanente verrà applicata/mantenuta utilizzando Ansible.

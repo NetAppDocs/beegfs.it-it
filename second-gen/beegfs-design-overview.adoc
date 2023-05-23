@@ -1,0 +1,31 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-overview.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Per supportare la soluzione BeeGFS su NetApp, che combina il file system parallelo BeeGFS con i sistemi storage NetApp EF600, sono necessarie apparecchiature, cablaggi e configurazioni specifiche. 
+---
+= Panoramica del design
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Per supportare la soluzione BeeGFS su NetApp, che combina il file system parallelo BeeGFS con i sistemi storage NetApp EF600, sono necessarie apparecchiature, cablaggi e configurazioni specifiche.
+
+Scopri di più:
+
+* link:beegfs-design-hardware-architecture.html["Configurazione dell'hardware"]
+* link:beegfs-design-software-architecture.html["Configurazione del software"]
+* link:beegfs-design-solution-verification.html["Verifica del progetto"]
+* link:beegfs-design-solution-sizing-guidelines.html["Linee guida per il dimensionamento"]
+* link:beegfs-design-performance-tuning.html["Tuning delle performance"]
+
+
+Architetture derivate con variazioni di design e performance:
+
+* link:beegfs-design-high-capacity-building-block.html["Building Block ad alta capacità"]
+

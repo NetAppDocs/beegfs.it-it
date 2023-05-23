@@ -1,0 +1,108 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-inventory-common-block-node-configuration.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 'Specificare la configurazione del nodo a blocchi comune utilizzando le variabili di gruppo (group_vars).' 
+---
+= Specificare la configurazione del nodo del blocco comune
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Specificare la configurazione del nodo a blocchi comune utilizzando le variabili di gruppo (group_vars).
+
+
+
+== Panoramica
+
+La configurazione che deve essere utilizzata per tutti i nodi a blocchi è definita in `group_vars/eseries_storage_systems.yml`. In genere include:
+
+* Dettagli su come il nodo di controllo Ansible deve connettersi ai sistemi storage e-Series utilizzati come nodi a blocchi.
+* Quali versioni del firmware, DI NVSRAM e del firmware del disco devono essere eseguite dai nodi.
+* Configurazione globale, incluse le impostazioni della cache, la configurazione dell'host e le modalità di provisioning dei volumi.
+
+
+
+NOTE: Le opzioni impostate in questo file possono essere definite anche su singoli nodi a blocchi, ad esempio se sono in uso modelli hardware misti o se si dispone di password diverse per ciascun nodo. La configurazione sui singoli nodi a blocchi avrà la precedenza sulla configurazione in questo file.
+
+
+
+== Fasi
+
+Creare il file `group_vars/eseries_storage_systems.yml` e compilarlo come segue:
+
+. Ansible non utilizza SSH per connettersi ai nodi a blocchi, ma le API REST. Per ottenere questo risultato, dobbiamo stabilire:
++
+[source, yaml]
+----
+ansible_connection: local
+----
+. Specificare il nome utente e la password per gestire ciascun nodo. Il nome utente può essere omesso (e l'impostazione predefinita è admin), altrimenti è possibile specificare qualsiasi account con privilegi di amministratore. Specificare inoltre se i certificati SSL devono essere verificati o ignorati:
++
+[source, yaml]
+----
+eseries_system_username: admin
+eseries_system_password: <PASSWORD>
+eseries_validate_certs: false
+----
++
+
+WARNING: Si sconsiglia di elencare le password in testo non crittografato. Utilizzare Ansible vault o fornire il `eseries_system_password` Quando si esegue Ansible con --extra-vars.
+
+. Facoltativamente, specificare il firmware del controller, NVSRAM e il firmware del disco da installare sui nodi. Questi dovranno essere scaricati su `packages/` Prima di eseguire Ansible. È possibile scaricare il firmware del controller e-Series e NVSRAM link:https://mysupport.netapp.com/site/products/all/details/eseries-santricityos/downloads-tab/["qui"^] e firmware del disco link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["qui"^]:
++
+[source, yaml]
+----
+eseries_firmware_firmware: "packages/<FILENAME>.dlp" # Ex. "packages/RCB_11.70.2_6000_61b1131d.dlp"
+eseries_firmware_nvsram: "packages/<FILENAME>.dlp" # Ex. "packages/N6000-872834-D06.dlp"
+eseries_drive_firmware_firmware_list:
+  - "packages/<FILENAME>.dlp"
+  # Additional firmware versions as needed.
+eseries_drive_firmware_upgrade_drives_online: true # Recommended unless BeeGFS hasn't been deployed yet, as it will disrupt host access if set to "false".
+----
++
+
+WARNING: Se viene specificata questa configurazione, Ansible aggiorna automaticamente tutto il firmware, incluso il riavvio dei controller (se necessario) con senza richieste aggiuntive. Si prevede che ciò non causi interruzioni per BeeGFS/host i/o, ma può causare una temporanea diminuzione delle performance.
+
+. Regolare le impostazioni predefinite della configurazione globale del sistema. Le opzioni e i valori elencati di seguito sono generalmente consigliati per BeeGFS su NetApp, ma possono essere modificati se necessario:
++
+[source, yaml]
+----
+eseries_system_cache_block_size: 32768
+eseries_system_cache_flush_threshold: 80
+eseries_system_default_host_type: linux dm-mp
+eseries_system_autoload_balance: disabled
+eseries_system_host_connectivity_reporting: disabled
+eseries_system_controller_shelf_id: 99 # Required by default.
+----
+. Configurare le impostazioni predefinite per il provisioning di volumi globali. Le opzioni e i valori elencati di seguito sono generalmente consigliati per BeeGFS su NetApp, ma possono essere modificati se necessario:
++
+[source, yaml]
+----
+eseries_volume_size_unit: pct # Required by default. This allows volume capacities to be specified as a percentage, simplifying putting together the inventory.
+eseries_volume_read_cache_enable: true
+eseries_volume_read_ahead_enable: false
+eseries_volume_write_cache_enable: true
+eseries_volume_write_cache_mirror_enable: true
+eseries_volume_cache_without_batteries: false
+----
+. Se necessario, modificare l'ordine in cui Ansible selezionerà le unità per i pool di storage e i gruppi di volumi tenendo presente le seguenti Best practice:
++
+.. Elencare tutte le unità (potenzialmente più piccole) che devono essere utilizzate per i volumi di gestione e/o metadati e i volumi di storage durano.
+.. Assicurarsi di bilanciare l'ordine di selezione dei dischi tra i canali disponibili in base ai modelli di shelf di dischi/enclosure di dischi. Ad esempio, con EF600 e senza espansioni, i dischi 0-11 si trovano sul canale 1 del disco e i dischi 12-23 sul canale del disco. Pertanto, è necessario scegliere una strategia per bilanciare la selezione del disco `disk shelf:drive` 99:0, 99:23, 99:1, 99:22, ecc. In caso di più enclosure, la prima cifra rappresenta l'ID dello shelf del disco.
++
+[source, yaml]
+----
+# Optimal/recommended order for the EF600 (no expansion):
+eseries_storage_pool_usable_drives: "99:0,99:23,99:1,99:22,99:2,99:21,99:3,99:20,99:4,99:19,99:5,99:18,99:6,99:17,99:7,99:16,99:8,99:15,99:9,99:14,99:10,99:13,99:11,99:12"
+----
+
+
+
+
+Fare clic su link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/group_vars/eseries_storage_systems.yml["qui"^] per un esempio di un file di inventario completo che rappresenta la configurazione di un nodo a blocchi comune.

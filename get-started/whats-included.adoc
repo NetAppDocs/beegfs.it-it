@@ -1,0 +1,17 @@
+---
+sidebar: sidebar 
+permalink: whats-included.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Questo sito descrive come implementare e gestire BeeGFS su NetApp. 
+---
+= Contenuto di questo sito
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Questo sito descrive come implementare e gestire BeeGFS su NetApp utilizzando architetture NetApp Verified Architectures (NVA) e architetture personalizzate. I progetti NVA sono testati a fondo e offrono ai clienti configurazioni di riferimento e indicazioni per il dimensionamento, in modo da ridurre al minimo i rischi di implementazione e accelerare il time-to-market. NetApp supporta inoltre architetture BeeGFS personalizzate eseguite su hardware NetApp, offrendo a clienti e partner flessibilità nella progettazione di file system per soddisfare un'ampia gamma di requisiti. Entrambi gli approcci sfruttano Ansible per l'implementazione, offrendo un approccio simile ad appliance per la gestione di BeeGFS su qualsiasi scala in una gamma flessibile di hardware.

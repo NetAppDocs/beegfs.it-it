@@ -1,0 +1,14 @@
+---
+permalink: upgrade/overview.html 
+sidebar: sidebar 
+keywords: upgrade, overview 
+summary: 'Panoramica sull"aggiornamento' 
+---
+= Panoramica sull'aggiornamento
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliquia.

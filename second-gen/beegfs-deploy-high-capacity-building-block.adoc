@@ -1,0 +1,43 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-high-capacity-building-block.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600, EF300, HDD, Expansion 
+summary: Le variazioni di implementazione per un building block ad alta capacità. 
+---
+= Building block ad alta capacità
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+La guida all'implementazione della soluzione BeeGFS standard delinea procedure e raccomandazioni per i requisiti di workload ad alte performance. I clienti che desiderano soddisfare requisiti di capacità elevata devono osservare le variazioni nell'implementazione e i consigli descritti di seguito.
+
+image:high-capacity-rack-diagram.png[""]
+
+
+
+== Controller
+
+Per gli building block ad alta capacità, i controller EF600 devono essere sostituiti con controller EF300, ciascuno con un HIC Cascade installato per l'espansione SAS. Ogni nodo a blocchi avrà un numero minimo di SSD NVMe popolati nell'enclosure dell'array per lo storage dei metadati BeeGFS e saranno collegati agli shelf di espansione popolati con HDD NL-SAS per i volumi di storage BeeGFS.
+
+La configurazione da nodo file a nodo di blocco rimane la stessa.
+
+
+
+== Posizionamento del disco
+
+Per lo storage dei metadati BeeGFS sono richiesti almeno 4 SSD NVMe in ciascun nodo a blocchi. Questi dischi devono essere posizionati negli slot più esterni dell'enclosure.
+
+image:high-capacity-drive-slots-diagram.png[""]
+
+
+
+== Vassoi di espansione
+
+Il building block ad alta capacità può essere dimensionato con 1-7, 60 tray di espansione per unità per array di storage.
+
+Per istruzioni su come collegare ciascun vassoio di espansione, link:https://docs.netapp.com/us-en/e-series/install-hw-cabling/driveshelf-cable-task.html#cabling-ef300^["Fare riferimento al cablaggio EF300 per gli shelf di dischi"].

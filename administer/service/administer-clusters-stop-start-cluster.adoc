@@ -1,0 +1,56 @@
+---
+sidebar: sidebar 
+permalink: administer-clusters-stop-start-cluster.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, stop, start 
+summary: Arresto e avvio del cluster ha senza problemi. 
+---
+= Arrestare e avviare il cluster
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Arresto e avvio del cluster ha senza problemi.
+
+
+
+== Panoramica
+
+In questa sezione viene descritto come arrestare e riavviare il cluster BeeGFS. Esempi di scenari in cui ciò potrebbe essere necessario includono la manutenzione elettrica o la migrazione tra datacenter o rack.
+
+
+
+== Fasi
+
+Se per qualsiasi motivo è necessario arrestare l'intero cluster BeeGFS e arrestare tutti i servizi eseguiti:
+
+[source, console]
+----
+pcs cluster stop --all
+----
+È anche possibile arrestare il cluster su singoli nodi (che esegue automaticamente il failover dei servizi su un altro nodo), sebbene si consiglia di mettere il nodo in standby (vedere la link:administer-clusters-failover-failback.html["failover"^] sezione):
+
+[source, console]
+----
+pcs cluster stop <HOSTNAME>
+----
+Per avviare i servizi e le risorse del cluster su tutti i nodi eseguire:
+
+[source, console]
+----
+pcs cluster start --all
+----
+Oppure avviare i servizi su un nodo specifico con:
+
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+A questo punto eseguire `pcs status` Verificare inoltre che i servizi del cluster e BeeGFS vengano avviati su tutti i nodi e che i servizi siano in esecuzione sui nodi previsti.
+
+
+TIP: A seconda delle dimensioni del cluster, l'interruzione dell'intero cluster può richiedere alcuni minuti (da secondi a minuti) o la visualizzazione avviata in `pcs status`. Se `pcs cluster <COMMAND>` Si blocca per più di cinque minuti, prima di eseguire "Ctrl+C" per annullare il comando, accedere a ciascun nodo del cluster e utilizzare `pcs status` Per verificare se i servizi cluster (Corosync/Pacemaker) sono ancora in esecuzione su quel nodo. Da qualsiasi nodo in cui il cluster è ancora attivo, è possibile controllare quali risorse bloccano il cluster. Risolvere manualmente il problema e il comando dovrebbe essere completo o può essere rieseguito per interrompere eventuali servizi rimanenti.

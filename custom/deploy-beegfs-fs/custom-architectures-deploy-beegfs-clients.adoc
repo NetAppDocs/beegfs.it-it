@@ -1,0 +1,237 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-deploy-beegfs-clients.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: In alternativa, è possibile utilizzare Ansible per configurare i client BeeGFS e montare il file system. 
+---
+= Implementare i client BeeGFS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+In alternativa, è possibile utilizzare Ansible per configurare i client BeeGFS e montare il file system.
+
+
+
+== Panoramica
+
+L'accesso ai file system BeeGFS richiede l'installazione e la configurazione del client BeeGFS su ciascun nodo che deve montare il file system. In questa sezione viene descritto come eseguire queste attività utilizzando la disponibile link:https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_client["Ruolo Ansible"^].
+
+
+
+== Fasi
+
+
+
+=== Creare il file di inventario del client
+
+. Se necessario, impostare SSH senza password dal nodo di controllo Ansible a ciascuno degli host che si desidera configurare come client BeeGFS:
++
+[source, bash]
+----
+ssh-copy-id <user>@<HOSTNAME_OR_IP>
+----
+. Sotto `host_vars/`, Creare un file per ogni client BeeGFS denominato `<HOSTNAME>.yml` con il seguente contenuto, inserendo il testo segnaposto con le informazioni corrette per il tuo ambiente:
++
+[source, yaml]
+----
+# BeeGFS Client
+ansible_host: <MANAGEMENT_IP>
+----
+. Se si desidera utilizzare i ruoli di NetApp e-Series host Collection per configurare le interfacce InfiniBand o Ethernet per consentire ai client di connettersi ai nodi di file BeeGFS, è possibile includere uno dei seguenti elementi:
++
+.. Se il tipo di rete è link:https://github.com/netappeseries/host/tree/release-1.2.0/roles/ipoib["InfiniBand (con IPoIB)"^]:
++
+[source, yaml]
+----
+eseries_ipoib_interfaces:
+- name: <INTERFACE>  # Example: ib0 or i1b
+  address: <IP/SUBNET> # Example: 100.127.100.1/16
+- name: <INTERFACE>  # Additional interfaces as needed.
+  address: <IP/SUBNET>
+----
+.. Se il tipo di rete è link:https://github.com/netappeseries/host/tree/release-1.2.0/roles/roce["RDMA su Ethernet convergente (RoCE)"^]:
++
+[source, yaml]
+----
+eseries_roce_interfaces:
+- name: <INTERFACE>  # Example: eth0.
+  address: <IP/SUBNET> # Example: 100.127.100.1/16
+- name: <INTERFACE>  # Additional interfaces as needed.
+  address: <IP/SUBNET>
+----
+.. Se il tipo di rete è link:https://github.com/netappeseries/host/tree/release-1.2.0/roles/ip["Ethernet (solo TCP, senza RDMA)"^]:
++
+[source, yaml]
+----
+eseries_ip_interfaces:
+- name: <INTERFACE>  # Example: eth0.
+  address: <IP/SUBNET> # Example: 100.127.100.1/16
+- name: <INTERFACE>  # Additional interfaces as needed.
+  address: <IP/SUBNET>
+----
+
+
+. Creare un nuovo file `client_inventory.yml` E specificare l'utente che Ansible deve utilizzare per connettersi a ciascun client e la password che Ansible deve utilizzare per l'escalation dei privilegi (ciò richiede `ansible_ssh_user` essere root o avere privilegi sudo):
++
+[source, yaml]
+----
+# BeeGFS client inventory.
+all:
+  vars:
+    ansible_ssh_user: <USER>
+    ansible_become_password: <PASSWORD>
+----
++
+
+IMPORTANT: Non memorizzare le password in testo normale. Utilizzare invece il vault Ansible (vedere la link:https://docs.ansible.com/ansible/latest/user_guide/vault.html["Documentazione Ansible"^] Per crittografare il contenuto con Ansible Vault) o utilizzare `--ask-become-pass` quando si esegue il playbook.
+
+. In `client_inventory.yml` File, elenca tutti gli host che devono essere configurati come client BeeGFS in `beegfs_clients` Fare riferimento ai commenti inline e rimuovere eventuali commenti aggiuntivi necessari per creare il modulo del kernel del client BeeGFS sul sistema:
++
+[source, yaml]
+----
+children:
+    # Ansible group representing all BeeGFS clients:
+    beegfs_clients:
+      hosts:
+        <CLIENT HOSTNAME>:
+        # Additional clients as needed.
+
+      vars:
+        # OPTION 1: If you’re using the Mellanox OFED drivers and they are already installed:
+        #eseries_ib_skip: True # Skip installing inbox drivers when using the IPoIB role.
+        #beegfs_client_ofed_enable: True
+        #beegfs_client_ofed_include_path: "/usr/src/ofa_kernel/default/include"
+
+        # OPTION 2: If you’re using inbox IB/RDMA drivers and they are already installed:
+        #eseries_ib_skip: True # Skip installing inbox drivers when using the IPoIB role.
+
+        # OPTION 3: If you want to use inbox IB/RDMA drivers and need them installed/configured.
+        #eseries_ib_skip: False # Default value.
+        #beegfs_client_ofed_enable: False # Default value.
+----
++
+
+NOTE: Quando si utilizzano i driver Mellanox OFED, assicurarsi che beegfs_client_ofed_include_path punti al "header include path" corretto per l'installazione di Linux. Per ulteriori informazioni, consultare la documentazione di BeeGFS per link:https://doc.beegfs.io/latest/advanced_topics/rdma_support.html["Supporto RDMA"^].
+
+. In `client_inventory.yml` Elencare i file system BeeGFS che si desidera montare sotto qualsiasi file definito in precedenza `vars`:
++
+[source, yaml]
+----
+        beegfs_client_mounts:
+          - sysMgmtdHost: <IP ADDRESS>  # Primary IP of the BeeGFS management service.
+            mount_point: /mnt/beegfs    # Path to mount BeeGFS on the client.
+            connInterfaces:
+              - <INTERFACE> # Example: ibs4f1
+              - <INTERFACE>
+            beegfs_client_config:
+              # Maximum number of simultaneous connections to the same node.
+              connMaxInternodeNum: 128 # BeeGFS Client Default: 12
+              # Allocates the number of buffers for transferring IO.
+              connRDMABufNum: 36 # BeeGFS Client Default: 70
+              # Size of each allocated RDMA buffer
+              connRDMABufSize: 65536 # BeeGFS Client Default: 8192
+              # Required when using the BeeGFS client with the shared-disk HA solution.
+              # This does require BeeGFS targets be mounted in the default “sync” mode.
+              # See the documentation included with the BeeGFS client role for full details.
+              sysSessionChecksEnabled: false
+        # Specify additional file system mounts for this or other file systems.
+----
+. A partire da BeeGFS 7.2.7 e 7.3.1 link:https://doc.beegfs.io/latest/advanced_topics/authentication.html["autenticazione della connessione"^] deve essere configurato o disabilitato esplicitamente. A seconda di come si sceglie di configurare l'autenticazione basata sulla connessione quando si specifica link:custom-architectures-inventory-common-file-node-configuration.html["configurazione di un nodo di file comune"^], potrebbe essere necessario modificare la configurazione del client:
++
+.. Per impostazione predefinita, l'implementazione del cluster ha configurerà automaticamente l'autenticazione della connessione e genererà un `connauthfile` Che verranno posizionati/mantenuti sul nodo di controllo Ansible in `<INVENTORY>/files/beegfs/<sysMgmtdHost>_connAuthFile`. Per impostazione predefinita, il ruolo del client BeeGFS è impostato per leggere/distribuire questo file ai client definiti in `client_inventory.yml`e non sono necessarie ulteriori azioni.
++
+... Per le opzioni avanzate, fare riferimento all'elenco completo dei valori predefiniti inclusi in link:https://github.com/netappeseries/beegfs/blob/release-3.1.0/roles/beegfs_client/defaults/main.yml#L32["Ruolo del client BeeGFS"^].
+
+
+.. Se si sceglie di specificare un segreto personalizzato con `beegfs_ha_conn_auth_secret` specificarlo in `client_inventory.yml` anche file:
++
+[source, yaml]
+----
+beegfs_ha_conn_auth_secret: <SECRET>
+----
+.. Se si sceglie di disattivare completamente l'autenticazione basata sulla connessione con `beegfs_ha_conn_auth_enabled`, specificare che in `client_inventory.yml` anche file:
++
+[source, yaml]
+----
+beegfs_ha_conn_auth_enabled: false
+----
+
+
+
+
+Per un elenco completo dei parametri supportati e ulteriori dettagli, fare riferimento a. link:https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_client["Documentazione completa del client BeeGFS"^]. Per un esempio completo di un inventario client, fare clic su link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/client_inventory.yml["qui"^].
+
+
+
+=== Creare il file Playbook del client BeeGFS
+
+. Creare un nuovo file `client_playbook.yml`
++
+[source, yaml]
+----
+# BeeGFS client playbook.
+- hosts: beegfs_clients
+  any_errors_fatal: true
+  gather_facts: true
+  collections:
+    - netapp_eseries.beegfs
+    - netapp_eseries.host
+  tasks:
+----
+. Facoltativo: Se si desidera utilizzare i ruoli di NetApp e-Series host Collection per configurare le interfacce per la connessione dei client ai file system BeeGFS, importare il ruolo corrispondente al tipo di interfaccia che si sta configurando:
++
+.. Se si utilizza InfiniBand (IPoIB):
++
+[source, yaml]
+----
+    - name: Ensure IPoIB is configured
+      import_role:
+        name: ipoib
+----
+.. Se si utilizza RDMA su Ethernet convergente (RoCE):
++
+[source, yaml]
+----
+    - name: Ensure IPoIB is configured
+      import_role:
+        name: roce
+----
+.. Se si utilizza Ethernet (solo TCP, senza RDMA):
++
+[source, yaml]
+----
+    - name: Ensure IPoIB is configured
+      import_role:
+        name: ip
+----
+
+
+. Infine, importare il ruolo del client BeeGFS per installare il software client e configurare i supporti del file system:
++
+[source, yaml]
+----
+    # REQUIRED: Install the BeeGFS client and mount the BeeGFS file system.
+    - name: Verify the BeeGFS clients are configured.
+      import_role:
+        name: beegfs_client
+----
+
+
+Per un esempio completo di un playbook client, fai clic link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/client_playbook.yml["qui"^].
+
+
+
+=== Eseguire il manuale BeeGFS Client Playbook
+
+Per installare/creare il client e montare BeeGFS, eseguire il seguente comando:
+
+[source, bash]
+----
+ansible-playbook -i client_inventory.yml client_playbook.yml
+----

@@ -1,0 +1,88 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-solution-sizing-guidelines.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: La soluzione BeeGFS include consigli per il dimensionamento delle performance e della capacità basati su test di verifica. 
+---
+= Linee guida per il dimensionamento
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+La soluzione BeeGFS include consigli per il dimensionamento delle performance e della capacità basati su test di verifica.
+
+L'obiettivo di un'architettura building-block è creare una soluzione semplice da dimensionare aggiungendo più building block per soddisfare i requisiti di un particolare sistema BeeGFS. Utilizzando le linee guida riportate di seguito, è possibile stimare la quantità e i tipi di blocchi di base BeeGFS necessari per soddisfare i requisiti del proprio ambiente.
+
+Tenere presente che queste stime sono le migliori performance del caso. Le applicazioni di benchmarking sintetico vengono scritte e utilizzate per ottimizzare l'utilizzo dei file system sottostanti in modi diversi dalle applicazioni reali.
+
+
+
+== Dimensionamento delle performance
+
+La seguente tabella fornisce il dimensionamento delle performance consigliato.
+
+|===
+| Profilo di configurazione | 1 MIB letture | 1MiB scrive 
+
+
+| Metadati + storage | 62GiBps | 21 GiBps 
+
+
+| Solo storage | 64 GiBps | 21 GiBps 
+|===
+Le stime di dimensionamento della capacità dei metadati si basano sulla "regola generale" secondo cui 500 GB di capacità sono sufficienti per circa 150 milioni di file in BeeGFS. Per ulteriori informazioni, consultare la documentazione di BeeGFS per https://doc.beegfs.io/latest/system_design/system_requirements.html["Requisiti di sistema"^].)
+
+L'utilizzo di funzionalità come gli elenchi di controllo degli accessi e il numero di directory e file per directory influisce anche sulla velocità di utilizzo dello spazio dei metadati. Le stime della capacità dello storage tengono conto della capacità utilizzabile del disco insieme all'overhead di RAID 6 e XFS.
+
+
+
+== Dimensionamento della capacità per metadati + building block dello storage
+
+La seguente tabella fornisce il dimensionamento della capacità consigliato per i metadati e gli elementi di base dello storage.
+
+|===
+| Dimensioni del disco (2+2 RAID 1) gruppi di volumi di metadati | Capacità dei metadati (numero di file) | Dimensioni del disco (8+2 RAID 6) gruppi di volumi di storage | Capacità dello storage (contenuto del file) 
+
+
+| 1,92 TB | 1,938,577,200 | 1,92 TB | 51,77 TB 
+
+
+| 3,84 TB | 3,880,388,400 | 3,84 TB | 103,55 TB 
+
+
+| 7,68 TB | 8,125,278,000 | 7,68 TB | 216,74 TB 
+
+
+| 15,3 TB | 17,269,854,000 | 15,3 TB | 460,60 TB 
+|===
+
+NOTE: Quando si ridimensionano i metadati e gli elementi di base dello storage, è possibile ridurre i costi utilizzando unità più piccole per i gruppi di volumi di metadati rispetto ai gruppi di volumi di storage.
+
+
+
+== Dimensionamento della capacità per gli elementi di base solo per lo storage
+
+La seguente tabella fornisce il dimensionamento della capacità a regola d'uso per gli elementi di base solo per lo storage.
+
+|===
+| Dimensioni del disco (10+2 RAID 6) gruppi di volumi di storage | Capacità dello storage (contenuto del file) 
+
+
+| 1,92 TB | 59,89 TB 
+
+
+| 3,84 TB | 119,80 TB 
+
+
+| 7,68 TB | 251,89 TB 
+
+
+| 15,3 TB | 538,55 TB 
+|===
+
+NOTE: L'overhead di performance e capacità dell'inclusione del servizio di gestione nel building block di base (primo) è minimo, a meno che non sia attivato il blocco globale dei file.

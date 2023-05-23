@@ -1,0 +1,14 @@
+---
+permalink: troubleshoot/overview.html 
+sidebar: sidebar 
+keywords: troubleshoot, overview 
+summary: Panoramica sulla risoluzione dei problemi 
+---
+= Panoramica sulla risoluzione dei problemi
+:allow-uri-read: 
+:icons: font
+:imagesdir: ../media/
+
+
+[role="lead"]
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incidunt ut labore et dolore magna aliquia.

@@ -1,0 +1,75 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-setup-nodes.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 'Configurare la rete sul BMC (Baseboard Management Controller) di ciascun server e configurare la porta di gestione su ciascun controller.' 
+---
+= Impostare nodi di file e nodi di blocco
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Sebbene la maggior parte delle attività di configurazione del software sia automatizzata utilizzando le raccolte Ansible fornite da NetApp, è necessario configurare il networking sul BMC (Baseboard Management Controller) di ciascun server e configurare la porta di gestione su ciascun controller.
+
+
+
+== Configurare i nodi di file
+
+. Configurare il networking sul BMC (Baseboard Management Controller) di ciascun server.
++
+Per informazioni su come configurare la rete per i file node Lenovo SR665 validati, consultare la https://thinksystem.lenovofiles.com/help/index.jsp?topic=%2F7D2W%2Fset_the_network_connection.html["Documentazione di Lenovo ThinkSystem"^].
+
++
+
+NOTE: Un BMC (Baseboard Management Controller), a volte chiamato Service Processor, è il nome generico della funzionalità di gestione out-of-band integrata in varie piattaforme server che possono fornire accesso remoto anche se il sistema operativo non è installato o accessibile. I vendor in genere commercializzano questa funzionalità con un proprio marchio. Ad esempio, su Lenovo SR665, il BMC viene definito _Lenovo XClarity Controller (XCC)_.
+
+. Configurare le impostazioni di sistema per ottenere le massime prestazioni.
++
+È possibile configurare le impostazioni di sistema utilizzando il setup UEFI (precedentemente noto come BIOS) o le API Redfish fornite da molti BMC. Le impostazioni di sistema variano in base al modello di server utilizzato come nodo di file.
+
++
+Per informazioni su come configurare le impostazioni di sistema per i nodi di file Lenovo SR665 validati, vedere link:beegfs-deploy-file-node-tuning.html["Ottimizzare le impostazioni di sistema per le prestazioni"].
+
+. Installare Red Hat 8.4 e configurare il nome host e la porta di rete utilizzati per gestire il sistema operativo, inclusa la connettività SSH dal nodo di controllo Ansible.
++
+Non configurare gli IP su nessuna delle porte InfiniBand in questo momento.
+
++
+
+NOTE: Sebbene non sia strettamente necessario, le sezioni successive presumono che i nomi host siano numerati in sequenza (ad esempio h1-HN) e si riferiscono alle attività che devono essere completate su host con numero pari o dispari.
+
+. Utilizza RedHat Subscription Manager per registrare e sottoscrivere il sistema per consentire l'installazione dei pacchetti richiesti dai repository ufficiali Red Hat e per limitare gli aggiornamenti alla versione supportata di Red Hat: `subscription-manager release --set=8.4`. Per istruzioni, vedere https://access.redhat.com/solutions/253273["Come registrarsi e sottoscrivere un sistema RHEL"^] e.  https://access.redhat.com/solutions/2761031["Come limitare gli aggiornamenti"^].
+. Abilitare il repository Red Hat contenente i pacchetti richiesti per l'alta disponibilità.
++
+....
+subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+....
+. Aggiornare il firmware di ConnectX-6 HCA alla versione consigliata in link:beegfs-technology-requirements.html["Requisiti tecnologici"].
++
+Questo aggiornamento può essere eseguito scaricando ed eseguendo una versione del tool mlxup che integra il firmware consigliato. È possibile scaricare questo tool da https://network.nvidia.com/support/firmware/mlxup-mft/["Mlxup - Utility di aggiornamento e query"^] (link:https://docs.nvidia.com/networking/display/MLXUPFWUTILITY/mlxup+-+Firmware+Utility+User+Guide["guida per l'utente"^]).
+
+
+
+
+
+== Impostare i nodi a blocchi
+
+Configurare i nodi a blocchi EF600 configurando la porta di gestione su ciascun controller.
+
+. Configurare la porta di gestione su ciascun controller EF600.
++
+Per istruzioni sulla configurazione delle porte, consultare https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["Centro di documentazione e-Series"^].
+
+. Facoltativamente, impostare il nome dell'array di storage per ciascun sistema.
++
+L'impostazione di un nome può semplificare il riferimento a ciascun sistema nelle sezioni successive. Per istruzioni sull'impostazione del nome dell'array, consultare https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["Centro di documentazione e-Series"^].
+
+
+
+
+NOTE: Sebbene non sia strettamente necessario, gli argomenti successivi presumono che i nomi degli array di storage siano numerati in sequenza (ad esempio c1 - CN) e fanno riferimento ai passaggi da completare sui sistemi con numero pari o dispari.

@@ -1,0 +1,213 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-file-node-tuning.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Per massimizzare le performance, si consiglia di configurare le impostazioni di sistema sul modello di server utilizzato come nodi di file. 
+---
+= Ottimizzare le impostazioni del sistema del nodo di file per le performance
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Per massimizzare le performance, si consiglia di configurare le impostazioni di sistema sul modello di server utilizzato come nodi di file.
+
+Le impostazioni di sistema variano a seconda del modello di server utilizzato come nodo di file. In questo argomento viene descritto come configurare le impostazioni di sistema per i nodi file del server Lenovo ThinkSystem SR665 validati.
+
+
+
+== Utilizzare l'interfaccia UEFI per regolare le impostazioni di sistema
+
+Il firmware di sistema del server Lenovo SR665 contiene numerosi parametri di tuning che possono essere impostati tramite l'interfaccia UEFI. Questi parametri di tuning possono influire su tutti gli aspetti del funzionamento del server e sulle prestazioni del server.
+
+In *UEFI Setup > System Settings* (Configurazione UEFI > Impostazioni di sistema), regolare le seguenti impostazioni di sistema:
+
+
+
+=== Menu Operating Mode (modalità operativa)
+
+[cols=","]
+|===
+| *Impostazioni di sistema* | *Cambia in* 
+
+
+ a| 
+Modalità operativa
+ a| 
+Personalizzato
+
+
+
+ a| 
+CTDP
+ a| 
+Manuale
+
+
+
+ a| 
+Manuale di cTDP
+ a| 
+350
+
+
+
+ a| 
+Limite di potenza del pacchetto
+ a| 
+Manuale
+
+
+
+ a| 
+Modalità di efficienza
+ a| 
+Disattiva
+
+
+
+ a| 
+Global-Cstate-Control
+ a| 
+Disattiva
+
+
+
+ a| 
+P-states SOC
+ a| 
+P0
+
+
+
+ a| 
+C-States DF
+ a| 
+Disattiva
+
+
+
+ a| 
+Stato P 1
+ a| 
+Disattiva
+
+
+
+ a| 
+Abilitazione spegnimento memoria
+ a| 
+Disattiva
+
+
+
+ a| 
+Nodi NUMA per socket
+ a| 
+NPS1
+
+|===
+
+
+=== Menu Devices and i/O.
+
+[cols=","]
+|===
+| *Impostazioni di sistema* | *Cambia in* 
+
+
+ a| 
+IOMMU
+ a| 
+Disattiva
+
+|===
+
+
+=== Menu di alimentazione
+
+[cols=","]
+|===
+| *Impostazioni di sistema* | *Cambia in* 
+
+
+ a| 
+PCIe Power Brake
+ a| 
+Disattiva
+
+|===
+
+
+=== Menu processori
+
+[cols=","]
+|===
+| *Impostazioni di sistema* | *Cambia in* 
+
+
+ a| 
+Controllo C-state globale
+ a| 
+Disattiva
+
+
+
+ a| 
+C-States DF
+ a| 
+Disattiva
+
+
+
+ a| 
+Modalità SMT
+ a| 
+Disattiva
+
+
+
+ a| 
+CPPC
+ a| 
+Disattiva
+
+|===
+
+
+== Utilizzare l'API Redfish per regolare le impostazioni di sistema
+
+Oltre a utilizzare la configurazione UEFI, è possibile utilizzare l'API Redfish per modificare le impostazioni di sistema.
+
+....
+curl --request PATCH \
+  --url https://<BMC_IP_ADDRESS>/redfish/v1/Systems/1/Bios/Pending \
+  --user <BMC_USER>:<BMC- PASSWORD> \
+  --header 'Content-Type: application/json' \
+  --data '{
+"Attributes": {
+"OperatingModes_ChooseOperatingMode": "CustomMode",
+"Processors_cTDP": "Manual",
+"Processors_PackagePowerLimit": "Manual",
+"Power_EfficiencyMode": "Disable",
+"Processors_GlobalC_stateControl": "Disable",
+"Processors_SOCP_states": "P0",
+"Processors_DFC_States": "Disable",
+"Processors_P_state1": "Disable",
+"Memory_MemoryPowerDownEnable": "Disable",
+"DevicesandIOPorts_IOMMU": "Disable",
+"Power_PCIePowerBrake": "Disable",
+"Processors_GlobalC_stateControl": "Disable",
+"Processors_DFC_States": "Disable",
+"Processors_SMTMode": "Disable",
+"Processors_CPPC": "Disable",
+"Memory_NUMANodesperSocket":"NPS1"
+}
+}
+'
+....
+Per informazioni dettagliate sullo schema Redfish, vedere https://redfish.dmtf.org/redfish/schema_index["Sito Web DMTF"^].

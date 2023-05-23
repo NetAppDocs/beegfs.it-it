@@ -1,0 +1,137 @@
+---
+sidebar: sidebar 
+permalink: beegfs-terms.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: Termini e concetti applicabili alla soluzione BeeGFS su NetApp. 
+---
+= Termini e concetti
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+I seguenti termini e concetti si applicano alla soluzione BeeGFS su NetApp.
+
+
+TIP: Vedere link:administer-clusters-overview.html["Amministrare i cluster BeeGFS"] Sezione per ulteriori dettagli su termini e concetti specifici per l'interazione con cluster BeeGFS ad alta disponibilità (ha).
+
+[cols="25h,~"]
+|===
+| Termine | Descrizione 
+
+
+ a| 
+AI
+ a| 
+Intelligenza artificiale.
+
+
+
+ a| 
+Inventario di Ansible
+ a| 
+Struttura di directory contenente file YAML utilizzati per descrivere il cluster BeeGFS ha desiderato.
+
+
+
+ a| 
+BMC
+ a| 
+Controller di gestione della baseboard. Talvolta indicato come processore di servizi.
+
+
+
+ a| 
+nodi a blocchi
+ a| 
+Sistemi storage.
+
+
+
+ a| 
+client
+ a| 
+Nodi nel cluster HPC che eseguono applicazioni che devono utilizzare il file system. A volte chiamato anche nodi di calcolo o GPU.
+
+
+
+ a| 
+DL
+ a| 
+Deep Learning.
+
+
+
+ a| 
+nodi di file
+ a| 
+File server BeeGFS.
+
+
+
+ a| 
+HA
+ a| 
+Alta disponibilità.
+
+
+
+ a| 
+HIC
+ a| 
+Scheda di interfaccia host.
+
+
+
+ a| 
+HPC
+ a| 
+High-Performance Computing.
+
+
+
+ a| 
+Workload di tipo HPC
+ a| 
+I carichi di lavoro in stile HPC sono in genere caratterizzati da più nodi di calcolo o GPU che hanno tutti bisogno di accedere allo stesso dataset in parallelo per facilitare un calcolo distribuito o un lavoro di training. Questi set di dati sono spesso costituiti da file di grandi dimensioni che devono essere sottoposti a striping su più nodi di storage fisici per eliminare i tradizionali colli di bottiglia hardware che impedirebbero l'accesso simultaneo a un singolo file.
+
+
+
+ a| 
+ML
+ a| 
+Apprendimento automatico.
+
+
+
+ a| 
+NLP
+ a| 
+Elaborazione del linguaggio naturale.
+
+
+
+ a| 
+NLU
+ a| 
+Comprensione del linguaggio naturale.
+
+
+
+ a| 
+NVA
+ a| 
+Il programma NetApp Verified Architecture (NVA) fornisce configurazioni di riferimento e indicazioni per il dimensionamento per carichi di lavoro e casi di utilizzo specifici. Queste soluzioni sono testate a fondo e sono progettate per ridurre al minimo i rischi di implementazione e accelerare il time-to-market.
+
+
+
+ a| 
+rete storage/rete client
+ a| 
+Rete utilizzata dai client per comunicare con il file system BeeGFS. Si tratta spesso della stessa rete utilizzata per la comunicazione MPI (Parallel message Passing Interface) e altre comunicazioni applicative tra i nodi del cluster HPC.
+
+|===

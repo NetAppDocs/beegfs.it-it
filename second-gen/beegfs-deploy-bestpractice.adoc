@@ -1,0 +1,154 @@
+---
+sidebar: sidebar 
+permalink: beegfs-deploy-bestpractice.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
+summary: 'Seguire le linee guida delle Best practice per l"implementazione della soluzione BeeGFS su NetApp.' 
+---
+= Esaminare le Best practice
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Seguire le linee guida delle Best practice per l'implementazione della soluzione BeeGFS su NetApp.
+
+
+
+== Convenzioni standard
+
+Quando si assembla e crea fisicamente il file di inventario Ansible, attenersi alle seguenti convenzioni standard (per ulteriori informazioni, vedere link:beegfs-deploy-beegfs-general-config.html["Creare l'inventario Ansible"]).
+
+* I nomi host dei nodi di file sono numerati in sequenza (h01-HN) con numeri inferiori nella parte superiore del rack e numeri superiori nella parte inferiore.
++
+Ad esempio, la convenzione di naming `[location][row][rack]hN` assomiglia a: `ictad22h01`.
+
+* Ciascun nodo a blocchi è composto da due controller di storage, ciascuno con il proprio nome host.
++
+Il nome di un array di storage viene utilizzato per fare riferimento all'intero sistema di storage a blocchi come parte di un inventario Ansible. I nomi degli array di storage devono essere numerati in sequenza (a01 - AN) e i nomi host dei singoli controller derivano da tale convenzione di naming.
+
++
+Ad esempio, un nodo del blocco denominato `ictad22a01` in genere, è possibile configurare i nomi host per ciascun controller come `ictad22a01-a` e. `ictad22a01-b`, Ma in un inventario Ansible deve essere indicato come `ictad22a01`.
+
+* I nodi di file e blocchi all'interno dello stesso building block condividono lo stesso schema di numerazione e sono adiacenti l'uno all'altro nel rack con entrambi i nodi di file in cima ed entrambi i nodi di blocco direttamente sotto di essi.
++
+Ad esempio, nel primo building block, i nodi di file h01 e h02 sono entrambi collegati direttamente ai nodi di blocco a01 e a02. Dall'alto verso il basso, i nomi host sono h01, h02, a01 e a02.
+
+* I building block vengono installati in ordine sequenziale in base ai nomi host, in modo che i nomi host con numero inferiore si trovino nella parte superiore del rack e i nomi host con numero superiore nella parte inferiore.
++
+L'obiettivo è ridurre al minimo la lunghezza del cavo che va verso la parte superiore degli switch rack e definire una pratica di implementazione standard per semplificare la risoluzione dei problemi. Per i datacenter in cui ciò non è consentito a causa di problemi relativi alla stabilità del rack, è certamente consentito l'inverso, popolando il rack dal basso verso l'alto.
+
+
+
+
+
+== Configurazione della rete storage InfiniBand
+
+Metà delle porte InfiniBand su ciascun nodo di file vengono utilizzate per connettersi direttamente ai nodi di blocco. L'altra metà è collegata agli switch InfiniBand e viene utilizzata per la connettività client-server BeeGFS. Quando si determinano le dimensioni delle subnet IPoIB utilizzate per client e server BeeGFS, è necessario considerare la crescita prevista del cluster di calcolo/GPU e del file system BeeGFS. Se si deve discostarsi dagli intervalli IP consigliati, tenere presente che ogni connessione diretta in un singolo building block ha una subnet univoca e non esiste alcuna sovrapposizione con le subnet utilizzate per la connettività client-server.
+
+
+
+=== Connessioni dirette
+
+I nodi di file e blocchi all'interno di ciascun building block utilizzano sempre gli IP nella tabella seguente per le loro connessioni dirette.
+
+
+NOTE: Questo schema di indirizzamento rispetta la seguente regola: Il terzo ottetto è sempre dispari o pari, a seconda che il nodo del file sia dispari o pari.
+
+|===
+| Nodo del file | Porta IB | Indirizzo IP | Nodo del blocco | Porta IB | IP fisico | IP virtuale 
+
+
+| Dispari (h1) | i1a | 192.168.1.10 | Dispari (c1) | 2a | 192.168.1.100 | 192.168.1.101 
+
+
+| Dispari (h1) | i2a | 192.168.3.10 | Dispari (c1) | 2a | 192.168.3.100 | 192.168.3.101 
+
+
+| Dispari (h1) | i3a | 192.168.5.10 | Pari (c2) | 2a | 192.168.5.100 | 192.168.5.101 
+
+
+| Dispari (h1) | i4a | 192.168.7.10 | Pari (c2) | 2a | 192.168.7.100 | 192.168.7.101 
+
+
+| Pari (h2) | i1a | 192.168.2.10 | Dispari (c1) | 2b | 192.168.2.100 | 192.168.2.101 
+
+
+| Pari (h2) | i2a | 192.168.4.10 | Dispari (c1) | 2b | 192.168.4.100 | 192.168.4.101 
+
+
+| Pari (h2) | i3a | 192.168.6.10 | Pari (c2) | 2b | 192.168.6.100 | 192.168.6.101 
+
+
+| Pari (h2) | i4a | 192.168.8.10 | Pari (c2) | 2b | 192.168.8.100 | 192.168.8.101 
+|===
+
+
+=== Schema di indirizzamento IPoIB client-server BeeGFS (due subnet)
+
+Per consentire ai client BeeGFS di utilizzare due porte InfiniBand, sono necessarie due subnet IPoIB con la metà dei servizi server BeeGFS configurati con un IP preferito su ciascuna subnet, in modo da garantire che i client utilizzino due porte InfiniBand per massimizzare la ridondanza e il possibile throughput per il file system.
+
+Ogni nodo di file esegue più servizi server BeeGFS (gestione, metadati o storage). Per consentire a ciascun servizio di eseguire il failover in modo indipendente sull'altro nodo di file, ciascuno è configurato con indirizzi IP univoci che possono fluttuare tra entrambi i nodi (a volte definiti interfaccia logica o LIF).
+
+Sebbene non sia obbligatorio, questa implementazione presuppone che i seguenti intervalli di subnet IPoIB siano in uso per queste connessioni e definisce uno schema di indirizzamento standard che applica le seguenti regole:
+
+* Il secondo ottetto è sempre dispari o pari, a seconda che la porta InfiniBand del nodo del file sia pari o dispari.
+* Gli IP del cluster BeeGFS sono sempre `xxx. 127.100.yyy` oppure `xxx.128.100.yyy`.
+
+
+
+NOTE: Oltre all'interfaccia utilizzata per la gestione del sistema operativo in-band, Corosync può utilizzare interfacce aggiuntive per la sincronizzazione e il battito cardiaco del cluster. In questo modo, la perdita di una singola interfaccia non riduce l'intero cluster.
+
+* Il servizio BeeGFS Management è sempre attivo `xxx.yyy.101.0` oppure `xxx.yyy.102.0`.
+* I servizi di metadati BeeGFS sono sempre attivi `xxx.yyy.101.zzz` oppure `xxx.yyy.102.zzz`.
+* I servizi di storage BeeGFS sono sempre attivi `xxx.yyy.103.zzz` oppure `xxx.yyy.103.zzz`.
+* Indirizzi compresi nell'intervallo `100.xxx.1.1` attraverso `100.xxx.99.255` sono riservati ai clienti.
+
+
+.Subnet A: 100.127.0.0/16
+La seguente tabella fornisce l'intervallo per la subnet A: 100.127.0.0/16.
+
+|===
+| Scopo | Porta InfiniBand | Indirizzo IP o intervallo 
+
+
+| IP cluster BeeGFS | i1b | 100.127.100.1 - 100.127.100.255 
+
+
+| Gestione di BeeGFS | i1b | 100.127.101.0 
+
+
+| Metadati BeeGFS | i1b o i3b | 100.127.101.1 - 100.127.101.255 
+
+
+| Storage BeeGFS | i1b o i3b | 100.127.103.1 - 100.127.103.255 
+
+
+| Client BeeGFS | (varia in base al client) | 100.127.1.1 - 100.127.99.255 
+|===
+.Subnet B: 100.128.0.0/16
+La seguente tabella fornisce l'intervallo per la subnet B: 100.128.0.0/16.
+
+|===
+| Scopo | Porta InfiniBand | Indirizzo IP o intervallo 
+
+
+| IP cluster BeeGFS | i4b | 100.128.100.1 - 100.128.100.255 
+
+
+| Gestione di BeeGFS | i2b | 100.128.102.0 
+
+
+| Metadati BeeGFS | i2b o i4b | 100.128.102.1 - 100.128.102.255 
+
+
+| Storage BeeGFS | i2b o i4b | 100.128.104.1 - 100.128.104.255 
+
+
+| Client BeeGFS | (varia in base al client) | 100.128.1.1 - 100.128.99.255 
+|===
+
+NOTE: Non tutti gli IP compresi negli intervalli sopra indicati vengono utilizzati in questa architettura verificata di NetApp. Dimostrano come gli indirizzi IP possono essere pre-allocati per consentire una facile espansione del file system utilizzando uno schema di indirizzamento IP coerente. In questo schema, i nodi di file BeeGFS e gli ID di servizio corrispondono al quarto ottetto di un intervallo ben noto di IP. Il file system potrebbe certamente scalare oltre 255 nodi o servizi, se necessario.

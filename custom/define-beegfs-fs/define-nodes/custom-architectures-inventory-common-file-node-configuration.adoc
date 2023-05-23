@@ -1,0 +1,309 @@
+---
+sidebar: sidebar 
+permalink: custom-architectures-inventory-common-file-node-configuration.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 'Specificare la configurazione del nodo file comune utilizzando le variabili di gruppo (group_vars).' 
+---
+= Specificare la configurazione del nodo file comune
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Specificare la configurazione del nodo file comune utilizzando le variabili di gruppo (group_vars).
+
+
+
+== Panoramica
+
+La configurazione che deve essere utilizzata per tutti i nodi di file è definita in `group_vars/ha_cluster.yml`. In genere include:
+
+* Dettagli su come connettersi e accedere a ciascun nodo di file.
+* Configurazione di rete comune.
+* Se sono consentiti riavvii automatici.
+* Modalità di configurazione degli stati firewall e selinux.
+* Configurazione del cluster, inclusi avvisi e scherma.
+* Tuning delle performance.
+* Configurazione comune del servizio BeeGFS.
+
+
+
+NOTE: Le opzioni impostate in questo file possono essere definite anche su singoli nodi di file, ad esempio se sono in uso modelli hardware misti o se si dispone di password diverse per ciascun nodo. La configurazione sui singoli nodi di file avrà la precedenza sulla configurazione in questo file.
+
+
+
+== Fasi
+
+Creare il file `group_vars/ha_cluster.yml` e compilarlo come segue:
+
+. Indicare come il nodo Ansible Control deve autenticare con gli host remoti:
++
+[source, yaml]
+----
+ansible_ssh_user: root
+ansible_become_password: <PASSWORD>
+----
++
+
+WARNING: In particolare per gli ambienti di produzione, non memorizzare le password in testo normale. Utilizzare invece Ansible Vault (vedere link:https://docs.ansible.com/ansible/latest/vault_guide/index.html["Crittografia del contenuto con Ansible Vault"^]) o il `--ask-become-pass` quando si esegue il playbook. Se il `ansible_ssh_user` è già root, quindi è possibile omettere il `ansible_become_password`.
+
+. Se si configurano IP statici sulle interfacce ethernet o InfiniBand (ad esempio gli IP del cluster) e più interfacce si trovano nella stessa subnet IP (ad esempio se ib0 utilizza 192.168.1.10/24 e ib1 utilizza 192.168.1.11/24), Per il corretto funzionamento del supporto multi-homed, è necessario configurare ulteriori tabelle e regole di routing IP. È sufficiente attivare il gancio di configurazione dell'interfaccia di rete fornito come segue:
++
+[source, yaml]
+----
+eseries_ip_default_hook_templates:
+  - 99-multihoming.j2
+----
+. Durante l'implementazione del cluster, a seconda del protocollo di storage potrebbe essere necessario riavviare i nodi per facilitare il rilevamento dei dispositivi a blocchi remoti (volumi e-Series) o applicare altri aspetti della configurazione. Per impostazione predefinita, i nodi richiedono prima del riavvio, ma è possibile consentire il riavvio automatico dei nodi specificando quanto segue:
++
+[source, yaml]
+----
+eseries_common_allow_host_reboot: true
+----
++
+.. Per impostazione predefinita, dopo un riavvio, per garantire che i dispositivi a blocchi e gli altri servizi siano pronti, Ansible attenderà fino al sistema `default.target` viene raggiunto prima di continuare con l'implementazione. In alcuni scenari, quando NVMe/IB è in uso, potrebbe non essere abbastanza lungo da inizializzare, rilevare e connettersi a dispositivi remoti. Ciò può causare la continuità prematura dell'implementazione automatica e il malfunzionamento. Per evitare questo problema quando si utilizza NVMe/IB, definire anche quanto segue:
++
+[source, yaml]
+----
+eseries_common_reboot_test_command: "! systemctl status eseries_nvme_ib.service || systemctl --state=exited | grep eseries_nvme_ib.service"
+----
+
+
+. Per comunicare con i servizi cluster BeeGFS e ha sono necessarie diverse porte firewall. A meno che non si desideri configurare il firwewall manualmente (non consigliato), specificare quanto segue per creare le zone firewall richieste e aprire automaticamente le porte:
++
+[source, yaml]
+----
+beegfs_ha_firewall_configure: True
+----
+. Al momento SELinux non è supportato e si consiglia di impostare lo stato su Disabled (disattivato) per evitare conflitti (soprattutto quando RDMA è in uso). Impostare quanto segue per assicurarsi che SELinux sia disattivato:
++
+[source, yaml]
+----
+eseries_beegfs_ha_disable_selinux: True
+eseries_selinux_state: disabled
+----
+. Configurare l'autenticazione in modo che i file node siano in grado di comunicare, regolando le impostazioni predefinite in base alle policy aziendali:
++
+[source, yaml]
+----
+beegfs_ha_cluster_name: hacluster                  # BeeGFS HA cluster name.
+beegfs_ha_cluster_username: hacluster              # BeeGFS HA cluster username.
+beegfs_ha_cluster_password: hapassword             # BeeGFS HA cluster username's password.
+beegfs_ha_cluster_password_sha512_salt: randomSalt # BeeGFS HA cluster username's password salt.
+----
+. Basato su link:custom-architectures-plan-file-system.html["Pianificare il file system"^] Sezione specificare l'IP di gestione BeeGFS per questo file system:
++
+[source, yaml]
+----
+beegfs_ha_mgmtd_floating_ip: <IP ADDRESS>
+----
++
+
+NOTE: Anche se apparentemente ridondante, `beegfs_ha_mgmtd_floating_ip` È importante quando si scala il file system BeeGFS oltre un singolo cluster ha. I cluster ha successivi vengono implementati senza un servizio di gestione BeeGFS aggiuntivo e puntano al servizio di gestione fornito dal primo cluster.
+
+. Attivare gli avvisi e-mail se lo si desidera:
++
+[source, yaml]
+----
+beegfs_ha_enable_alerts: True
+# E-mail recipient list for notifications when BeeGFS HA resources change or fail.
+beegfs_ha_alert_email_list: ["<EMAIL>"]
+# This dictionary is used to configure postfix service (/etc/postfix/main.cf) which is required to set email alerts.
+beegfs_ha_alert_conf_ha_group_options:
+      # This parameter specifies the local internet domain name. This is optional when the cluster nodes have fully qualified hostnames (i.e. host.example.com)
+      mydomain: <MY_DOMAIN>
+beegfs_ha_alert_verbosity: 3
+#  1) high-level node activity
+#  3) high-level node activity + fencing action information + resources (filter on X-monitor)
+#  5) high-level node activity + fencing action information + resources
+----
+. Si consiglia vivamente di abilitare la scherma, altrimenti i servizi possono essere bloccati per l'avvio sui nodi secondari quando il nodo primario non funziona.
++
+.. Abilitare la scherma a livello globale specificando quanto segue:
++
+[source, yaml]
+----
+beegfs_ha_cluster_crm_config_options:
+  stonith-enabled: True
+----
++
+... Prendere nota di eventuali supporti link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_controlling-cluster-behavior-configuring-and-managing-high-availability-clusters["proprietà del cluster"^] può anche essere specificato qui, se necessario. In genere, la regolazione di questi elementi non è necessaria, in quanto il ruolo BeeGFS ha viene fornito con una serie di elementi ben testati link:https://github.com/netappeseries/beegfs/blob/ae038bb2f7617d18a36cc4df8ca9464bd5039b8b/roles/beegfs_ha_7_2/defaults/main.yml#L54["valori predefiniti"^].
+
+
+.. Selezionare e configurare un agente di scherma:
++
+... OPZIONE 1: Per abilitare la recinzione utilizzando le PDU (Power Distribution Unit) APC:
++
+[source, yaml]
+----
+beegfs_ha_fencing_agents:
+  fence_apc:
+    - ipaddr: <PDU_IP_ADDRESS>
+      login: <PDU_USERNAME>
+      passwd: <PDU_PASSWORD>
+      pcmk_host_map: "<HOSTNAME>:<PDU_PORT>,<PDU_PORT>;<HOSTNAME>:<PDU_PORT>,<PDU_PORT>"
+----
+... OPZIONE 2: Per abilitare la scherma utilizzando le API Redfish fornite da Lenovo XCC (e da altri BMC):
++
+[source, yaml]
+----
+redfish: &redfish
+  username: <BMC_USERNAME>
+  password: <BMC_PASSWORD>
+  ssl_insecure: 1 # If a valid SSL certificate is not available specify “1”.
+
+beegfs_ha_fencing_agents:
+  fence_redfish:
+    - pcmk_host_list: <HOSTNAME>
+      ip: <BMC_IP>
+      <<: *redfish
+    - pcmk_host_list: <HOSTNAME>
+      ip: <BMC_IP>
+      <<: *redfish
+----
+... Per ulteriori informazioni sulla configurazione di altri agenti di scherma, fare riferimento a. link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters["Documentazione RedHat"^].
+
+
+
+
+. Il ruolo BeeGFS ha può applicare diversi parametri di tuning per ottimizzare ulteriormente le performance. Questi includono l'ottimizzazione dell'utilizzo della memoria del kernel e l'i/o dei dispositivi a blocchi, tra gli altri parametri. Il ruolo viene fornito con una serie ragionevole di link:https://github.com/netappeseries/beegfs/blob/release-3.0.1/roles/beegfs_ha_7_2/defaults/main.yml#L106["valori predefiniti"^] In base ai test eseguiti con i nodi a blocchi NetApp e-Series, ma per impostazione predefinita questi non vengono applicati a meno che non si specifichi:
++
+[source, yaml]
+----
+beegfs_ha_enable_performance_tuning: True
+----
++
+.. Se necessario, specificare qui eventuali modifiche all'ottimizzazione predefinita delle prestazioni. Consulta l'articolo completo link:https://github.com/netappeseries/beegfs/blob/release-3.0.1/roles/beegfs_ha_7_2/docs/performance_tuning.md["parametri di ottimizzazione delle performance"^] documentazione per ulteriori dettagli.
+
+
+. Per garantire che gli indirizzi IP mobili (talvolta noti come interfacce logiche) utilizzati per i servizi BeeGFS possano eseguire il failover tra i nodi di file, tutte le interfacce di rete devono essere denominate in modo coerente. Per impostazione predefinita, i nomi delle interfacce di rete vengono generati dal kernel, che non è garantito per generare nomi coerenti, anche su modelli di server identici con adattatori di rete installati negli stessi slot PCIe. Ciò è utile anche quando si creano inventari prima dell'implementazione dell'apparecchiatura e si conoscono i nomi delle interfacce generate. Per garantire nomi di dispositivi coerenti, in base a un diagramma a blocchi del server o. `lshw  -class network -businfo` Output, specificare il mapping indirizzo PCIe desiderato per l'interfaccia logica come segue:
++
+.. Per le interfacce di rete InfiniBand (IPoIB):
++
+[source, yaml]
+----
+eseries_ipoib_udev_rules:
+  "<PCIe ADDRESS>": <NAME> # Ex: 0000:41:00.0: i1a
+----
+.. Per le interfacce di rete Ethernet:
++
+[source, yaml]
+----
+eseries_ip_udev_rules:
+  "<PCIe ADDRESS>": <NAME> # Ex: 0000:41:00.0: e1a
+----
++
+
+IMPORTANT: Per evitare conflitti quando le interfacce vengono rinominate (impedendone la ridenominazione), non utilizzare nomi predefiniti potenziali come eth0, ens9f0, ib0 o ibs4f0. Una convenzione di denominazione comune prevede l'utilizzo di 'e' o 'i' per Ethernet o InfiniBand, seguito dal numero dello slot PCIe e da una lettera che indica la porta. Ad esempio, la seconda porta di un adattatore InfiniBand installato nello slot 3 è: I3b.
+
++
+
+NOTE: Se si utilizza un modello di nodo di file verificato, fare clic su link:https://docs.netapp.com/us-en/beegfs/beegfs-deploy-create-inventory.html#step-4-define-configuration-that-should-apply-to-all-file-nodes["qui"^] Esempio di mapping indirizzo-porta logica PCIe.
+
+
+
+. Specificare facoltativamente la configurazione da applicare a tutti i servizi BeeGFS nel cluster. È possibile trovare i valori di configurazione predefiniti link:https://github.com/netappeseries/beegfs/blob/release-3.0.1/roles/beegfs_ha_7_2/defaults/main.yml#L159["qui"^]e la configurazione per servizio viene specificata altrove:
++
+.. Servizio di gestione BeeGFS:
++
+[source, yaml]
+----
+beegfs_ha_beegfs_mgmtd_conf_ha_group_options:
+  <OPTION>: <VALUE>
+----
+.. Servizi di metadati BeeGFS:
++
+[source, yaml]
+----
+beegfs_ha_beegfs_meta_conf_ha_group_options:
+  <OPTION>: <VALUE>
+----
+.. Servizi di storage BeeGFS:
++
+[source, yaml]
+----
+beegfs_ha_beegfs_storage_conf_ha_group_options:
+  <OPTION>: <VALUE>
+----
+
+
+. A partire da BeeGFS 7.2.7 e 7.3.1 link:https://doc.beegfs.io/latest/advanced_topics/authentication.html["autenticazione della connessione"^] deve essere configurato o disabilitato esplicitamente. Esistono alcuni modi per configurarlo utilizzando la distribuzione basata su Ansible:
++
+.. Per impostazione predefinita, l'implementazione configura automaticamente l'autenticazione della connessione e genera un `connauthfile` Che verranno distribuiti a tutti i nodi di file e utilizzati con i servizi BeeGFS. Questo file verrà anche posizionato/mantenuto nel nodo di controllo Ansible all'indirizzo `<INVENTORY>/files/beegfs/<sysMgmtdHost>_connAuthFile` dove deve essere mantenuto (in modo sicuro) per il riutilizzo con i client che devono accedere a questo file system.
++
+... Per generare una nuova chiave, specificare `-e "beegfs_ha_conn_auth_force_new=True` Quando si esegue il playbook Ansible. Nota: Questa operazione viene ignorata se si seleziona `beegfs_ha_conn_auth_secret` è definito.
+... Per le opzioni avanzate, fare riferimento all'elenco completo dei valori predefiniti inclusi in link:https://github.com/netappeseries/beegfs/blob/release-3.1.0/roles/beegfs_ha_7_3/defaults/main.yml#L32["Ruolo BeeGFS ha"^].
+
+
+.. È possibile utilizzare un segreto personalizzato definendo quanto segue in `ha_cluster.yml`:
++
+[source, yaml]
+----
+beegfs_ha_conn_auth_secret: <SECRET>
+----
+.. L'autenticazione della connessione può essere disattivata completamente (NON consigliata):
++
+[source, yaml]
+----
+beegfs_ha_conn_auth_enabled: false
+----
+
+
+
+
+Fare clic su link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/group_vars/ha_cluster.yml["qui"^] per un esempio di un file di inventario completo che rappresenta la configurazione di un nodo di file comune.
+
+
+
+=== Utilizzo di HDR (200 GB) InfiniBand con i nodi a blocchi NetApp EF600:
+
+Per utilizzare HDR (200 GB) InfiniBand con EF600, il gestore di subnet deve supportare la virtualizzazione. Se i nodi di file e blocchi sono collegati mediante uno switch, questo deve essere attivato nel gestore di subnet per il fabric complessivo.
+
+Se i nodi di blocco e di file sono collegati direttamente mediante InfiniBand, un'istanza di `opensm` deve essere configurato su ogni nodo di file per ogni interfaccia direttamente connessa a un nodo di blocco. Per eseguire questa operazione, specificare `configure: true` quando link:custom-architectures-inventory-configure-file-nodes.html["configurazione delle interfacce di storage dei nodi di file"^].
+
+Attualmente la versione inbox di `opensm` Fornito con le distribuzioni Linux supportate non supporta la virtualizzazione. È invece necessario installare e configurare la versione di `opensm` Da Mellanox OpenFabrics Enterprise Distribution (OFED). Sebbene la distribuzione con Ansible sia ancora supportata, sono necessari alcuni passaggi aggiuntivi:
+
+. Utilizzando curl o il tool desiderato, scaricare i pacchetti per la versione di opensm elencata nella link:beegfs-technology-requirements.html["requisiti tecnologici"^] Dal sito Web di Mellanox al `<INVENTORY>/packages/` directory. Ad esempio:
++
+[source, bash]
+----
+curl -o packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+
+curl -o packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+----
+. Sotto `group_vars/ha_cluster.yml` definire la seguente configurazione:
++
+[source, yaml]
+----
+### OpenSM package and configuration information
+eseries_ib_opensm_allow_upgrades: true
+eseries_ib_opensm_skip_package_validation: true
+eseries_ib_opensm_rhel_packages: []
+eseries_ib_opensm_custom_packages:
+  install:
+    - files:
+        add:
+          "packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
+          "packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
+    - packages:
+        add:
+          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+  uninstall:
+    - packages:
+        remove:
+          - opensm
+          - opensm-libs
+      files:
+        remove:
+          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+
+eseries_ib_opensm_options:
+  virt_enabled: "2"
+----
+

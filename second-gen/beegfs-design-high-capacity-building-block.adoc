@@ -1,0 +1,55 @@
+---
+sidebar: sidebar 
+permalink: beegfs-design-high-capacity-building-block.html 
+keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600, EF300, HDD, Expansion 
+summary: Le variazioni di progettazione per un building block ad alta capacità. 
+---
+= Building block ad alta capacità
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Il design della soluzione BeeGFS standard è costruito tenendo in considerazione i carichi di lavoro dalle performance elevate. I clienti che cercano casi di utilizzo ad alta capacità devono osservare le variazioni nelle caratteristiche di progettazione e performance qui delineate.
+
+
+
+== Configurazione hardware e software
+
+La configurazione hardware e software per l'building block ad alta capacità è standard, ad eccezione del fatto che i controller EF600 devono essere sostituiti con controller EF300 con un'opzione per il collegamento tra 1 e 7 tray di espansione IOM con 60 unità ciascuno per ciascun array di storage, totale da 2 a 14 vassoi di espansione per building block.
+
+I clienti che implementano una progettazione di building block ad alta capacità probabilmente utilizzeranno solo la configurazione di base basata su building block, costituita da servizi di gestione, metadati e storage BeeGFS per ciascun nodo. Per un'efficienza dei costi, i nodi di storage ad alta capacità devono eseguire il provisioning dei volumi di metadati sui dischi NVMe nell'enclosure di controller EF300 e fornire i volumi di storage ai dischi NL-SAS nei vassoi di espansione.
+
+image:high-capacity-rack-diagram.png[""]
+
+
+
+== Linee guida per il dimensionamento
+
+Queste linee guida sul dimensionamento presuppongono che gli building block ad alta capacità siano configurati con un gruppo di volumi 2+2 NVMe SSD per i metadati nell'enclosure EF300 di base e 6 gruppi di volumi 8+2 NL-SAS per tray di espansione IOM per lo storage.
+
+|===
+| Dimensioni del disco (HDD con capacità) | Capacità per BB (1 vassoio) | Capacità per BB (2 tray) | Capacità per BB (3 tray) | Capacità per BB (4 tray) 
+
+
+| 4 TB | 439 TB | 878 TB | 1317 TB | 1756 TB 
+
+
+| 8 TB | 878 TB | 1756 TB | 2634 TB | 3512 TB 
+
+
+| 10 TB | 1097 TB | 2195 TB | 3292 TB | 4390 TB 
+
+
+| 12 TB | 1317 TB | 2634 TB | 3951 TB | 5268 TB 
+
+
+| 16 TB | 1756 TB | 3512 TB | 5268 TB | 7024 TB 
+
+
+| 18 TB | 1975 TB | 3951 TB | 5927 TB | 7902 TB 
+|===
