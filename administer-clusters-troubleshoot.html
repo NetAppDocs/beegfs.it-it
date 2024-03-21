@@ -1,0 +1,2467 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head class="at-element-marker">
+  <title>Risolvere i problemi</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge,chrome=1">
+  <meta http-equiv="language" content="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="Risolvere i problemi" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://docs.netapp.com/it-it/beegfs/administer-clusters-troubleshoot.html" />
+	<meta property="og:description" content="Risoluzione dei problemi di un cluster BeeGFS ha." />
+  <meta property="og:image" content="https://docs.netapp.com/it-it/beegfs/images/logo-tophat-social.png" />
+  <meta property="og:image:alt" content="NetApp Logo" />
+  <meta name="format-detection" content="telephone=no">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="encoding" content="utf-8">
+  <meta http-equiv="nss-type" content="Product Documentation"/>
+  <meta http-equiv="nss-subtype" content="User Guide"/><meta name="description" content="Risoluzione dei problemi di un cluster BeeGFS ha.">
+  <meta name="keywords" content=" BeeGFS on NetApp, HA, Cluster, Administration, troubleshooting"><!-- Icons -->
+  <link rel="icon" href="/it-it/beegfs/images/favicon.ico" type="image/x-icon">
+
+  <!-- RSS Feed --><!-- CSS Definitions: NetApp CSS should be defined after generic css -->
+
+
+  <!-- Combined CSS -->
+  <link rel="stylesheet" type="text/css" href="/it-it/beegfs/css/ie-netappdocs.css">
+
+  
+  <link rel="stylesheet" href="/it-it/beegfs/css/ie-landing-page.css" type="text/css">
+  <link rel="stylesheet" href="/it-it/beegfs/css/ie-tabbed-blocks.css" type="text/css">
+  <!-- Canonical url -->
+  <link rel="canonical" href="https://docs.netapp.com/it-it/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="x-default" href="https://docs.netapp.com/us-en/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="it" href="https://docs.netapp.com/it-it/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="en" href="https://docs.netapp.com/us-en/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="ja" href="https://docs.netapp.com/ja-jp/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="ko" href="https://docs.netapp.com/ko-kr/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="zh-Hans" href="https://docs.netapp.com/zh-cn/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="zh-Hant" href="https://docs.netapp.com/zh-tw/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="de" href="https://docs.netapp.com/de-de/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="es" href="https://docs.netapp.com/es-es/beegfs/administer-clusters-troubleshoot.html" />
+  <link rel="alternate" hreflang="fr" href="https://docs.netapp.com/fr-fr/beegfs/administer-clusters-troubleshoot.html" />
+  <!-- Top level site integrations -->
+<script type="text/javascript" src="https://cdn.cookielaw.org/consent/72570c5c-fe30-465f-b0e0-b77f7fb4ae34/OtAutoBlock.js"></script>
+    <script type="text/javascript" src="https://cdn.cookielaw.org/scripttemplates/otSDKStub.js" charset="UTF-8" data-document-language="true" data-domain-script="72570c5c-fe30-465f-b0e0-b77f7fb4ae34"></script>
+    <script type="text/javascript">function OptanonWrapper() { }</script>
+    <script type="text/plain" class="optanon-category-C0002" src="https://assets.adobedtm.com/60287eadf1ee/c284da483c83/launch-e9ff3acac59f.min.js"></script>
+    <script class="optanon-category-C0001">(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.setAttributeNode(d.createAttribute('data-ot-ignore'));j.setAttribute('class','optanon-category-C0001');j.async=true;
+        j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl+'';f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','GTM-MD73T9M');</script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  
+  <script>
+    $(document).ready(function() {
+      const MASTHEAD_OFFSET = 65;
+      const SECTIONS = $("main h2, main h3");
+      // PAGE NAV - Init
+      if (SECTIONS.length == 0) {
+        // remove if there is no elements
+        /*
+        $("#ie-right-navbar").remove();
+        $("#ie-right-navbar-collapse").remove();
+        */
+      } else {
+        $(".page-nav-title").css('display', 'block');
+        for (var i = 0; i < SECTIONS.length; i++) {
+          var sectionId = $(SECTIONS[i]).attr('id');
+          var sectionName = $(SECTIONS[i]).text();
+          var subClass = $(SECTIONS[i]).is("h3") ? ' page-nav__sublink' : '';
+          $("#page-menu").append('<li class="page-nav-item"><a href="#' + sectionId + '" class="page-nav__link' + subClass + '">' + sectionName + '</a></li>');
+        }
+      }
+    });
+  </script>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+  <!-- Used for Product Family Page Sidebar Visibility --><!-- Used to import Promise for IE. Required for SearchKit -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.5/bluebird.min.js"></script><script src='/it-it/beegfs/js/na-search.js'></script><script src='/it-it/beegfs/js/ie-clouddocs.js'></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><script>
+    /*
+      $(document).ready(function() {
+          $("#tg-sb-link").click(function() {
+              $("#tg-sb-sidebar").toggle();
+              $("#tg-sb-content").toggleClass('col-md-9');
+              $("#tg-sb-content").toggleClass('col-md-12');
+              $("#tg-sb-icon").toggleClass('fa-toggle-on');
+              $("#tg-sb-icon").toggleClass('fa-toggle-off');
+          });
+      });
+      */
+  </script>
+  <script src='/it-it/beegfs/js/custom-dropdown.js'></script>
+  <script src='/it-it/beegfs/js/FileSaver.min.js'></script>
+  <script src='/it-it/beegfs/js/jszip-utils.min.js'></script>
+  <script src='/it-it/beegfs/js/jszip.min.js'></script><script src='/it-it/beegfs/js/ie-pdf-ux.js'></script></head>
+
+
+  <body class role="document" data-flavor="">
+    <div class="skip-to-main">
+      <a href="#main" >Skip to main content</a>
+    </div><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MD73T9M"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><div id="page" class="">
+      <div id="ie-phone-menu" class=""></div>
+      <div id="ie-content-wrap" class="">
+        <nav id="ie-new-header">
+    <ul>
+        <li id="ie-phone-menu-button">
+            <a href="#">
+                <image id="" src="/it-it/beegfs/images/hamburger.svg" alt="menu" />
+            </a>
+        </li>
+
+        <li>
+            <a href="https://www.netapp.com/it">
+                <image id="ie-header-logo" src="/it-it/beegfs/images/netapp_logo.svg" alt="netapp" />
+            </a>
+        </li>
+        <li id="ie-header-docs">
+            <a href="https://www.netapp.com/it/support-and-training/documentation/">Documenti</a>
+        </li>
+
+        <!-- Empty container to push header left with or without lang selector -->
+        <li id="empty-container" style="margin-left: auto">
+        </li>
+        <!-- Start Language Selector --><li id="ie-language-dropdown">
+            <div id="language-dropdown" class="custom-dropdown custom-dropdown-lang">
+                <div class="custom-dropdown-select custom-dropdown-select-lang">
+                    <img src="/it-it/beegfs/images/language_white_24dp.svg" class="n-globe__icon" />
+                    <span class="lang-name">Italiano</span>
+                    <img src="/it-it/beegfs/images/dropdown-arrow.svg" alt="" class="custom-icon chevrondown header invisible" />
+                    <img src="/it-it/beegfs/images/dropdown-arrow.svg" alt="" class="custom-icon chevronup header" />
+                    </button>
+                </div>
+
+                <ul class="custom-dropdown-menu"><li>
+                        <a href="https://docs.netapp.com/it-it/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">Italiano</span></a>
+                    </li><li>
+                        <a href="https://docs.netapp.com/us-en/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">English</span></a>
+                    </li><li>
+                        <a href="https://docs.netapp.com/ja-jp/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">日本語</span></a>
+                    </li><li>
+                        <a href="https://docs.netapp.com/ko-kr/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">한국어</span></a>
+                    </li><li>
+                        <a href="https://docs.netapp.com/zh-cn/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">简体中文</span></a>
+                    </li><li>
+                        <a href="https://docs.netapp.com/zh-tw/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">繁體中文</span></a>
+                    </li><li>
+                        <a href="https://docs.netapp.com/de-de/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">Deutsch</span></a>
+                    </li><li>
+                        <a href="https://docs.netapp.com/es-es/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">Español</span></a>
+                    </li><li>
+                        <a href="https://docs.netapp.com/fr-fr/beegfs/administer-clusters-troubleshoot.html"
+                            target="_self"><span translate="no" class="notranslate">Français</span></a>
+                    </li></ul>
+            </div>
+            </li>
+        <!-- End Language Selector -->
+
+
+        <li id="ie-allnetapp">
+            <div id="allnetapp-dropdown" class="custom-dropdown custom-dropdown-allnetapp">
+                <div class="custom-dropdown-select custom-dropdown-select-allnetapp">
+                    <img src="/it-it/beegfs/images/apps_white_24dp.svg" alt="" class="allnetapp-icon" />
+                    <span class="allnetapp-name">Tutto NetApp</span>
+                    <img src="/it-it/beegfs/images/dropdown-arrow.svg" alt="" class="custom-icon chevrondown header invisible" />
+                    <img src="/it-it/beegfs/images/dropdown-arrow.svg" alt="" class="custom-icon chevronup header" />
+                    </button>
+                </div>
+
+                <ul class="custom-dropdown-menu allnetapp-dropdown">
+                    <li>
+                        <a href="https://bluexp.netapp.com/"
+                            target="_self"><span translate="no" class="notranslate">BlueXP</span></a>
+                    </li>
+                    <li>
+                        <a href="https://mysupport.netapp.com/site/"
+                            target="_self"><span translate="no" class="notranslate">Supporto</span></a>
+                    </li>
+                    <li>
+                        <a href="https://kb.netapp.com/"
+                            target="_self"><span translate="no" class="notranslate">Knowledge Base</span></a>
+                    </li>
+                    <li>
+                        <a href="https://www.netapp.com/it/support-and-training/netapp-learning-services/"
+                            target="_self"><span translate="no" class="notranslate">Training</span></a>
+                    </li>
+                </ul>
+            </div>
+
+        </li>
+
+    </ul>
+</nav>
+
+        <main id="n-main-content" class="n-main-content">
+          <!-- Start Documentation Content -->
+<div class="ie-main">
+
+<div id="ie-new-sidebar-collapse" style="display: none">
+    <img id="sidebar-expand" class="ie-searchbox-icon" src="/it-it/beegfs/images/double_arrow.svg" alt="" />
+</div>
+<div id="ie-new-sidebar">
+    <div id="ie-product-identity-lockup">
+        <div id="sidebar-collapse" class="">
+            <img src="/it-it/beegfs/images/double_arrow.svg" alt="" />
+        </div>
+        <div id="ie-breadcrumb" class="">
+  <ul class="ie-breadcrumb">
+    <li class="">
+      <a href="https://docs.netapp.com">Tutti i documenti</a>
+    </li>
+    
+    
+
+    
+    <li class="">
+      <a href="https://docs.netapp.com/it-it/e-series-family/">
+        E-Series
+      </a>
+    </li>
+    
+  </ul>
+  
+  <div class="ie-product-name" >
+    <!--<a href="/it-it/beegfs/">-->
+      BeeGFS on NetApp with E-Series Storage
+    <!--</a>-->
+  </div>
+</div>
+
+            
+
+        
+        
+
+<div id="ie-searchbox" class="ie-searchbox-sidebar ">
+    <img class="ie-searchbox-icon" src="/it-it/beegfs/images/loupe.svg" alt=""/>
+    <div id="react-search" 
+        data-search-html="/it-it/beegfs/search.html" 
+        data-type="widget"
+        data-placeholder="Esplora la documentazione"
+        data-no-results-found="Nessun risultato per {query}"
+        data-did-you-mean="Cerca {suggestion}."
+        data-no-results-found-did-you-mean="Nessun risultato per {query}. Intendi {suggestion}?"
+        data-results-found="{hitCount} risultati trovati"
+        data-error-message="Si è verificato un errore. Riprova."
+        data-error-reset="Reimposta ricerca"
+        data-sk-es-pf-indexes="" 
+        data-flavor="">
+    </div>
+</div>
+        
+    </div>
+    <div id="ie-new-toc"><script>
+  let sidebarAccordion = true;
+
+  /* specific css rules for Mac */
+  if(navigator.platform.match('Mac') !== null) {
+    document.body.setAttribute('class', 'OSX');
+  }
+
+</script>
+
+<div id="ie-sidebar-container">
+  <ul id="ie-sidebar-list" ><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Documenti BeeGFS su NetApp"
+      data-li-level="1#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/index.html" 
+    ><a class="ie-sidebar-menuitem-1 " href="/it-it/beegfs/index.html">
+        Documenti BeeGFS su NetApp
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Inizia subito"
+      data-li-level="1" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-1  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Inizia subito</div>-->
+         Inizia subito
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Contenuto di questo sito"
+      data-li-level="2#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/whats-included.html" 
+    ><a class="ie-sidebar-menuitem-2 " href="/it-it/beegfs/whats-included.html">
+        Contenuto di questo sito
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Termini e concetti"
+      data-li-level="2#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-terms.html" 
+    ><a class="ie-sidebar-menuitem-2 " href="/it-it/beegfs/beegfs-terms.html">
+        Termini e concetti
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Utilizzare architetture verificate"
+      data-li-level="1" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-1  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Utilizzare architetture verificate</div>-->
+         Utilizzare architetture verificate
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica e requisiti"
+      data-li-level="2" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-2  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Panoramica e requisiti</div>-->
+         Panoramica e requisiti
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica della soluzione"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-solution-overview.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-solution-overview.html">
+        Panoramica della soluzione
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Generazioni di design"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-gens.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-gens.html">
+        Generazioni di design
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica dell'architettura"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-architecture-overview.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-architecture-overview.html">
+        Panoramica dell'architettura
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Requisiti tecnici"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-technology-requirements.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-technology-requirements.html">
+        Requisiti tecnici
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Esaminare la progettazione della soluzione"
+      data-li-level="2" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-2  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Esaminare la progettazione della soluzione</div>-->
+         Esaminare la progettazione della soluzione
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica del design"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-design-overview.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-design-overview.html">
+        Panoramica del design
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Configurazione dell'hardware"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-design-hardware-architecture.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-design-hardware-architecture.html">
+        Configurazione dell'hardware
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Configurazione del software"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-design-software-architecture.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-design-software-architecture.html">
+        Configurazione del software
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Verifica del progetto"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-design-solution-verification.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-design-solution-verification.html">
+        Verifica del progetto
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Linee guida per il dimensionamento"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-design-solution-sizing-guidelines.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-design-solution-sizing-guidelines.html">
+        Linee guida per il dimensionamento
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Tuning delle performance"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-design-performance-tuning.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-design-performance-tuning.html">
+        Tuning delle performance
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Opzione ad alta capacità"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-design-high-capacity-building-block.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-design-high-capacity-building-block.html">
+        Opzione ad alta capacità
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Implementare la soluzione"
+      data-li-level="2" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-2  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Implementare la soluzione</div>-->
+         Implementare la soluzione
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica dell'implementazione"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-overview.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-deploy-overview.html">
+        Panoramica dell'implementazione
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Scopri di più sull'inventario Ansible"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-learn-ansible.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-deploy-learn-ansible.html">
+        Scopri di più sull'inventario Ansible
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Esaminare le Best practice"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-bestpractice.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-deploy-bestpractice.html">
+        Esaminare le Best practice
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Implementare l'hardware"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-hardware.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-deploy-hardware.html">
+        Implementare l'hardware
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Implementare il software"
+      data-li-level="3" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-3  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Implementare il software</div>-->
+         Implementare il software
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Impostare i nodi di file e blocchi"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-setup-nodes.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/beegfs-deploy-setup-nodes.html">
+        Impostare i nodi di file e blocchi
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Ottimizzare le impostazioni di sistema per le prestazioni"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="beegfs-deploy-file-node-tuning.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/beegfs-deploy-file-node-tuning.html">
+        Ottimizzare le impostazioni di sistema per le prestazioni
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Impostare il nodo di controllo Ansible"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-setting-up-an-ansible-control-node.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/beegfs-deploy-setting-up-an-ansible-control-node.html">
+        Impostare il nodo di controllo Ansible
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Creare l'inventario Ansible"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-create-inventory.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/beegfs-deploy-create-inventory.html">
+        Creare l'inventario Ansible
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Definire i blocchi di base BeeGFS"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-define-inventory.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/beegfs-deploy-define-inventory.html">
+        Definire i blocchi di base BeeGFS
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Implementare BeeGFS"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-playbook.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/beegfs-deploy-playbook.html">
+        Implementare BeeGFS
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Configurare i client BeeGFS"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-configure-clients.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/beegfs-deploy-configure-clients.html">
+        Configurare i client BeeGFS
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Scalare i cluster BeeGFS"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-scale-building-blocks.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-deploy-scale-building-blocks.html">
+        Scalare i cluster BeeGFS
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Percentuali di volume consigliate"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-recommended-volume-percentages.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-deploy-recommended-volume-percentages.html">
+        Percentuali di volume consigliate
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Opzione ad alta capacità"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/beegfs-deploy-high-capacity-building-block.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/beegfs-deploy-high-capacity-building-block.html">
+        Opzione ad alta capacità
+      </a></li></ul></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Utilizzare architetture personalizzate"
+      data-li-level="1" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-1  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Utilizzare architetture personalizzate</div>-->
+         Utilizzare architetture personalizzate
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica e requisiti"
+      data-li-level="2#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-overview.html" 
+    ><a class="ie-sidebar-menuitem-2 " href="/it-it/beegfs/custom-architectures-overview.html">
+        Panoramica e requisiti
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Configurazione iniziale"
+      data-li-level="2" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-2  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Configurazione iniziale</div>-->
+         Configurazione iniziale
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Installazione e cablaggio della bulloneria"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-setup-cable-hw.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-setup-cable-hw.html">
+        Installazione e cablaggio della bulloneria
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Impostare i nodi di file e blocchi"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-setup-nodes.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-setup-nodes.html">
+        Impostare i nodi di file e blocchi
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Impostare il nodo di controllo Ansible"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-setup-ansible-control-node.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-setup-ansible-control-node.html">
+        Impostare il nodo di controllo Ansible
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Definire il file system BeeGFS"
+      data-li-level="2" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-2  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Definire il file system BeeGFS</div>-->
+         Definire il file system BeeGFS
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica di Ansible Inventory"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-overview.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-inventory-overview.html">
+        Panoramica di Ansible Inventory
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Pianificare il file system"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-plan-file-system.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-plan-file-system.html">
+        Pianificare il file system
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Definire i nodi di file e blocchi"
+      data-li-level="3" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-3  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Definire i nodi di file e blocchi</div>-->
+         Definire i nodi di file e blocchi
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Configurare singoli nodi di file"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-configure-file-nodes.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/custom-architectures-inventory-configure-file-nodes.html">
+        Configurare singoli nodi di file
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Configurare singoli nodi a blocchi"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-configure-block-nodes.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/custom-architectures-inventory-configure-block-nodes.html">
+        Configurare singoli nodi a blocchi
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Specificare la configurazione del nodo file comune"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-common-file-node-configuration.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/custom-architectures-inventory-common-file-node-configuration.html">
+        Specificare la configurazione del nodo file comune
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Specificare la configurazione del nodo del blocco comune"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-common-block-node-configuration.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/custom-architectures-inventory-common-block-node-configuration.html">
+        Specificare la configurazione del nodo del blocco comune
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Definire i servizi BeeGFS"
+      data-li-level="3" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-3  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Definire i servizi BeeGFS</div>-->
+         Definire i servizi BeeGFS
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Servizio di gestione BeeGFS"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-beegfs-management.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/custom-architectures-inventory-beegfs-management.html">
+        Servizio di gestione BeeGFS
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Servizi di metadati BeeGFS"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-beegfs-metadata.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/custom-architectures-inventory-beegfs-metadata.html">
+        Servizi di metadati BeeGFS
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Servizi di storage BeeGFS"
+      data-li-level="4#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-beegfs-storage.html" 
+    ><a class="ie-sidebar-menuitem-4 " href="/it-it/beegfs/custom-architectures-inventory-beegfs-storage.html">
+        Servizi di storage BeeGFS
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Mappare i servizi BeeGFS ai nodi di file"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-inventory-map-services-to-file-nodes.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-inventory-map-services-to-file-nodes.html">
+        Mappare i servizi BeeGFS ai nodi di file
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Implementare il file system BeeGFS"
+      data-li-level="2" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-2  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Implementare il file system BeeGFS</div>-->
+         Implementare il file system BeeGFS
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica di Ansible Playbook"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-deploy-playbook-overview.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-deploy-playbook-overview.html">
+        Panoramica di Ansible Playbook
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Implementare il cluster BeeGFS ha"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-deploy-ha-cluster.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-deploy-ha-cluster.html">
+        Implementare il cluster BeeGFS ha
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Implementare i client BeeGFS"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-deploy-beegfs-clients.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-deploy-beegfs-clients.html">
+        Implementare i client BeeGFS
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Verificare l'implementazione di BeeGFS"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/custom-architectures-deploy-verify.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/custom-architectures-deploy-verify.html">
+        Verificare l'implementazione di BeeGFS
+      </a></li></ul></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Amministrare i cluster BeeGFS"
+      data-li-level="1" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-1  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Amministrare i cluster BeeGFS</div>-->
+         Amministrare i cluster BeeGFS
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Panoramica, concetti chiave e terminologia"
+      data-li-level="2#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-overview.html" 
+    ><a class="ie-sidebar-menuitem-2 " href="/it-it/beegfs/administer-clusters-overview.html">
+        Panoramica, concetti chiave e terminologia
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Quando utilizzare Ansible vs. PC"
+      data-li-level="2#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-ansible-pcs.html" 
+    ><a class="ie-sidebar-menuitem-2 " href="/it-it/beegfs/administer-clusters-ansible-pcs.html">
+        Quando utilizzare Ansible vs. PC
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Esaminare lo stato del cluster"
+      data-li-level="2#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-examine-state.html" 
+    ><a class="ie-sidebar-menuitem-2 " href="/it-it/beegfs/administer-clusters-examine-state.html">
+        Esaminare lo stato del cluster
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Riconfigurare e aggiornare"
+      data-li-level="2" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-2  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Riconfigurare e aggiornare</div>-->
+         Riconfigurare e aggiornare
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Riconfigurare il cluster ha e BeeGFS"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-reconfigure.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/administer-clusters-reconfigure.html">
+        Riconfigurare il cluster ha e BeeGFS
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Aggiornare il cluster ha e BeeGFS"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-update.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/administer-clusters-update.html">
+        Aggiornare il cluster ha e BeeGFS
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Assistenza e manutenzione"
+      data-li-level="2" 
+      class=" sidebar-folder    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="" 
+    ><a class="ie-sidebar-menuitem-2  ie-sidebar-button " href="#">
+        <img class="ie-sidebar-icon ie-sidebar-button open" src="/it-it/beegfs/images/link_expand.svg" alt="" />
+        <img class="ie-sidebar-icon ie-sidebar-button close" src="/it-it/beegfs/images/link_collapse.svg" alt="" />
+        <!--<div class="" style="display: inline;"> Assistenza e manutenzione</div>-->
+         Assistenza e manutenzione
+      </a>
+      <ul class="">
+        <li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Servizi di failover e failback"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-failover-failback.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/administer-clusters-failover-failback.html">
+        Servizi di failover e failback
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Impostare il cluster in modalità di manutenzione"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-maintenance-mode.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/administer-clusters-maintenance-mode.html">
+        Impostare il cluster in modalità di manutenzione
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Arrestare e avviare il cluster"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-stop-start-cluster.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/administer-clusters-stop-start-cluster.html">
+        Arrestare e avviare il cluster
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Sostituire i nodi del file"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-replace-file-nodes.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/administer-clusters-replace-file-nodes.html">
+        Sostituire i nodi del file
+      </a></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Espandere o ridurre il cluster"
+      data-li-level="3#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-expand-shrink-cluster.html" 
+    ><a class="ie-sidebar-menuitem-3 " href="/it-it/beegfs/administer-clusters-expand-shrink-cluster.html">
+        Espandere o ridurre il cluster
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Risolvere i problemi"
+      data-li-level="2#" 
+      class="  ie-sidebar-selected    "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/administer-clusters-troubleshoot.html" 
+    ><a class="ie-sidebar-menuitem-2 " href="/it-it/beegfs/administer-clusters-troubleshoot.html">
+        Risolvere i problemi
+      </a></li></ul></li><li 
+      data-pdf-exists="true" 
+      data-pdf-filename="Note legali"
+      data-li-level="1#" 
+      class="   "
+      dale-page-url="/administer-clusters-troubleshoot.html" 
+      dale-entry-url="/legal-notices.html" 
+    ><a class="ie-sidebar-menuitem-1 " href="/it-it/beegfs/legal-notices.html">
+        Note legali
+      </a></li></ul>
+</div>
+<script>
+
+  $(".ie-sidebar-button").click(function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    expandedLI = $('li.ie-sidebar-expand')
+
+    const li = $(this).closest("li");
+
+    const parentsLI = $(li).parents('li');
+
+    expandedLI.map(element => {
+      if (sidebarAccordion && !li.hasClass('ie-sidebar-expand') && jQuery.inArray(expandedLI[element], parentsLI) == -1) {
+        $(expandedLI[element]).toggleClass('ie-sidebar-expand');
+        $(expandedLI[element]).children("ul").animate({ height: 'toggle' }, 400, function () {
+          $(li).children("ul").toggleClass('ie-sidebar-open');
+
+        })
+      }
+
+    })
+
+    $(li).toggleClass('ie-sidebar-expand');
+    $(li).children("ul").animate({ height: 'toggle' }, 400, function () {
+      $(li).children("ul").toggleClass('ie-sidebar-open');
+    })
+  });
+
+
+  
+    $("li.ie-sidebar-selected").parents('ul').toggleClass("ie-sidebar-open");
+    $("li.ie-sidebar-selected").toggleClass("ie-sidebar-expand")
+    $("ul.ie-sidebar-open").parent().toggleClass("ie-sidebar-expand");
+    $("li.ie-sidebar-selected").children('ul').toggleClass("ie-sidebar-open")
+  
+  
+</script>
+    </div>
+</div>
+<script>
+
+    
+    let sidebarScrollTopPosition = 0;
+    $("#ie-new-toc").on("scroll", function () {
+        if (sidebarScrollTopPosition == 0) {
+            $.cookie("sidebarScroll", $("#ie-new-toc").scrollTop(), {
+                path: "/it-it/beegfs"
+            });
+        }
+
+        if ($("#ie-new-toc").scrollTop() > 0) {
+            $('#ie-product-identity-lockup').addClass('ie-addShadow');
+        } else {
+            $('#ie-product-identity-lockup').removeClass('ie-addShadow');
+        }
+    });
+
+    $(function () {
+        if ($.cookie("sidebarScroll")) {
+            $("#ie-new-toc").scrollTop($.cookie("sidebarScroll"));
+        }
+    });
+
+    function setSidebarBottom() {
+        const footerGap = PXinViewport($(".n-footer"));
+        document.getElementById("ie-new-sidebar").style.bottom = Math.max(0, footerGap) + "px";
+    }
+
+    window.onscroll = () => {
+        setSidebarBottom();
+    };
+
+    $("#sidebar-collapse").click(function (e) {
+        const sidebarWidth = $("#ie-new-sidebar").width() - $("#ie-new-sidebar-collapse").width();
+        e.preventDefault();
+        const width = $(".ie-content-pane").width();
+        const marginLeft = parseInt($(".ie-content-pane").css('marginLeft'));
+
+        if ($.cookie("sidebarScroll")) {
+            sidebarScrollTopPosition = $.cookie("sidebarScroll");
+        }
+
+        $("#ie-new-sidebar").animate({ width: 'toggle' }, 350, function () {
+            $("#ie-new-sidebar-collapse").show();
+            $("#ie-new-sidebar").removeClass("open")
+            $("#ie-new-sidebar").addClass("close")
+            $("#ie-new-sidebar").removeAttr("style")
+        });
+        $(".ie-content-pane").animate({ width: (width + sidebarWidth), marginLeft: (marginLeft - sidebarWidth) }, 350, function () {
+            resizeContent()
+        })
+
+    });
+    $("#sidebar-expand").click(function (e) {
+        const sidebarWidth = $("#ie-new-sidebar").width() - $("#ie-new-sidebar-collapse").width();
+        e.preventDefault();
+        const width = $(".ie-content-pane").width();
+        const marginLeft = parseInt($(".ie-content-pane").css('marginLeft'));
+
+        $("#ie-new-sidebar").animate({ width: 'toggle' }, 250, function () {
+            $('#ie-new-sidebar').css('display', 'flex');
+            $("#ie-new-sidebar-collapse").hide();
+            $("#ie-new-sidebar").removeClass("close")
+            $("#ie-new-sidebar").addClass("open")
+            setSidebarBottom();
+
+            if (sidebarScrollTopPosition != 0) {
+                $.cookie("sidebarScroll", sidebarScrollTopPosition, {
+                    path: "/it-it/beegfs"
+                })
+                $("#ie-new-toc").scrollTop(sidebarScrollTopPosition);
+                sidebarScrollTopPosition = 0;
+            }
+        });
+        $(".ie-content-pane").animate({ width: (width - sidebarWidth), 'marginLeft': (marginLeft + sidebarWidth) }, 250, function () {
+            resizeContent()
+        })
+    });
+    function resizeContent() {
+        const sidebarWidth = $("#ie-new-sidebar").width() - $("#ie-new-sidebar-collapse").width();
+        const rightNavbarVisible =  $("#ie-right-navbar").css('display') && $("#ie-right-navbar").css('display') != 'none';
+        const sidebarVisible = $("#ie-new-sidebar").css('display') != 'none';
+        const rightNavbarWidth = $("#ie-right-navbar").width();
+        const rightNavbarCollapseWidth = $("#ie-right-navbar-collapse").width();
+        const rightNavbarCollapseVisible = $("#ie-right-navbar-collapse").css('display') && $("#ie-right-navbar-collapse").css('display') != 'none';
+        
+        if (rightNavbarVisible && sidebarVisible) {
+            $(".ie-content-pane").width(`calc(100% - ${sidebarWidth + rightNavbarWidth}px)`)
+            $(".ie-content-pane").css('marginLeft', `${sidebarWidth}px`)
+        } else if (sidebarVisible) {
+            $(".ie-content-pane").css('marginLeft', `${sidebarWidth}px`)
+            if (rightNavbarCollapseVisible) {
+                $(".ie-content-pane").width(`calc(100% - ${sidebarWidth + rightNavbarCollapseWidth}px)`)
+            } else {
+                $(".ie-content-pane").width(`calc(100% - ${$("#ie-new-sidebar").width()}px)`)
+            }
+
+        } else if (rightNavbarVisible) {
+            $(".ie-content-pane").css('marginLeft', `${$("#ie-new-sidebar-collapse").width()}px`)
+            $(".ie-content-pane").width(`calc(100% - ${rightNavbarWidth}px)`)
+        } else {
+            $(".ie-content-pane").css('marginLeft', `${$("#ie-new-sidebar-collapse").width()}px`)
+            if (rightNavbarCollapseVisible) {
+                $(".ie-content-pane").width(`calc(100% - ${rightNavbarCollapseWidth}px)`);
+            } else {
+                $(".ie-content-pane").width(`calc(100% - ${$("#ie-new-sidebar-collapse").width()}px) `);
+            }
+            
+        }
+    }
+    $(window).on("resize load", function () {
+        setSidebarBottom();
+        resizeContent()
+    });
+
+
+</script>
+
+<div class="ie-content-pane ie-component-detail-content ie-component-detail-content--show-code">
+    <!-- Begin of page container --><article class="page-content" id="main">
+      <!-- include utility.html -->
+      <div class="ie-info-disclaimer">
+    <span>
+      <div class="ie-info-disclaimer-container">
+        <div class="ie-info-disclaimer-icon">
+          <img src="/it-it/beegfs/images/notification-icons.svg" class="luci-icon" alt="" />
+        </div>
+        <div class="ie-info-disclaimer-content">
+          <span> La versione in lingua italiana fornita proviene da una traduzione automatica. Per eventuali incoerenze, fare riferimento alla versione in lingua inglese. </span>
+        </div>
+        <div style="clear:both;"></div>
+      </div>
+    </span>
+  </div><div class="ie-component-detail-heading-wrap">
+  <h1 class="ie-component-detail-heading">Risolvere i problemi</h1>
+</div>
+
+<div id="ie-byline">
+  
+<div class="page-details">
+    
+        
+            <time datetime="2023-05-23 22:01:21 +0000">05/23/2023</time>
+        
+    
+    
+        <span>Collaboratori
+        </span>
+    
+    
+</div>
+<div class="page-controls">
+    <div id="contribute-dropdown" class="custom-dropdown custom-dropdown-contrib" >
+        <div class="custom-dropdown-select custom-dropdown-select-contrib">
+        <span class="contrib-name"><img src="/it-it/beegfs/images/discuss-sm.svg" alt="" class="github-icon" />Suggerisci modifiche</span>
+        <img src="/it-it/beegfs/images/dropdown-arrow.svg" alt="" class="custom-icon chevrondown invisible" />
+        <img src="/it-it/beegfs/images/dropdown-arrow.svg" alt="" class="custom-icon chevronup" />
+        </div>
+        <ul class="custom-dropdown-menu suggested-changes-dropdown"><li>
+                <a target="_blank" href="https://github.com/NetAppDocs/beegfs.it-it/issues/new?template=new-from-page.yml&page-url=https://docs.netapp.com/it-it/beegfs/administer-clusters-troubleshoot.html&page-title=Risolvere i problemi" class="page-nav-contribute-link" role="button">Richiedi modifiche alla documentazione</a>
+            </li><li> 
+                <a target="_blank" href="https://github.com/NetAppDocs/beegfs/blob/main/administer/administer-clusters-troubleshoot.adoc" class="page-nav-contribute-link" role="button">Modifica questa pagina</a>
+            </li><li><a target="_blank" href="https://docs.netapp.com/us-en/contribute/" class="page-nav-contribute-link"  >Scopri come collaborare</a></li>
+        </ul>
+    </div>
+    <div id="pdf-control-container">
+        <div class="n-pdf-header">
+            <a id="toggleButtonPdf" class="n-pdf-button" type="button">
+                <img class="adobe-icon" src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>PDF<img src="/it-it/beegfs/images/dropdown-arrow.svg" class="custom-icon" alt="" />
+            </a>
+        </div>
+        <div class="n-pdf-body-container">
+            <ul id="toggleContainerPdf" class="n-pdf-body" style="display:none;"><li class="pdf-ux-container">
+                    
+                    
+                    
+                    <a target="_blank" class="pdf-download-link" href="/it-it/beegfs/pdfs/fullsite-sidebar/BeeGFS_su_NetApp_con_storage_e_Series.pdf" >
+                    <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>PDF del sito di questa documentazione</a>
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Inizia_subito.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Inizia subito
+          </a>
+          
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Utilizzare_architetture_verificate.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Utilizzare architetture verificate
+          </a>
+          
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Panoramica_e_requisiti.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Panoramica e requisiti
+          </a>
+          
+
+
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Esaminare_la_progettazione_della_soluzione.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Esaminare la progettazione della soluzione
+          </a>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Implementare_la_soluzione.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Implementare la soluzione
+          </a>
+          
+
+
+
+
+
+
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Implementare_il_software.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Implementare il software
+          </a>
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Utilizzare_architetture_personalizzate.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Utilizzare architetture personalizzate
+          </a>
+          
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Configurazione_iniziale.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Configurazione iniziale
+          </a>
+          
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Definire_il_file_system_BeeGFS.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Definire il file system BeeGFS
+          </a>
+          
+
+
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Definire_i_nodi_di_file_e_blocchi.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Definire i nodi di file e blocchi
+          </a>
+          
+
+
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Definire_i_servizi_BeeGFS.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Definire i servizi BeeGFS
+          </a>
+          
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Implementare_il_file_system_BeeGFS.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Implementare il file system BeeGFS
+          </a>
+          
+
+
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Amministrare_i_cluster_BeeGFS.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Amministrare i cluster BeeGFS
+          </a>
+          
+
+
+
+
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Riconfigurare_e_aggiornare.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Riconfigurare e aggiornare
+          </a>
+          
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+    
+      <ul class="subfolders" style="display:none;">
+        <li class="pdf-ux-container">
+          
+          
+          
+          <a target="_blank" class="pdf-download-link"
+            
+              href="/it-it/beegfs/pdfs/sidebar/Assistenza_e_manutenzione.pdf" 
+            
+          >
+            <img src="/it-it/beegfs/images/pdf-icon.png" alt="" width="16" height="16"/>
+            Assistenza e manutenzione
+          </a>
+          
+
+
+
+
+
+
+
+
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+    <ul class="subfolders" id="pdf-remove" style="display:none;"><li class="active"></li></ul>
+  
+
+
+        </li>
+      </ul>
+    
+
+  
+
+
+
+</li></ul>
+            <div class="zip-pdf-link-container" style="display: none;">   
+                <a href="#" id="zipPdf">
+                <img src="/it-it/beegfs/images/pdf-zip.png" alt="" width="16" height="16"/>
+                <pre>Raccolta di documenti PDF separati<span class="zip-size"></span></pre>
+                </a><div id="zip-link-popup" class="hide">
+    <div class="inner-modal">
+        <div class="downloading-progress">
+            <div class="spinner"></div>
+            <h1>Creating your file...</h1>
+            <div>This may take a few minutes. Thanks for your patience.</div>
+            <button class="cancel-download-btn" type="button">Cancel</button>
+        </div>
+        <div class="download-complete hide">
+            <div class="done-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20.285 2l-11.285 11.567-5.286-5.011-3.714 3.716 9 8.728 15-15.285z"/></svg>
+            </div>
+            <div>Your file is ready</div>
+            <button class="cancel-download-btn" type="button">OK</button>
+        </div>
+    </div>
+</div>
+<script>
+    $(".cancel-download-btn").click(function(){
+        $("#zip-link-popup").addClass("hide");
+        $("#zip-link-popup .downloading-progress").removeClass("hide");
+        $("#zip-link-popup .download-complete").addClass("hide");
+    });
+</script></div>
+        </div>
+    </div>        
+<script>
+$("#toggleContainerPdf li.active:last-child").parents('ul.subfolders').toggle('display');
+$("#toggleButtonPdf").on('click', function(e){ 
+    e.stopPropagation();
+    $("#toggleContainerPdf").toggle('display');
+    $(".n-pdf-body-container .zip-pdf-link-container").toggle('display');
+});
+
+//hide is by clicking outside pdfcontainer
+$(document).on('click', function (e) {
+    if ($('#toggleContainerPdf').is(':visible') && !$('.n-pdf-body-container').is(e.target) && !$('.n-pdf-body-container').has(e.target).length)  {
+        
+        $("#toggleContainerPdf").toggle('display');
+        $(".n-pdf-body-container .zip-pdf-link-container").toggle('display');
+        $("#toggleButtonPdf").removeClass("active");
+    }
+});
+</script>
+<script>
+    function getPdfLocation() {
+        const pdfLocation = window.scrollX + document.querySelector('#pdf-control-container').getBoundingClientRect().left
+        if (pdfLocation < 450) {
+            $(".n-pdf-body-container").addClass("block")
+        } else {
+            $(".n-pdf-body-container").removeClass("block")
+        }
+    
+    }
+    $( window ).on( "resize", function() {
+        getPdfLocation()
+} );
+</script>
+<script>
+    const pdfButtonWidth =  $(".n-pdf-header").width();
+    const pdfMenuWidth = $(".n-pdf-body-container").width();
+    $(".n-pdf-body-container").css('margin-left', `calc(${pdfButtonWidth - pdfMenuWidth}px)`);
+</script>
+</div>
+
+    
+
+</div>
+
+
+
+
+<div class="content-to-index">
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph lead">
+<p>Risoluzione dei problemi di un cluster BeeGFS ha.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="panoramica">Panoramica</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Questa sezione illustra come analizzare e risolvere i problemi di vari guasti e altri scenari che potrebbero verificarsi quando si utilizza un cluster BeeGFS ha.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="guide-per-la-risoluzione-dei-problemi">Guide per la risoluzione dei problemi</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="analisi-di-guasti-imprevisti">Analisi di guasti imprevisti</h3>
+<div class="paragraph">
+<p>Quando un nodo viene inaspettatamente recintato e i relativi servizi vengono spostati in un altro nodo, il primo passo dovrebbe essere vedere se il cluster indica eventuali guasti alle risorse nella parte inferiore di <code>pcs status</code>. In genere, se la scherma è stata completata correttamente e le risorse sono state riavviate su un altro nodo, non sarà presente nulla.</p>
+</div>
+<div class="paragraph">
+<p>In genere, il passaggio successivo consiste nell'eseguire una ricerca nei log di sistema utilizzando <code>journalctl</code> Su uno qualsiasi dei nodi di file rimanenti (i registri di pacemaker sono sincronizzati su tutti i nodi). Se si conosce l'ora in cui si è verificato l'errore, è possibile avviare la ricerca poco prima che si sia verificato l'errore (generalmente si consiglia di almeno dieci minuti prima):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">journalctl --since "&lt;YYYY-MM-DD HH:MM:SS&gt;"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Le sezioni seguenti mostrano il testo comune che è possibile inserire nei registri per restringere ulteriormente l'analisi.</p>
+</div>
+<div class="sect3">
+<h4 id="procedure-per-investigarerisolvere">Procedure per investigare/risolvere</h4>
+<div class="sect4">
+<h5 id="fase-1-controllare-se-il-monitor-beegfs-ha-rilevato-un-guasto">Fase 1: Controllare se il monitor BeeGFS ha rilevato un guasto:</h5>
+<div class="paragraph">
+<p>Se il failover è stato attivato dal monitor BeeGFS, viene visualizzato un errore (in caso contrario, passare alla fase successiva).</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">journalctl --since "&lt;YYYY-MM-DD HH:MM:SS&gt;" | grep -i unexpected
+[...]
+Jul 01 15:51:03 ictad22h01 pacemaker-schedulerd[9246]:  warning: Unexpected result (error: BeeGFS service is not active!) was recorded for monitor of meta_08-monitor on ictad22h02 at Jul  1 15:51:03 2022</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In questo caso, il servizio BeeGFS meta_08 si è arrestato per qualche motivo. Per continuare con la risoluzione dei problemi, è necessario avviare ictad22h02 ed esaminare i registri per il servizio all'indirizzo <code>/var/log/beegfs-meta-meta_08_tgt_0801.log</code>. Ad esempio, il servizio BeeGFS potrebbe aver riscontrato un errore dell'applicazione a causa di un problema interno o del nodo.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<img src="/us-en/beegfs/images/tip.svg" alt="Suggerimento">
+</td>
+<td class="content">
+A differenza dei registri di Pacemaker, i registri dei servizi BeeGFS non vengono distribuiti a tutti i nodi del cluster. Per analizzare questi tipi di errori, sono necessari i log del nodo originale in cui si è verificato l'errore.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>I possibili problemi che potrebbero essere segnalati dal monitor includono:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Destinazioni non accessibili.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Descrizione: Indica che i volumi a blocchi non erano accessibili.</p>
+</li>
+<li>
+<p>Risoluzione dei problemi:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Se anche il servizio non è stato avviato sul nodo di file alternativo, verificare che il nodo di blocco sia integro.</p>
+</li>
+<li>
+<p>Verificare l'eventuale presenza di problemi fisici che impediscano l'accesso ai nodi di blocco da questo nodo di file, ad esempio adattatori o cavi InfiniBand difettosi.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Rete non raggiungibile.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Descrizione: Nessuno degli adattatori utilizzati dai client per connettersi a questo servizio BeeGFS era in linea.</p>
+</li>
+<li>
+<p>Risoluzione dei problemi:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>In caso di impatto su più/tutti i nodi di file, controllare se si è verificato un errore nella rete utilizzata per collegare i client BeeGFS e il file system.</p>
+</li>
+<li>
+<p>Verificare l'eventuale presenza di problemi fisici che impediscano l'accesso ai client da questo nodo di file, ad esempio cavi o adattatori InfiniBand difettosi.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Servizio BeeGFS non attivo.</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Descrizione: Un servizio BeeGFS si è arrestato inaspettatamente.</p>
+</li>
+<li>
+<p>Risoluzione dei problemi:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Nel nodo del file che ha riportato l'errore, controllare i log del servizio BeeGFS interessato per verificare se ha rilevato un blocco. In questo caso, aprire un caso con il supporto NetApp per poter indagare sul crash.</p>
+</li>
+<li>
+<p>Se non vengono segnalati errori nel log di BeeGFS, controllare i log del journal per verificare se systemd ha registrato un motivo per cui il servizio è stato arrestato. In alcuni scenari, il servizio BeeGFS potrebbe non aver avuto la possibilità di registrare alcun messaggio prima che il processo venisse terminato (ad esempio, se qualcuno ha eseguito <code>kill -9 &lt;PID&gt;</code>).</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect4">
+<h5 id="fase-2-controllare-se-il-nodo-ha-lasciato-inaspettatamente-il-cluster">Fase 2: Controllare se il nodo ha lasciato inaspettatamente il cluster</h5>
+<div class="paragraph">
+<p>Nel caso in cui il nodo abbia subito un guasto hardware catastrofico (ad esempio, la scheda di sistema è morta) o si sia verificato un problema di kernel panic o software simile, il monitor BeeGFS non segnala alcun errore. Cercare invece il nome host e dovrebbero essere visualizzati messaggi da Pacemaker che indicano che il nodo è stato perso inaspettatamente:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">journalctl --since "&lt;YYYY-MM-DD HH:MM:SS&gt;" | grep -i &lt;HOSTNAME&gt;
+[...]
+Jul 01 16:18:01 ictad22h01 pacemaker-attrd[9245]:  notice: Node ictad22h02 state is now lost
+Jul 01 16:18:01 ictad22h01 pacemaker-controld[9247]:  warning: Stonith/shutdown of node ictad22h02 was not expected</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="fase-3-verificare-che-il-pacemaker-sia-in-grado-di-individuare-il-nodo">Fase 3: Verificare che il pacemaker sia in grado di individuare il nodo</h5>
+<div class="paragraph">
+<p>In tutti gli scenari si dovrebbe vedere il tentativo di pacemaker di recinzione del nodo per verificare che sia effettivamente offline (i messaggi esatti possono variare a seconda della causa del recinzione):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Cluster node ictad22h02 will be fenced: peer is no longer part of the cluster
+Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Node ictad22h02 is unclean
+Jul 01 16:18:02 ictad22h01 pacemaker-schedulerd[9246]:  warning: Scheduling Node ictad22h02 for STONITH</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Se l'azione di scherma viene completata correttamente, vengono visualizzati messaggi come:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">Jul 01 16:18:14 ictad22h01 pacemaker-fenced[9243]:  notice: Operation 'off' [2214070] (call 27 from pacemaker-controld.9247) for host 'ictad22h02' with device 'fence_redfish_2' returned: 0 (OK)
+Jul 01 16:18:14 ictad22h01 pacemaker-fenced[9243]:  notice: Operation 'off' targeting ictad22h02 on ictad22h01 for pacemaker-controld.9247@ictad22h01.786df3a1: OK
+Jul 01 16:18:14 ictad22h01 pacemaker-controld[9247]:  notice: Peer ictad22h02 was terminated (off) by ictad22h01 on behalf of pacemaker-controld.9247: OK</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Se l'azione di scherma non è riuscita per qualche motivo, i servizi BeeGFS non potranno essere riavviati su un altro nodo per evitare il rischio di corruzione dei dati. Si tratta di un problema da analizzare separatamente, ad esempio se il dispositivo di scherma (PDU o BMC) non fosse accessibile o non fosse configurato correttamente.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="address-failed-resource-actions-azioni-risorsa-indirizzo-non-riuscito-trovato-in-fondo-allo-stato-di-pcs">Address Failed Resource Actions (azioni risorsa indirizzo non riuscito) (trovato in fondo allo stato di pcs)</h3>
+<div class="paragraph">
+<p>Se una risorsa richiesta per eseguire un servizio BeeGFS non riesce, il monitor BeeGFS attiva un failover. In questo caso, probabilmente non sarà presente alcuna "azione risorsa non riuscita" nella parte inferiore di <code>pcs status</code> fare riferimento alla procedura <a href="administer-clusters-failover-failback.html" target="_blank" rel="noopener">"failback dopo un failover non pianificato"</a>.</p>
+</div>
+<div class="paragraph">
+<p>In caso contrario, dovrebbero essere presenti solo due scenari in cui verranno visualizzate le "azioni delle risorse non riuscite".</p>
+</div>
+<div class="sect3">
+<h4 id="procedure-per-investigarerisolvere-2">Procedure per investigare/risolvere</h4>
+<div class="sect4">
+<h5 id="scenario-1-è-stato-rilevato-un-problema-temporaneo-o-permanente-con-un-agente-di-scherma-che-è-stato-riavviato-o-spostato-in-un-altro-nodo">Scenario 1: È stato rilevato un problema temporaneo o permanente con un agente di scherma che è stato riavviato o spostato in un altro nodo.</h5>
+<div class="paragraph">
+<p>Alcuni agenti di scherma sono più affidabili di altri e ciascuno implementerà il proprio metodo di monitoraggio per garantire che il dispositivo di scherma sia pronto. In particolare, l'agente Redfish scherma ha rilevato azioni di risorse non riuscite come le seguenti, anche se continuerà a mostrare avviato:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">  * fence_redfish_2_monitor_60000 on ictad22h01 'not running' (7): call=2248, status='complete', exitreason='', last-rc-change='2022-07-26 08:12:59 -05:00', queued=0ms, exec=0ms</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Un agente di scherma che segnala azioni di risorse non riuscite su un nodo particolare non dovrebbe attivare un failover dei servizi BeeGFS in esecuzione su quel nodo. Dovrebbe semplicemente essere riavviato automaticamente sullo stesso nodo o su un altro nodo.</p>
+</div>
+<div class="paragraph">
+<p>Procedura per la risoluzione:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Se l'agente di scherma rifiuta costantemente di essere eseguito su tutti i nodi o su un sottoinsieme di nodi, controllare se tali nodi sono in grado di connettersi all'agente di scherma e verificare che l'agente di scherma sia configurato correttamente nell'inventario Ansible.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Ad esempio, se un agente di scherma Redfish (BMC) è in esecuzione sullo stesso nodo in cui è responsabile della scherma e la gestione del sistema operativo e gli IP BMC si trovano sulla stessa interfaccia fisica, alcune configurazioni dello switch di rete non consentono la comunicazione tra le due interfacce (per evitare loop di rete). Per impostazione predefinita, il cluster ha tenterà di evitare di posizionare gli agenti di scherma sul nodo che sono responsabili della scherma, ma questo può accadere in alcuni scenari/configurazioni.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Una volta risolti tutti i problemi (o se il problema sembrava essere effimero), eseguire <code>pcs resource cleanup</code> per ripristinare le azioni delle risorse non riuscite.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect4">
+<h5 id="scenario-2-il-monitor-beegfs-ha-rilevato-un-problema-e-ha-attivato-un-failover-ma-per-qualche-motivo-le-risorse-non-sono-state-avviate-su-un-nodo-secondario">Scenario 2: Il monitor BeeGFS ha rilevato un problema e ha attivato un failover, ma per qualche motivo le risorse non sono state avviate su un nodo secondario.</h5>
+<div class="paragraph">
+<p>A condizione che sia attivata la funzione di scherma e che la risorsa non sia stata bloccata dall'arresto sul nodo originale (vedere la sezione relativa alla risoluzione dei problemi per "standby (on-fail)"), i motivi più probabili includono problemi di avvio della risorsa su un nodo secondario perché:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Il nodo secondario era già offline.</p>
+</li>
+<li>
+<p>Un problema di configurazione fisica o logica ha impedito al secondario di accedere ai volumi di blocco utilizzati come destinazioni BeeGFS.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Procedura per la risoluzione:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Per ogni voce nelle azioni delle risorse non riuscite:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Confermare che l'azione della risorsa non riuscita era un'operazione di avvio.</p>
+</li>
+<li>
+<p>In base alla risorsa indicata e al nodo specificato nelle azioni delle risorse non riuscite:</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Cercare e correggere eventuali problemi esterni che impediscano al nodo di avviare la risorsa specificata. Ad esempio, se l'indirizzo IP BeeGFS (floating IP) non si avvia, verificare che almeno una delle interfacce richieste sia connessa/online e cablata allo switch di rete corretto. Se una destinazione BeeGFS (dispositivo a blocchi / volume e-Series) non funziona, verificare che le connessioni fisiche ai nodi di blocco back-end siano collegate come previsto e verificare che i nodi di blocco siano integri.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Se non ci sono problemi esterni evidenti e si desidera una causa principale per questo incidente, si consiglia di aprire un caso con il supporto NetApp per indagare prima di procedere, in quanto i seguenti passaggi potrebbero rendere difficile/impossibile l'analisi della causa principale (RCA).</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Dopo aver risolto eventuali problemi esterni:</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Commentare eventuali nodi non funzionali dal file Ansible inventory.yml ed eseguire nuovamente il playbook Ansible completo per assicurarsi che tutte le configurazioni logiche siano configurate correttamente sui nodi secondari.</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Nota: Non dimenticare di rimuovere il commento da questi nodi e di eseguire nuovamente il playbook una volta che i nodi sono in buono stato e sei pronto per il failback.</p>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>In alternativa, è possibile tentare di ripristinare manualmente il cluster:</p>
+<div class="olist lowerroman">
+<ol class="lowerroman" type="i">
+<li>
+<p>Posizionare di nuovo online i nodi offline utilizzando: <code>pcs cluster start &lt;HOSTNAME&gt;</code></p>
+</li>
+<li>
+<p>Cancellare tutte le azioni delle risorse non riuscite utilizzando: <code>pcs resource cleanup</code></p>
+</li>
+<li>
+<p>Eseguire lo stato dei PC e verificare che tutti i servizi inizano come previsto.</p>
+</li>
+<li>
+<p>Se necessario, eseguire <code>pcs resource relocate run</code> per spostare nuovamente le risorse nel nodo preferito (se disponibile).</p>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="problemi-comuni">Problemi comuni</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="i-servizi-beegfs-non-eseguono-il-failover-o-il-failback-quando-richiesto">I servizi BeeGFS non eseguono il failover o il failback quando richiesto</h3>
+<div class="paragraph">
+<p><strong>Probabile problema:</strong> il <code>pcs resource relocate</code> il comando run è stato eseguito, ma non è mai stato completato correttamente.</p>
+</div>
+<div class="paragraph">
+<p><strong>Come controllare:</strong> Esegui <code>pcs constraint --full</code> E verificare la presenza di eventuali vincoli di posizione con un ID di <code>pcs-relocate-&lt;RESOURCE&gt;</code>.</p>
+</div>
+<div class="paragraph">
+<p><strong>Come risolvere:</strong> Esegui <code>pcs resource relocate clear</code> quindi rieseguire <code>pcs constraint --full</code> per verificare che i vincoli aggiuntivi vengano rimossi.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="un-nodo-nello-stato-di-pc-mostra-standby-on-fail-quando-la-scherma-è-disattivata">Un nodo nello stato di PC mostra "standby (on-fail)" quando la scherma è disattivata</h3>
+<div class="paragraph">
+<p><strong>Probabile problema:</strong> pacemaker non è riuscito a confermare che tutte le risorse sono state interrotte sul nodo che ha avuto esito negativo.</p>
+</div>
+<div class="paragraph">
+<p><strong>Come risolvere:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Eseguire <code>pcs status</code> e verificare la presenza di risorse che non sono "avviate" o che mostrano errori nella parte inferiore dell'output e risolvere eventuali problemi.</p>
+</li>
+<li>
+<p>Per riportare il nodo in linea eseguire <code>pcs resource cleanup --node=&lt;HOSTNAME&gt;</code>.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dopo-un-failover-imprevisto-le-risorse-mostrano-started-on-fail-avviato-on-fail-in-stato-pc-quando-la-scherma-è-attivata">Dopo un failover imprevisto, le risorse mostrano "Started (on-fail)" (avviato (on-fail)) in stato PC quando la scherma è attivata</h3>
+<div class="paragraph">
+<p><strong>Probabile problema:</strong> si è verificato Un problema che ha attivato un failover, ma Pacemaker non è riuscito a verificare che il nodo sia stato recintato. Questo potrebbe verificarsi a causa di una configurazione errata del recinto o di un problema con l'agente di recinzione (ad esempio: La PDU è stata disconnessa dalla rete).</p>
+</div>
+<div class="paragraph">
+<p><strong>Come risolvere:</strong></p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Verificare che il nodo sia effettivamente spento.</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<img src="/us-en/beegfs/images/important.svg" alt="Importante">
+</td>
+<td class="content">
+Se il nodo specificato non è effettivamente disattivato, ma esegue risorse o servizi cluster, si VERIFICHERÀ un danneggiamento dei dati o un errore del cluster.
+</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Confermare manualmente la scherma con: <code>pcs stonith confirm &lt;NODE&gt;</code></p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>A questo punto i servizi dovrebbero terminare il failover e essere riavviati su un altro nodo integro.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="attività-comuni-di-risoluzione-dei-problemi">Attività comuni di risoluzione dei problemi</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="riavviare-i-singoli-servizi-beegfs">Riavviare i singoli servizi BeeGFS</h3>
+<div class="paragraph">
+<p>In genere, se un servizio BeeGFS deve essere riavviato (ad esempio per facilitare una modifica della configurazione), questa operazione deve essere eseguita aggiornando l'inventario Ansible e rieseguendo il manuale. In alcuni scenari potrebbe essere consigliabile riavviare singoli servizi per facilitare la risoluzione dei problemi più rapida, ad esempio per modificare il livello di registrazione senza dover attendere l'esecuzione dell'intero playbook.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<img src="/us-en/beegfs/images/important.svg" alt="Importante">
+</td>
+<td class="content">
+A meno che non vengano aggiunte modifiche manuali all'inventario Ansible, queste verranno ripristinate alla prossima esecuzione del playbook Ansible.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect3">
+<h4 id="opzione-1-riavvio-controllato-dal-sistema">Opzione 1: Riavvio controllato dal sistema</h4>
+<div class="paragraph">
+<p>Se esiste il rischio che il servizio BeeGFS non si riavvii correttamente con la nuova configurazione, impostare innanzitutto il cluster in modalità di manutenzione per evitare che il monitor BeeGFS rilevi che il servizio è stato arrestato e che venga attivato un failover indesiderato:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">pcs property set maintenance-mode=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Se necessario, apportare eventuali modifiche alla configurazione dei servizi all'indirizzo <code>/mnt/&lt;SERVICE_ID&gt;/<strong>_config/beegfs-</strong>.conf</code> (esempio: <code>/mnt/meta_01_tgt_0101/metadata_config/beegfs-meta.conf</code>) quindi utilizzare systemd per riavviarlo:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">systemctl restart beegfs-*@&lt;SERVICE_ID&gt;.service</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Esempio: <code>systemctl restart beegfs-meta@meta_01_tgt_0101.service</code></p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="opzione-2-riavvio-controllato-da-pacemaker">Opzione 2: Riavvio controllato da pacemaker</h4>
+<div class="paragraph">
+<p>Se non si è preoccupati per la nuova configurazione, il servizio potrebbe arrestarsi in modo imprevisto (ad esempio, semplicemente cambiando il livello di registrazione) oppure ci si trova in una finestra di manutenzione e non si è preoccupati per i tempi di inattività, è sufficiente riavviare il monitor BeeGFS per il servizio che si desidera riavviare:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-console" data-lang="console">pcs resource restart &lt;SERVICE&gt;-monitor</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ad esempio, per riavviare il servizio di gestione BeeGFS: <code>pcs resource restart mgmt-monitor</code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+    </article>
+    <!-- Page Container -->
+  </div>
+
+  
+  <!-- Start Page Toolbar -->
+<div id="ie-right-navbar-collapse" class="close">
+  <img id="navbar-expand" class="ie-searchbox-icon" src="/it-it/beegfs/images/double_arrow.svg" alt="" />
+</div>
+<div id="ie-right-navbar" class="open">
+  <div id="right-navbar-collapse">
+    <img src="/it-it/beegfs/images/double_arrow.svg" alt="" />
+  </div>
+  <div class="page-nav-container">
+    <nav class="page-nav-fixed">
+      <div class="page-nav-title">In questa pagina</div>
+      <div class="page-nav-links">
+        <ul class="page-nav-inner" id="page-menu"></ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
+
+<script>
+  resizeContent();
+  function setRightBarHeight() {
+    var h = 0;
+
+    // header 1
+    h += PXinViewport($('.n-footer'));
+    h += PXinViewport($('#ie-new-header'));
+
+    if ($('#ie-right-navbar').length) {
+      $('#ie-right-navbar').css({ height: `calc(100vh - ${h}px)` });
+    }
+    if ($('.page-nav-links').length) {
+      h += 98;
+      $('.page-nav-links').css({ height: `calc(100vh - ${h}px)` });
+    }
+  }
+
+  $(document).ready(function () {
+    // PAGE NAV - Click
+    const MASTHEAD_OFFSET = 65;
+    const SECTIONS = $("main h2, main h3");
+    let calculateActiveSection = false;
+    setTimeout(() => {
+      calculateActiveSection = true;
+    }, 100)
+
+    $(".page-nav__link").click(function (event) {
+      calculateActiveSection = false;
+      $(".page-nav__link").removeClass('page-nav__link--active');
+      var target = $(event.target);
+      target.addClass('page-nav__link--active');
+      location.hash = event.target.hash;
+      setTimeout(() => {
+        calculateActiveSection = true;
+      }, 100)
+
+    });
+
+    // PAGE NAV - Scroll
+    $(window).on('resize scroll', function () {
+      if (calculateActiveSection) {
+        var activeSection = getActiveSection(SECTIONS, MASTHEAD_OFFSET);
+        if (activeSection) {
+          var activeHref = $(activeSection).attr('id');
+          $(".page-nav__link").removeClass('page-nav__link--active');
+          $("#page-menu a[href=#" + activeHref + "]").addClass('page-nav__link--active');
+          if (location.hash != "#" + activeHref) {
+            if (history.replaceState) {
+              history.replaceState(null, null, "#" + activeHref);
+            }
+          }
+        }
+      }
+    });
+
+    $(".n-pdf-button").click(function () {
+      $(this).toggleClass("active");
+    });
+
+    $.fn.isVisibleAndInViewport = function () {
+      var elementTop = $(this).offset().top;
+      var elementBottom = elementTop + $(this).outerHeight();
+
+      var viewportTop = $(window).scrollTop();
+      var viewportBottom = viewportTop + $(window).height();
+
+      return elementBottom > viewportTop && elementTop < viewportBottom && $(this).is(":visible");
+    };
+
+
+    $(window).on('resize scroll', function () {
+      setRightBarHeight();
+    });
+
+    $(window).trigger('resize');
+
+
+  });
+
+  $("#right-navbar-collapse").click(function (e) {
+    const rightNavbarWidth = $("#ie-right-navbar").width() - $("#ie-right-navbar-collapse").width();
+    e.preventDefault();
+    const width = $(".ie-content-pane").width();
+
+    $("#ie-right-navbar").animate({ width: 'toggle' }, 350, function () {
+      $("#ie-right-navbar-collapse").removeClass("close")
+      $("#ie-right-navbar-collapse").addClass("open")
+      $("#ie-right-navbar").removeClass("open")
+      $("#ie-right-navbar").addClass("close")
+    });
+    $(".ie-content-pane").animate({ width: (width + rightNavbarWidth) }, 350, function () {
+      resizeContent()
+      setSidebarBottom();
+    })
+
+  });
+  $("#navbar-expand").click(function (e) {
+    const rightNavbarWidth = $("#ie-right-navbar").width() - $("#ie-right-navbar-collapse").width();
+    e.preventDefault();
+    const width = $(".ie-content-pane").width();
+    $("#ie-right-navbar").animate({ width: 'toggle' }, 250, function () {
+      $("#ie-right-navbar-collapse").removeClass("open")
+      $("#ie-right-navbar-collapse").addClass("close")
+      $("#ie-right-navbar").removeClass("close")
+      $("#ie-right-navbar").addClass("open")
+      setRightBarHeight();
+      setSidebarBottom();
+    });
+    $(".ie-content-pane").animate({ width: (width - rightNavbarWidth) }, 250, function () {
+      resizeContent()
+    })
+  });
+
+  function navbarResize() {
+    const rightNavbarResized = $("#ie-right-navbar-collapse").hasClass('resized');
+    if (window.innerWidth < 1024) {
+      $("#ie-right-navbar").removeClass("open")
+      $("#ie-right-navbar").addClass("close")
+      $("#ie-right-navbar").removeAttr("style")
+      $("#ie-right-navbar-collapse").removeClass("close")
+      $("#ie-right-navbar-collapse").addClass("open")
+      $("#ie-right-navbar-collapse").addClass("resized")
+    } else {
+      if (rightNavbarResized) {
+        $('#ie-right-navbar').removeClass('close');
+        $('#ie-right-navbar').addClass('open');
+        $("#ie-right-navbar-collapse").removeClass("resized")
+        $("#ie-right-navbar-collapse").removeClass("open")
+        $("#ie-right-navbar-collapse").addClass("close")
+      }
+    }
+    resizeContent()
+  }
+  navbarResize();
+  $(window).on('resize load', function () {
+    navbarResize()
+  });
+
+  function getActiveSection(sections, offset) {
+    var scrollPosition = $(window).scrollTop() + offset + 5;
+    var activeSection;
+    for (var i = 0; i < sections.length; i++) {
+      var el = $(sections[i]);
+      var activePosition = el.offset().top;
+      if (activePosition > scrollPosition) {
+        break;
+      }
+
+      activeSection = sections[i];
+    }
+
+    return activeSection;
+  }
+
+  $("a[href*=#]:not([href=#])").click(function () {
+    setTimeout(() => {
+      $(window).trigger('scroll');
+    }, 105)
+  })
+
+  const hashOnLoad = location.href.split("#")[1];
+  setTimeout(function () {
+    if (hashOnLoad) {
+      $(".page-nav__link").removeClass('page-nav__link--active');
+      $("#page-menu a[href=#" + hashOnLoad + "]").addClass('page-nav__link--active');
+    }
+  }, 100)
+
+</script>
+
+
+  <div style="clear: both"></div><!-- Main needs to have height --></div>
+
+        </main>
+
+        <footer class="n-footer">
+  <div class="n-footer__bottom">
+    <div class="n-container">
+        <div class="n-footer__left">
+          <li class="n-footer__copyright-link">
+                    <a href="https://www.netapp.com/company/legal/copyright/">© 2024 NetApp, Inc.</a>
+          </li>
+        </div>
+        <div class="n-footer__center">
+          <ul class="n-footer__copyright-list">
+            <li class="n-footer__copyright-link">
+              <a href="https://www.netapp.com/company/legal/terms-of-use/">Condizioni per l'utilizzo</a>
+            </li>
+            <li class="n-footer__copyright-link">
+              <a href="https://www.netapp.com/company/legal/privacy-policy/">Direttiva sulla privacy</a>
+            </li>
+            <li class="n-footer__copyright-link">
+              <a href="https://www.netapp.com/company/legal/cookie-policy/">Direttiva sui cookie</a>
+            </li>
+            <li class="n-footer__copyright-link">
+              <a class="ot-sdk-show-settings">Impostazioni cookie</a>
+            </li>
+          </ul>
+       </div>
+        <div class="n-footer__right">
+              <li class="n-footer__copyright-link">
+                <a target="_self" href="javascript:netapp_mailto()">Invia feedback su questa pagina</a>
+              </li>
+        </div>
+     </div>
+  </div>
+</footer>
+
+      </div><!-- Elasticsearch JS -->
+      <script type="text/javascript" src='/it-it/beegfs/js/bundle.js'></script>
+
+      <!-- Syntax Highlighting -->
+      <script type="text/javascript" src='/it-it/beegfs/js/prism.js'></script>
+      <script type="text/javascript" src='/it-it/beegfs/js/prism-curl.js'></script>
+    </div>
+    <script>
+      document.body.offsetWidth=1903;
+      cookieLaw = {}
+      cookieLaw.euCountry = "US";
+      cookieLaw.invoke = function(){return false;}
+    </script>
+    <script src='/it-it/beegfs/js/ie-tabbed-blocks.js'></script>
+    <script src='/it-it/beegfs/js/ie-sidebar.js'></script>
+  </body>
+
+</html>
