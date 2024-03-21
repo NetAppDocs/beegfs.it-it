@@ -1811,7 +1811,6 @@
   <block id="2bce5080fcc3d6b8a54a49745dd28d52" category="list-text">Avere accesso SSH e HTTPS a tutti i nodi di file e blocchi.</block>
   <block id="63115803566871887df2b7864b03edba" category="paragraph">È possibile trovare i passaggi dettagliati per l'installazione <block ref="84ce541b3fd5c60f6335f3a2ccb7ca82" category="inline-link-macro-rx"></block>.</block>
   <block id="014e0772632604acc6760e28c820cb22" category="summary">Panoramica sulla risoluzione dei problemi</block>
-  <block id="4929a64464b43e326e35b25ce7e3ceeb" category="sidebar">La soluzione BeeGFS su NetApp è una NetApp Verified Architecture (NVA), che combina il file system parallelo BeeGFS con i sistemi storage NetApp EF600. Questa soluzione è un'infrastruttura affidabile, scalabile e conveniente che tiene il passo con i carichi di lavoro più estremi.</block>
   <block id="be11c74c1dd7f307bb80183a90dc2067" category="sidebar">Inizia subito</block>
   <block id="12623d7cc9dff74b7325aa809ffc84df" category="sidebar">Blog - ulteriori informazioni su BeeGFS ed e-Series</block>
   <block id="0af9e7bf64a8e8c1b37ec554248f3d14" category="sidebar">Blog - BeeGFS per principianti</block>
@@ -1862,4 +1861,5 @@
   <block id="dd38f906b37d412de7d1c1dcf4cbf31c" category="paragraph"><block ref="dd38f906b37d412de7d1c1dcf4cbf31c" category="inline-link-macro-rx"></block></block>
   <block id="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-macro"><block ref="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-rx"></block></block>
   <block id="2352c4e1f4d0024ade0869e00e6243f4" category="paragraph"><block ref="2352c4e1f4d0024ade0869e00e6243f4" category="inline-link-macro-rx"></block></block>
+  <block id="e8afe31a21b6aae9717484d865743dae" category="sidebar">BeeGFS su NetApp con storage e-Series è una soluzione integrata e comprovata che offre un'infrastruttura HPC semplice, affidabile, scalabile e conveniente, in grado di restare al passo con i tuoi carichi di lavoro più estremi.</block>
 </blocks>
