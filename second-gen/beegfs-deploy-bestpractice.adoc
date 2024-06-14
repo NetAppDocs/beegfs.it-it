@@ -20,7 +20,7 @@ Seguire le linee guida delle Best practice per l'implementazione della soluzione
 
 == Convenzioni standard
 
-Quando si assembla e crea fisicamente il file di inventario Ansible, attenersi alle seguenti convenzioni standard (per ulteriori informazioni, vedere link:beegfs-deploy-beegfs-general-config.html["Creare l'inventario Ansible"]).
+Quando si assembla e crea fisicamente il file di inventario Ansible, attenersi alle seguenti convenzioni standard (per ulteriori informazioni, vedere link:beegfs-deploy-create-inventory.html["Creare l'inventario Ansible"]).
 
 * I nomi host dei nodi di file sono numerati in sequenza (h01-HN) con numeri inferiori nella parte superiore del rack e numeri superiori nella parte inferiore.
 +

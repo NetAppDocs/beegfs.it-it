@@ -906,7 +906,6 @@
   <block id="d1da0cd6852302b521f35aeee065f5ea" category="summary">Seguire le linee guida delle Best practice per l'implementazione della soluzione BeeGFS su NetApp.</block>
   <block id="38b622e4d5c9d918330c81663f61a4e3" category="doc">Esaminare le Best practice</block>
   <block id="d780de93793370946b2449b88a29b5ea" category="section-title">Convenzioni standard</block>
-  <block id="2028bcc5ed7fdc8ba437b0150866ff2c" category="paragraph">Quando si assembla e crea fisicamente il file di inventario Ansible, attenersi alle seguenti convenzioni standard (per ulteriori informazioni, vedere <block ref="ecd3f3fdba3715697adf284eecd1c932" category="inline-link-macro-rx"></block>).</block>
   <block id="b4d19c971bd6ad93985147c0ce9477c8" category="list-text">I nomi host dei nodi di file sono numerati in sequenza (h01-HN) con numeri inferiori nella parte superiore del rack e numeri superiori nella parte inferiore.</block>
   <block id="0a4e8ee6eb2b3c9ae6b2864c18db1a80" category="paragraph">Ad esempio, la convenzione di naming<block ref="6171c77957e7dd932771522d0f5313aa" prefix=" " category="inline-code"></block> assomiglia a:<block ref="8afb08c5a5c2666b19de0aaba8de4d93" prefix=" " category="inline-code"></block>.</block>
   <block id="7bf4bcec78c083e165c31432234ebef8" category="list-text">Ciascun nodo a blocchi è composto da due controller di storage, ciascuno con il proprio nome host.</block>
@@ -1862,4 +1861,5 @@
   <block id="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-macro"><block ref="8acb58cbd50ef1b468a020ee0bd351d3" category="inline-link-rx"></block></block>
   <block id="2352c4e1f4d0024ade0869e00e6243f4" category="paragraph"><block ref="2352c4e1f4d0024ade0869e00e6243f4" category="inline-link-macro-rx"></block></block>
   <block id="e8afe31a21b6aae9717484d865743dae" category="sidebar">BeeGFS su NetApp con storage e-Series è una soluzione integrata e comprovata che offre un'infrastruttura HPC semplice, affidabile, scalabile e conveniente, in grado di restare al passo con i tuoi carichi di lavoro più estremi.</block>
+  <block id="3a9aabbbb8c331319a41788bf5d1786a" category="paragraph">Quando si assembla e crea fisicamente il file di inventario Ansible, attenersi alle seguenti convenzioni standard (per ulteriori informazioni, vedere <block ref="dbbcb9482f49ee969cddb7f10864cbd0" category="inline-link-macro-rx"></block>).</block>
 </blocks>
