@@ -800,8 +800,6 @@
   <block id="f00f227030eb163a017a1730e0ddefb6" category="list-text">Due slot per zona NUMA.</block>
   <block id="d12719622b3ae7d145ba3994f18ac93f" category="list-text">Ogni slot deve fornire alimentazione/raffreddamento sufficiente per l'adattatore Mellanox MCX653106A-HDAT.</block>
   <block id="a631c0a4a9b408ccc2559c2a3323af51" category="paragraph">*Varie:*</block>
-  <block id="61591a2035ff0c79f159e510d399af20" category="list-text">Due dischi SATA da 1 TB e 7.200 rpm (o simili) configurati in RAID 1 per il sistema operativo.</block>
-  <block id="47c626e648f05fcfc94552cad7e0f210" category="list-text">Adattatore OCP 3.0 10 GbE (o equivalente) per la gestione del sistema operativo in-band.</block>
   <block id="30a4226a3d02d27336f749ae5dcd893b" category="list-text">BMC 1GbE con API Redfish per la gestione dei server out-of-band.</block>
   <block id="173ee7b6334b65c38509a87b47bd79da" category="list-text">Doppi alimentatori hot swap e ventole ad alte prestazioni.</block>
   <block id="84edc2766d3f7158f313edb5aed216f7" category="list-text">Per raggiungere gli switch InfiniBand storage, è necessario supportare i cavi ottici Mellanox InfiniBand.</block>
@@ -1642,7 +1640,6 @@
   <block id="d487c72028a8f41291fa35df82cfe348" category="paragraph">Per ulteriori opzioni di configurazione delle porte HIC e dei protocolli host, inclusa la possibilità di configurare iSCSI CHAP, fare riferimento a. <block ref="03b4e8c5a2a4120cb0ea20ad53010d79" category="inline-link-macro-rx"></block> Incluso nella raccolta SANtricity. Nota durante l'implementazione di BeeGFS, il pool di storage, la configurazione del volume e altri aspetti del provisioning dello storage verranno configurati altrove e non devono essere definiti in questo file.</block>
   <block id="ca752ddde33be986f431e89edb589ac1" category="paragraph">Fare clic su <block ref="4b43b7669fad4b5b712c0fa73fdf7e2c" category="inline-link-macro-rx"></block> per un esempio di un file di inventario completo che rappresenta un singolo nodo a blocchi.</block>
   <block id="bb3b75abe4dc6581c40f5061474bb17f" category="section-title">Utilizzando HDR (200 GB) InfiniBand o 200GB RoCE con i nodi a blocchi NetApp EF600:</block>
-  <block id="f8de92059efc82f4fcf167cc78595c49" category="paragraph">Per utilizzare HDR (200 GB) InfiniBand con EF600, è necessario configurare un secondo IP "virtuale" per ciascuna porta fisica. Questo è un esempio del modo corretto per configurare un EF600 dotato di InfiniBand HDR HIC a due porte:</block>
   <block id="2636cdb2e4c8c163e637fb4b1be7ef57" category="summary">Specificare la configurazione del nodo a blocchi comune utilizzando le variabili di gruppo (group_vars).</block>
   <block id="42379f3693325579ec45c17436f3fa30" category="doc">Specificare la configurazione del nodo del blocco comune</block>
   <block id="f3b82d936104a57a294cfa3abe47b556" category="paragraph">La configurazione che deve essere utilizzata per tutti i nodi a blocchi è definita in<block ref="7bc866ffde9914c7ef21768fcf6f0683" prefix=" " category="inline-code"></block>. In genere include:</block>
@@ -1862,4 +1859,7 @@
   <block id="2352c4e1f4d0024ade0869e00e6243f4" category="paragraph"><block ref="2352c4e1f4d0024ade0869e00e6243f4" category="inline-link-macro-rx"></block></block>
   <block id="e8afe31a21b6aae9717484d865743dae" category="sidebar">BeeGFS su NetApp con storage e-Series è una soluzione integrata e comprovata che offre un'infrastruttura HPC semplice, affidabile, scalabile e conveniente, in grado di restare al passo con i tuoi carichi di lavoro più estremi.</block>
   <block id="3a9aabbbb8c331319a41788bf5d1786a" category="paragraph">Quando si assembla e crea fisicamente il file di inventario Ansible, attenersi alle seguenti convenzioni standard (per ulteriori informazioni, vedere <block ref="dbbcb9482f49ee969cddb7f10864cbd0" category="inline-link-macro-rx"></block>).</block>
+  <block id="a743f5810f84b94eef8da441707ef9cb" category="paragraph">Per utilizzare HDR (200 GB) InfiniBand con EF600, è necessario configurare un secondo IP "virtuale" per ciascuna porta fisica. Di seguito è riportato un esempio del modo corretto di configurare un EF600 dotato di InfiniBand HDR HIC a doppia porta:</block>
+  <block id="c0e444d9cf9d3a48a737c4df4fa52549" category="list-text">Due unità SATA da 1TB 7,2K GB (o simili o superiori) configurate in RAID 1 per il sistema operativo.</block>
+  <block id="509d1f98aaad6eee1691109893d137fe" category="list-text">Porta 1GbE (o superiore) per la gestione del sistema operativo in-band.</block>
 </blocks>

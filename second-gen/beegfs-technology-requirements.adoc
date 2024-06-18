@@ -58,8 +58,8 @@ Per ottenere le prestazioni previste, ciascun nodo di file deve soddisfare o sup
 
 *Varie:*
 
-* Due dischi SATA da 1 TB e 7.200 rpm (o simili) configurati in RAID 1 per il sistema operativo.
-* Adattatore OCP 3.0 10 GbE (o equivalente) per la gestione del sistema operativo in-band.
+* Due unità SATA da 1TB 7,2K GB (o simili o superiori) configurate in RAID 1 per il sistema operativo.
+* Porta 1GbE (o superiore) per la gestione del sistema operativo in-band.
 * BMC 1GbE con API Redfish per la gestione dei server out-of-band.
 * Doppi alimentatori hot swap e ventole ad alte prestazioni.
 * Per raggiungere gli switch InfiniBand storage, è necessario supportare i cavi ottici Mellanox InfiniBand.
