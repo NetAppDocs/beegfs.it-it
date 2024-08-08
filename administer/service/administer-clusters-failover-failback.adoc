@@ -97,23 +97,23 @@ pcs resource relocate run
 
 Se si desidera modificare in modo permanente il nodo di file preferito per un singolo servizio BeeGFS, regolare l'inventario Ansible in modo che il nodo preferito venga elencato per primo ed eseguire nuovamente il playbook Ansible.
 
-Ad esempio in questo esempio `inventory.yml` File, ictad22h01 è il nodo di file preferito per eseguire il servizio di gestione BeeGFS:
+Ad esempio, in questo file di esempio `inventory.yml` , beegfs_01 è il nodo file preferito per eseguire il servizio di gestione BeeGFS:
 
 [source, yaml]
 ----
         mgmt:
           hosts:
-            ictad22h01:
-            ictad22h02:
+            beegfs_01:
+            beegfs_02:
 ----
-L'inversione dell'ordine causerebbe la preferenza dei servizi di gestione su ictad22h02:
+L'inversione dell'ordine causerebbe la preferenza dei servizi di gestione su beegfs_02:
 
 [source, yaml]
 ----
         mgmt:
           hosts:
-            ictad22h02:
-            ictad22h01:
+            beegfs_02:
+            beegfs_01:
 ----
 
 
@@ -128,7 +128,7 @@ Se per qualche motivo è necessario spostare un singolo servizio in un nodo di f
 pcs resource move <SERVICE>-monitor <HOSTNAME>
 ----
 
-WARNING: Non specificare singole risorse o il gruppo di risorse. Specificare sempre il nome del monitor per il servizio BeeGFS che si desidera trasferire. Ad esempio, per spostare il servizio di gestione BeeGFS in ictad22h02 eseguire: `pcs resource move mgmt-monitor ictad22h02`. Questo processo può essere ripetuto per spostare uno o più servizi lontano dai nodi preferiti. Verificare l'utilizzo di `pcs status` i servizi sono stati ricollocati/avviati sul nuovo nodo.
+WARNING: Non specificare singole risorse o il gruppo di risorse. Specificare sempre il nome del monitor per il servizio BeeGFS che si desidera trasferire. Ad esempio, per spostare il servizio di gestione BeeGFS in beegfs_02 eseguire: `pcs resource move mgmt-monitor beegfs_02`. Questo processo può essere ripetuto per spostare uno o più servizi lontano dai nodi preferiti. Verificare che l'utilizzo dei `pcs status` servizi sia stato ricollocato/avviato sul nuovo nodo.
 
 Per spostare di nuovo un servizio BeeGFS nel nodo preferito, eliminare prima i vincoli di risorsa temporanei (ripetendo questa operazione in base alle necessità per più servizi):
 

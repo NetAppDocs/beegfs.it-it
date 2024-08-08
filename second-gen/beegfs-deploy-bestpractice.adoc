@@ -24,14 +24,14 @@ Quando si assembla e crea fisicamente il file di inventario Ansible, attenersi a
 
 * I nomi host dei nodi di file sono numerati in sequenza (h01-HN) con numeri inferiori nella parte superiore del rack e numeri superiori nella parte inferiore.
 +
-Ad esempio, la convenzione di naming `[location][row][rack]hN` assomiglia a: `ictad22h01`.
+Ad esempio, la convenzione di denominazione `[location][row][rack]hN` è simile a: `beegfs_01`.
 
 * Ciascun nodo a blocchi è composto da due controller di storage, ciascuno con il proprio nome host.
 +
 Il nome di un array di storage viene utilizzato per fare riferimento all'intero sistema di storage a blocchi come parte di un inventario Ansible. I nomi degli array di storage devono essere numerati in sequenza (a01 - AN) e i nomi host dei singoli controller derivano da tale convenzione di naming.
 
 +
-Ad esempio, un nodo del blocco denominato `ictad22a01` in genere, è possibile configurare i nomi host per ciascun controller come `ictad22a01-a` e. `ictad22a01-b`, Ma in un inventario Ansible deve essere indicato come `ictad22a01`.
+Ad esempio, un nodo di blocco denominato `ictad22a01` in genere può avere nomi host configurati per ogni controller come e , ma in un inventario Ansible come `ictad22a01-a` `ictad22a01-b` `netapp_01`.
 
 * I nodi di file e blocchi all'interno dello stesso building block condividono lo stesso schema di numerazione e sono adiacenti l'uno all'altro nel rack con entrambi i nodi di file in cima ed entrambi i nodi di blocco direttamente sotto di essi.
 +
@@ -87,9 +87,7 @@ NOTE: Questo schema di indirizzamento rispetta la seguente regola: Il terzo otte
 |===
 
 
-=== Schema di indirizzamento IPoIB client-server BeeGFS (due subnet)
-
-Per consentire ai client BeeGFS di utilizzare due porte InfiniBand, sono necessarie due subnet IPoIB con la metà dei servizi server BeeGFS configurati con un IP preferito su ciascuna subnet, in modo da garantire che i client utilizzino due porte InfiniBand per massimizzare la ridondanza e il possibile throughput per il file system.
+=== Schemi di indirizzamento IPoIB client-server BeeGFS
 
 Ogni nodo di file esegue più servizi server BeeGFS (gestione, metadati o storage). Per consentire a ciascun servizio di eseguire il failover in modo indipendente sull'altro nodo di file, ciascuno è configurato con indirizzi IP univoci che possono fluttuare tra entrambi i nodi (a volte definiti interfaccia logica o LIF).
 
@@ -104,9 +102,51 @@ NOTE: Oltre all'interfaccia utilizzata per la gestione del sistema operativo in-
 
 * Il servizio BeeGFS Management è sempre attivo `xxx.yyy.101.0` oppure `xxx.yyy.102.0`.
 * I servizi di metadati BeeGFS sono sempre attivi `xxx.yyy.101.zzz` oppure `xxx.yyy.102.zzz`.
-* I servizi di storage BeeGFS sono sempre attivi `xxx.yyy.103.zzz` oppure `xxx.yyy.103.zzz`.
+* I servizi di archiviazione BeeGFS sono sempre a `xxx.yyy.103.zzz` o `xxx.yyy.104.zzz`.
 * Indirizzi compresi nell'intervallo `100.xxx.1.1` attraverso `100.xxx.99.255` sono riservati ai clienti.
 
+
+
+
+==== Schema di indirizzamento a singola subnet IPoIB
+
+Questa guida alla distribuzione utilizza un unico schema di subnet, dati i vantaggi elencati nella link:beegfs-design-software-architecture.html#beegfs-network-configuration["architettura del software"].
+
+.Subnet: 100.127.0.0/16
+La seguente tabella fornisce l'intervallo per una singola subnet: 100.127.0.0/16.
+
+|===
+| Scopo | Porta InfiniBand | Indirizzo IP o intervallo 
+
+
+| IP cluster BeeGFS | i1b o i4b | 100.127.100.1 - 100.127.100.255 
+
+
+.2+| Gestione di BeeGFS | i1b | 100.127.101.0 
+
+
+| i2b | 100.127.102.0 
+
+
+.2+| Metadati BeeGFS | i1b o i3b | 100.127.101.1 - 100.127.101.255 
+
+
+| i2b o i4b | 100.127.102.1 - 100.127.102.255 
+
+
+.2+| Storage BeeGFS | i1b o i3b | 100.127.103.1 - 100.127.103.255 
+
+
+| i2b o i4b | 100.127.104.1 - 100.127.104.255 
+
+
+| Client BeeGFS | (varia in base al client) | 100.127.1.1 - 100.127.99.255 
+|===
+
+
+==== Schema di indirizzamento a due subnet IPoIB
+
+Uno schema di indirizzamento a due subnet non è più consigliato, ma può ancora essere implementato. Fare riferimento alle tabelle seguenti per uno schema di due subnet consigliato.
 
 .Subnet A: 100.127.0.0/16
 La seguente tabella fornisce l'intervallo per la subnet A: 100.127.0.0/16.

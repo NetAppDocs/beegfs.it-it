@@ -32,20 +32,20 @@ Le impostazioni di sistema variano a seconda del modello di server utilizzato co
 +
 ** Parametri di configurazione del servizio BeeGFS
 +
-È possibile ignorare le impostazioni predefinite per i parametri di configurazione in base alle esigenze. Per i parametri che è possibile regolare per i carichi di lavoro o i casi di utilizzo specifici, vedere https://github.com/netappeseries/beegfs/blob/135d9a04ae96f4d202300bae870c6404b77b6865/roles/beegfs_ha_7_2/defaults/main.yml#L155["Parametri di configurazione del servizio BeeGFS"^].
+È possibile ignorare le impostazioni predefinite per i parametri di configurazione in base alle esigenze. Per i parametri che è possibile regolare per carichi di lavoro specifici o casi di utilizzo, vedere la https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L237["Parametri di configurazione del servizio BeeGFS"^].
 
 ** I parametri di montaggio e formattazione del volume sono impostati sui valori predefiniti consigliati e devono essere regolati solo in caso di utilizzo avanzato. I valori predefiniti sono i seguenti:
 +
 *** Ottimizza la formattazione iniziale del volume in base al tipo di destinazione (ad esempio gestione, metadati o storage), oltre alla configurazione RAID e alle dimensioni dei segmenti del volume sottostante.
 *** Regolare il modo in cui pacemaker monta ciascun volume per assicurarsi che le modifiche vengano immediatamente applicate ai nodi a blocchi e-series. In questo modo si evita la perdita di dati quando i nodi di file non funzionano con scritture attive in corso.
 +
-Per i parametri che è possibile regolare per i carichi di lavoro o i casi di utilizzo specifici, vedere https://github.com/netappeseries/beegfs/blob/135d9a04ae96f4d202300bae870c6404b77b6865/roles/beegfs_ha_7_2/defaults/main.yml#L258["formattazione dei volumi e parametri di configurazione del montaggio"^].
+Per i parametri che è possibile regolare per carichi di lavoro specifici o casi di utilizzo, vedere la https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L279["formattazione dei volumi e parametri di configurazione del montaggio"^].
 
 
 
 
 
-. *Impostazioni di sistema nel sistema operativo Linux installato sui nodi di file.* è possibile ignorare le impostazioni predefinite del sistema operativo Linux quando si crea l'inventario Ansible nel passaggio 4 di link:beegfs-deploy-beegfs-general-config.html["Creare l'inventario Ansible"].
+. *Impostazioni di sistema nel sistema operativo Linux installato sui nodi dei file.* È possibile ignorare le impostazioni predefinite del sistema operativo Linux quando si crea l'inventario Ansible nel passaggio 4 di link:beegfs-deploy-create-inventory.html["Creare l'inventario Ansible"].
 +
 Le impostazioni predefinite sono state utilizzate per validare la soluzione BeeGFS su NetApp, ma è possibile modificarle per adattarle ai carichi di lavoro o ai casi di utilizzo specifici. Di seguito sono riportati alcuni esempi delle impostazioni di sistema del sistema operativo Linux che è possibile modificare:
 
@@ -71,7 +71,7 @@ Le impostazioni predefinite sono state utilizzate per validare la soluzione BeeG
 
 ** Dimensione richiesta di lettura.
 +
-È possibile aumentare la dimensione massima della richiesta di lettura per gli HCA Mellanox.
+È possibile aumentare la dimensione massima della richiesta di lettura per gli HCA NVIDIA.
 
 
 

@@ -92,7 +92,7 @@ Disattiva
 
 
  a| 
-Stato P 1
+Stato P.
  a| 
 Disattiva
 
@@ -197,7 +197,7 @@ curl --request PATCH \
 "Processors_GlobalC_stateControl": "Disable",
 "Processors_SOCP_states": "P0",
 "Processors_DFC_States": "Disable",
-"Processors_P_state1": "Disable",
+"Processors_P_State": "Disable",
 "Memory_MemoryPowerDownEnable": "Disable",
 "DevicesandIOPorts_IOMMU": "Disable",
 "Power_PCIePowerBrake": "Disable",

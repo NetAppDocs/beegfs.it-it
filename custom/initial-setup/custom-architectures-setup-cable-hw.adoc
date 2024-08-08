@@ -37,7 +37,7 @@ Quando si pianifica l'installazione, è importante che tutte le apparecchiature 
 
 Esempio di un singolo building block:
 
-image:../media/buildingblock.png["esempio di building block"]
+image:../media/buildingblock-sr665v3.png["esempio di building block"]
 
 Esempio di un'installazione BeeGFS di grandi dimensioni in cui sono presenti più elementi di base in ciascun cluster ha e più cluster ha nel file system:
 

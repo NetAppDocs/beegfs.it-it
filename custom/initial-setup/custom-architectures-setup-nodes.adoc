@@ -52,7 +52,7 @@ Utilizza RedHat Subscription Manager per registrare e sottoscrivere il sistema p
 Abilitare il repository Red Hat contenente i pacchetti richiesti per l'alta disponibilità:
 
 ....
-subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
 
 

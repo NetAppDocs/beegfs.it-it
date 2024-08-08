@@ -86,11 +86,11 @@ Si consiglia inoltre di impostare SSH senza password dal nodo di controllo a tut
 
 === Nodi di file BeeGFS
 
-I file node devono eseguire RedHat 8.4 e avere accesso al repository ha contenente i pacchetti richiesti (pacemaker, corosync, fence-agents-all, resource-agents). Ad esempio, è possibile eseguire il seguente comando per abilitare il repository appropriato su RedHat 8:
+I file node devono eseguire RedHat 9.3 e avere accesso al repository ha contenente i pacchetti richiesti (pacemaker, corosync, fence-agents-all, resource-agents). Ad esempio, è possibile eseguire il seguente comando per abilitare il repository appropriato su RedHat 9:
 
 [source, bash]
 ----
-subscription-manager repo-override repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+subscription-manager repo-override repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ----
 
 

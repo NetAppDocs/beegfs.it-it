@@ -17,18 +17,23 @@ summary: 'Ciascun building block è costituito da due nodi di file x86 validati 
 Ciascun building block è costituito da due nodi di file x86 validati collegati direttamente a due nodi a blocchi utilizzando cavi HDR (200 GB) InfiniBand.
 
 
-NOTE: Poiché ogni building block include due nodi di file BeeGFS, per stabilire il quorum nel cluster di failover sono necessari almeno due building block. Sebbene sia possibile configurare un cluster a due nodi, esistono limitazioni a questa configurazione che possono impedire il failover in alcuni scenari. Se è necessario un cluster a due nodi, è anche possibile incorporare un terzo dispositivo come spareggio, sebbene ciò non sia trattato in questa procedura di implementazione.
+NOTE: Per stabilire il quorum nel cluster di failover sono necessari almeno due building block. Un cluster a due nodi presenta limitazioni che potrebbero impedire il corretto funzionamento del failover. È possibile configurare un cluster a due nodi incorporando un terzo dispositivo come tiebreaker; tuttavia, questa documentazione non lo descrive.
 
-Se non diversamente specificato, i seguenti passaggi sono identici per ciascun building block del cluster, indipendentemente dal fatto che venga utilizzato per eseguire metadati e servizi di storage BeeGFS o solo servizi di storage.
+I seguenti passaggi sono identici per ogni building block nel cluster, indipendentemente dal fatto che venga utilizzato per eseguire sia metadati BeeGFS che servizi di storage o solo servizi di storage, a meno che non sia diversamente specificato.
 
 .Fasi
-. Configurare ciascun nodo di file BeeGFS con quattro HCA (host Channel Adapter) a doppia porta PCIe 4.0 ConnectX-6 in modalità InfiniBand e installarli negli slot PCIe 2, 3, 5 e 6.
+. Impostare ciascun nodo di file BeeGFS con quattro host Channel Adapter (HCA) utilizzando i modelli specificati nella link:beegfs-technology-requirements.html["Requisiti tecnici"]. Inserire gli HCA negli slot PCIe del nodo file in base alle seguenti specifiche:
++
+** *Lenovo ThinkSystem SR665 V3 Server:* utilizza gli slot PCIe 1, 2, 4 e 5.
+** *Lenovo ThinkSystem SR665 Server:* utilizza gli slot PCIe 2, 3, 5 e 6.
+
+
 . Configurare ciascun nodo a blocchi BeeGFS con una scheda HIC (host Interface Card) da 200 GB a doppia porta e installare l'HIC in ciascuno dei due controller storage.
 +
-Rack dei blocchi in modo che i due nodi di file BeeGFS si trovino sopra i nodi di blocco BeeGFS. La figura seguente mostra la configurazione hardware corretta per l'building block BeeGFS (vista posteriore).
+Rack dei blocchi in modo che i due nodi di file BeeGFS si trovino sopra i nodi di blocco BeeGFS. La figura seguente mostra la configurazione hardware corretta per il building block BeeGFS utilizzando i server Lenovo ThinkSystem SR665 V3 come nodi file (vista posteriore).
 
 +
-image:../media/buildingblock.png[""]
+image:../media/buildingblock-sr665v3.png[""]
 
 +
 
@@ -43,17 +48,20 @@ image:../media/driveslots.png[""]
 
 
 
-. Per collegare i nodi di file e blocchi, utilizzare cavi di rame a collegamento diretto da 1 m InfiniBand HDR 200 GB, in modo che corrispondano alla topologia illustrata nella figura seguente.
+. Collegare i nodi di blocco e di file utilizzando link:beegfs-technology-requirements.html#block-file-cables["1m cavi in rame con collegamento diretto HDR 200GB InfiniBand"], in modo che corrispondano alla topologia mostrata nella figura seguente.
 +
-image:../media/directattachcable.png[""]
+image:../media/directattachcable-sr665v3.png[""]
 
 +
 
 NOTE: I nodi di più building block non sono mai connessi direttamente. Ogni building block deve essere trattato come un'unità standalone e tutte le comunicazioni tra building block avvengono tramite switch di rete.
 
-. Utilizzare cavi di rame a collegamento diretto da 200 GB InfiniBand HDR da 2 m (o della lunghezza appropriata) per collegare le restanti porte InfiniBand su ciascun nodo di file agli switch InfiniBand che verranno utilizzati per la rete di storage.
+. Collegare le restanti porte InfiniBand sul file node allo switch InfiniBand della rete di storage tramite lo specifico switch InfiniBand link:beegfs-technology-requirements.html#file-switch-cables["2m cavi InfiniBand"] storage.
 +
-Se sono in uso switch InfiniBand ridondanti, collegare le porte evidenziate in verde chiaro nella figura seguente a diversi switch.
+Quando si utilizzano cavi splitter per collegare lo switch di archiviazione ai nodi file, un cavo deve diramarsi dallo switch e connettersi alle porte indicate in verde chiaro. Un altro cavo splitter deve diramarsi dallo switch e collegarsi alle porte indicate in verde scuro.
+
++
+Inoltre, per le reti di storage con switch ridondanti, le porte indicate in verde chiaro devono essere collegate a uno switch, mentre le porte in verde scuro devono essere collegate a un altro switch.
 
 +
 image:../media/networkcable.png[""]

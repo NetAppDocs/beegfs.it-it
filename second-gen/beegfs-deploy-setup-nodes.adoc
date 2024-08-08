@@ -22,7 +22,7 @@ Sebbene la maggior parte delle attività di configurazione del software sia auto
 
 . Configurare il networking sul BMC (Baseboard Management Controller) di ciascun server.
 +
-Per informazioni su come configurare la rete per i file node Lenovo SR665 validati, consultare la https://thinksystem.lenovofiles.com/help/index.jsp?topic=%2F7D2W%2Fset_the_network_connection.html["Documentazione di Lenovo ThinkSystem"^].
+Per informazioni su come configurare la rete per i nodi file Lenovo SR665 V3 convalidati, vedere la https://pubs.lenovo.com/sr665-v3/["Documentazione di Lenovo ThinkSystem"^].
 
 +
 
@@ -35,7 +35,7 @@ NOTE: Un BMC (Baseboard Management Controller), a volte chiamato Service Process
 +
 Per informazioni su come configurare le impostazioni di sistema per i nodi di file Lenovo SR665 validati, vedere link:beegfs-deploy-file-node-tuning.html["Ottimizzare le impostazioni di sistema per le prestazioni"].
 
-. Installare Red Hat 8.4 e configurare il nome host e la porta di rete utilizzati per gestire il sistema operativo, inclusa la connettività SSH dal nodo di controllo Ansible.
+. Installare Red Hat 9.3 e configurare il nome host e la porta di rete utilizzati per gestire il sistema operativo, inclusa la connettività SSH dal nodo di controllo Ansible.
 +
 Non configurare gli IP su nessuna delle porte InfiniBand in questo momento.
 
@@ -43,15 +43,15 @@ Non configurare gli IP su nessuna delle porte InfiniBand in questo momento.
 
 NOTE: Sebbene non sia strettamente necessario, le sezioni successive presumono che i nomi host siano numerati in sequenza (ad esempio h1-HN) e si riferiscono alle attività che devono essere completate su host con numero pari o dispari.
 
-. Utilizza RedHat Subscription Manager per registrare e sottoscrivere il sistema per consentire l'installazione dei pacchetti richiesti dai repository ufficiali Red Hat e per limitare gli aggiornamenti alla versione supportata di Red Hat: `subscription-manager release --set=8.4`. Per istruzioni, vedere https://access.redhat.com/solutions/253273["Come registrarsi e sottoscrivere un sistema RHEL"^] e.  https://access.redhat.com/solutions/2761031["Come limitare gli aggiornamenti"^].
+. USA RedHat Subscription Manager per registrare e sottoscrivere il sistema per consentire l'installazione dei pacchetti richiesti dai repository ufficiali di Red Hat e per limitare gli aggiornamenti alla versione supportata di Red Hat: `subscription-manager release --set=9.3`. Per istruzioni, vedere https://access.redhat.com/solutions/253273["Come registrarsi e sottoscrivere un sistema RHEL"^] e  https://access.redhat.com/solutions/2761031["Come limitare gli aggiornamenti"^].
 . Abilitare il repository Red Hat contenente i pacchetti richiesti per l'alta disponibilità.
 +
 ....
-subscription-manager repo-override --repo=rhel-8-for-x86_64-highavailability-rpms --add=enabled:1
+subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
-. Aggiornare il firmware di ConnectX-6 HCA alla versione consigliata in link:beegfs-technology-requirements.html["Requisiti tecnologici"].
+. Aggiornare tutto il firmware HCA alla versione consigliata in link:beegfs-technology-requirements.html["Requisiti tecnologici"].
 +
-Questo aggiornamento può essere eseguito scaricando ed eseguendo una versione del tool mlxup che integra il firmware consigliato. È possibile scaricare questo tool da https://network.nvidia.com/support/firmware/mlxup-mft/["Mlxup - Utility di aggiornamento e query"^] (link:https://docs.nvidia.com/networking/display/MLXUPFWUTILITY/mlxup+-+Firmware+Utility+User+Guide["guida per l'utente"^]).
+Questo aggiornamento può essere eseguito scaricando ed eseguendo una versione del tool mlxup che integra il firmware consigliato. È possibile scaricare questo strumento da https://network.nvidia.com/support/firmware/mlxup-mft/["Mlxup - Utility di aggiornamento e query"^] (link:https://docs.nvidia.com/networking/display/mlxupfwutility["guida per l'utente"^]).
 
 
 

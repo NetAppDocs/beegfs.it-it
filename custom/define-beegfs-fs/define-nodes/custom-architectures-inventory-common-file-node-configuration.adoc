@@ -131,7 +131,7 @@ beegfs_ha_cluster_crm_config_options:
   stonith-enabled: True
 ----
 +
-... Prendere nota di eventuali supporti link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_controlling-cluster-behavior-configuring-and-managing-high-availability-clusters["proprietà del cluster"^] può anche essere specificato qui, se necessario. In genere, la regolazione di questi elementi non è necessaria, in quanto il ruolo BeeGFS ha viene fornito con una serie di elementi ben testati link:https://github.com/netappeseries/beegfs/blob/ae038bb2f7617d18a36cc4df8ca9464bd5039b8b/roles/beegfs_ha_7_2/defaults/main.yml#L54["valori predefiniti"^].
+... Nota se necessario, è anche possibile specificare qui tutti i supporti link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/assembly_controlling-cluster-behavior-configuring-and-managing-high-availability-clusters["proprietà del cluster"^] . La regolazione di questi non è tipicamente necessaria, poiché il ruolo di BeeGFS ha viene fornito con un certo numero di ben testati link:https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L54["valori predefiniti"^].
 
 
 .. Selezionare e configurare un agente di scherma:
@@ -165,19 +165,19 @@ beegfs_ha_fencing_agents:
       ip: <BMC_IP>
       <<: *redfish
 ----
-... Per ulteriori informazioni sulla configurazione di altri agenti di scherma, fare riferimento a. link:https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters["Documentazione RedHat"^].
+... Per ulteriori informazioni sulla configurazione di altri agenti di scherma, fare riferimento alla link:https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/assembly_configuring-fencing-configuring-and-managing-high-availability-clusters["Documentazione RedHat"^].
 
 
 
 
-. Il ruolo BeeGFS ha può applicare diversi parametri di tuning per ottimizzare ulteriormente le performance. Questi includono l'ottimizzazione dell'utilizzo della memoria del kernel e l'i/o dei dispositivi a blocchi, tra gli altri parametri. Il ruolo viene fornito con una serie ragionevole di link:https://github.com/netappeseries/beegfs/blob/release-3.0.1/roles/beegfs_ha_7_2/defaults/main.yml#L106["valori predefiniti"^] In base ai test eseguiti con i nodi a blocchi NetApp e-Series, ma per impostazione predefinita questi non vengono applicati a meno che non si specifichi:
+. Il ruolo BeeGFS ha può applicare diversi parametri di tuning per ottimizzare ulteriormente le performance. Questi includono l'ottimizzazione dell'utilizzo della memoria del kernel e l'i/o dei dispositivi a blocchi, tra gli altri parametri. Il ruolo viene fornito con una serie ragionevole di link:https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L180["valori predefiniti"^] in base al test con i nodi di blocco NetApp E-Series, ma per impostazione predefinita questi non vengono applicati a meno che non si specifichi:
 +
 [source, yaml]
 ----
 beegfs_ha_enable_performance_tuning: True
 ----
 +
-.. Se necessario, specificare qui eventuali modifiche all'ottimizzazione predefinita delle prestazioni. Consulta l'articolo completo link:https://github.com/netappeseries/beegfs/blob/release-3.0.1/roles/beegfs_ha_7_2/docs/performance_tuning.md["parametri di ottimizzazione delle performance"^] documentazione per ulteriori dettagli.
+.. Se necessario, specificare qui eventuali modifiche all'ottimizzazione predefinita delle prestazioni. Per ulteriori informazioni, consultare la documentazione completa link:https://github.com/NetApp/beegfs/blob/master/docs/beegfs_ha/performance_tuning.md["parametri di ottimizzazione delle performance"^] .
 
 
 . Per garantire che gli indirizzi IP mobili (talvolta noti come interfacce logiche) utilizzati per i servizi BeeGFS possano eseguire il failover tra i nodi di file, tutte le interfacce di rete devono essere denominate in modo coerente. Per impostazione predefinita, i nomi delle interfacce di rete vengono generati dal kernel, che non è garantito per generare nomi coerenti, anche su modelli di server identici con adattatori di rete installati negli stessi slot PCIe. Ciò è utile anche quando si creano inventari prima dell'implementazione dell'apparecchiatura e si conoscono i nomi delle interfacce generate. Per garantire nomi di dispositivi coerenti, in base a un diagramma a blocchi del server o. `lshw  -class network -businfo` Output, specificare il mapping indirizzo PCIe desiderato per l'interfaccia logica come segue:
@@ -187,14 +187,14 @@ beegfs_ha_enable_performance_tuning: True
 [source, yaml]
 ----
 eseries_ipoib_udev_rules:
-  "<PCIe ADDRESS>": <NAME> # Ex: 0000:41:00.0: i1a
+  "<PCIe ADDRESS>": <NAME> # Ex: 0000:01:00.0: i1a
 ----
 .. Per le interfacce di rete Ethernet:
 +
 [source, yaml]
 ----
 eseries_ip_udev_rules:
-  "<PCIe ADDRESS>": <NAME> # Ex: 0000:41:00.0: e1a
+  "<PCIe ADDRESS>": <NAME> # Ex: 0000:01:00.0: e1a
 ----
 +
 
@@ -206,7 +206,7 @@ NOTE: Se si utilizza un modello di nodo di file verificato, fare clic su link:ht
 
 
 
-. Specificare facoltativamente la configurazione da applicare a tutti i servizi BeeGFS nel cluster. È possibile trovare i valori di configurazione predefiniti link:https://github.com/netappeseries/beegfs/blob/release-3.0.1/roles/beegfs_ha_7_2/defaults/main.yml#L159["qui"^]e la configurazione per servizio viene specificata altrove:
+. Specificare facoltativamente la configurazione da applicare a tutti i servizi BeeGFS nel cluster. È possibile trovare i valori di configurazione predefiniti link:https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L237["qui"^]e specificare altrove la configurazione per servizio:
 +
 .. Servizio di gestione BeeGFS:
 +
@@ -236,7 +236,7 @@ beegfs_ha_beegfs_storage_conf_ha_group_options:
 .. Per impostazione predefinita, l'implementazione configura automaticamente l'autenticazione della connessione e genera un `connauthfile` Che verranno distribuiti a tutti i nodi di file e utilizzati con i servizi BeeGFS. Questo file verrà anche posizionato/mantenuto nel nodo di controllo Ansible all'indirizzo `<INVENTORY>/files/beegfs/<sysMgmtdHost>_connAuthFile` dove deve essere mantenuto (in modo sicuro) per il riutilizzo con i client che devono accedere a questo file system.
 +
 ... Per generare una nuova chiave, specificare `-e "beegfs_ha_conn_auth_force_new=True` Quando si esegue il playbook Ansible. Nota: Questa operazione viene ignorata se si seleziona `beegfs_ha_conn_auth_secret` è definito.
-... Per le opzioni avanzate, fare riferimento all'elenco completo dei valori predefiniti inclusi in link:https://github.com/netappeseries/beegfs/blob/release-3.1.0/roles/beegfs_ha_7_3/defaults/main.yml#L32["Ruolo BeeGFS ha"^].
+... Per le opzioni avanzate, fare riferimento all'elenco completo dei valori predefiniti inclusi nella link:https://github.com/NetApp/beegfs/blob/master/roles/beegfs_ha_7_4/defaults/main.yml#L21["Ruolo BeeGFS ha"^].
 
 
 .. È possibile utilizzare un segreto personalizzato definendo quanto segue in `ha_cluster.yml`:
@@ -265,15 +265,15 @@ Per utilizzare HDR (200 GB) InfiniBand con EF600, il gestore di subnet deve supp
 
 Se i nodi di blocco e di file sono collegati direttamente mediante InfiniBand, un'istanza di `opensm` deve essere configurato su ogni nodo di file per ogni interfaccia direttamente connessa a un nodo di blocco. Per eseguire questa operazione, specificare `configure: true` quando link:custom-architectures-inventory-configure-file-nodes.html["configurazione delle interfacce di storage dei nodi di file"^].
 
-Attualmente la versione inbox di `opensm` Fornito con le distribuzioni Linux supportate non supporta la virtualizzazione. È invece necessario installare e configurare la versione di `opensm` Da Mellanox OpenFabrics Enterprise Distribution (OFED). Sebbene la distribuzione con Ansible sia ancora supportata, sono necessari alcuni passaggi aggiuntivi:
+Attualmente la versione in arrivo di `opensm` fornita con le distribuzioni Linux supportate non supporta la virtualizzazione. È invece necessario installare e configurare la versione di `opensm` da NVIDIA OpenFabrics Enterprise Distribution (OFED). Sebbene la distribuzione con Ansible sia ancora supportata, sono necessari alcuni passaggi aggiuntivi:
 
-. Utilizzando curl o il tool desiderato, scaricare i pacchetti per la versione di opensm elencata nella link:beegfs-technology-requirements.html["requisiti tecnologici"^] Dal sito Web di Mellanox al `<INVENTORY>/packages/` directory. Ad esempio:
+. Utilizzando curl o lo strumento desiderato, scaricare i pacchetti per la versione di opensm elencati nella link:beegfs-technology-requirements.html["requisiti tecnologici"^] sezione dal sito web di NVIDIA alla `<INVENTORY>/packages/` directory. Ad esempio:
 +
 [source, bash]
 ----
-curl -o packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+curl -o packages/opensm-libs-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/23.10-3.2.2.0/rhel9.3/x86_64/opensm-libs-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm
 
-curl -o packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/5.4-1.0.3.0/rhel8.4/x86_64/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+curl -o packages/opensm-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm https://linux.mellanox.com/public/repo/mlnx_ofed/23.10-3.2.2.0/rhel9.3/x86_64/opensm-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm
 ----
 . Sotto `group_vars/ha_cluster.yml` definire la seguente configurazione:
 +
@@ -287,12 +287,12 @@ eseries_ib_opensm_custom_packages:
   install:
     - files:
         add:
-          "packages/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
-          "packages/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm": "/tmp/"
+          "packages/opensm-libs-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm": "/tmp/"
+          "packages/opensm-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm": "/tmp/"
     - packages:
         add:
-          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
-          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+          - /tmp/opensm-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm
+          - /tmp/opensm-libs-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm
   uninstall:
     - packages:
         remove:
@@ -300,8 +300,8 @@ eseries_ib_opensm_custom_packages:
           - opensm-libs
       files:
         remove:
-          - /tmp/opensm-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
-          - /tmp/opensm-libs-5.9.0.MLNX20210617.c9f2ade-0.1.54103.x86_64.rpm
+          - /tmp/opensm-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm
+          - /tmp/opensm-libs-5.17.2.MLNX20240610.dc7c2998-0.1.2310322.x86_64.rpm
 
 eseries_ib_opensm_options:
   virt_enabled: "2"

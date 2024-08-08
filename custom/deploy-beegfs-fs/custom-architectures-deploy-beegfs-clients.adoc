@@ -103,7 +103,7 @@ children:
         # Additional clients as needed.
 
       vars:
-        # OPTION 1: If you’re using the Mellanox OFED drivers and they are already installed:
+        # OPTION 1: If you’re using the NVIDIA OFED drivers and they are already installed:
         #eseries_ib_skip: True # Skip installing inbox drivers when using the IPoIB role.
         #beegfs_client_ofed_enable: True
         #beegfs_client_ofed_include_path: "/usr/src/ofa_kernel/default/include"
@@ -117,7 +117,7 @@ children:
 ----
 +
 
-NOTE: Quando si utilizzano i driver Mellanox OFED, assicurarsi che beegfs_client_ofed_include_path punti al "header include path" corretto per l'installazione di Linux. Per ulteriori informazioni, consultare la documentazione di BeeGFS per link:https://doc.beegfs.io/latest/advanced_topics/rdma_support.html["Supporto RDMA"^].
+NOTE: Quando si utilizzano i driver NVIDIA OFED, assicurarsi che beegfs_client_ofed_include_PATH punti al corretto "header include PATH" per l'installazione Linux. Per ulteriori informazioni, vedere la documentazione di BeeGFS per link:https://doc.beegfs.io/latest/advanced_topics/rdma_support.html["Supporto RDMA"^].
 
 . In `client_inventory.yml` Elencare i file system BeeGFS che si desidera montare sotto qualsiasi file definito in precedenza `vars`:
 +

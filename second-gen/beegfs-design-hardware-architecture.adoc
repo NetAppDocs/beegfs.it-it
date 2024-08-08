@@ -47,7 +47,7 @@ Nella figura seguente, notare che:
 image:../media/beegfs-design-image6.png[""]
 
 
-NOTE: Per le reti di storage con switch ridondanti, le porte evidenziate in verde chiaro devono essere collegate a uno switch e le porte in verde scuro a un altro switch.
+NOTE: Quando si utilizzano cavi splitter per collegare lo switch di archiviazione ai nodi file, un cavo deve diramarsi e connettersi alle porte indicate in verde chiaro. Un altro cavo dovrebbe diramarsi e collegarsi alle porte delineate in verde scuro. Inoltre, per le reti di storage con switch ridondanti, le porte indicate in verde chiaro devono essere collegate a uno switch, mentre le porte in verde scuro devono essere collegate a un altro switch.
 
 La configurazione del cablaggio illustrata nella figura consente a ciascun servizio BeeGFS di:
 
@@ -57,7 +57,7 @@ La configurazione del cablaggio illustrata nella figura consente a ciascun servi
 
 
 .Cablaggio per sfruttare la larghezza di banda
-Per sfruttare l'intera larghezza di banda bidirezionale PCIe, assicurarsi che una porta di ciascun adattatore InfiniBand si colleghi al fabric di storage e l'altra porta si colleghi a un nodo a blocchi. La velocità massima teorica di una porta HDR InfiniBand è di 25 Gbps (senza tenere conto della segnalazione e di altri overhead). La larghezza di banda massima single-direction di uno slot PCIe 4.0 x16 è di 32 Gbps, creando un potenziale collo di bottiglia durante l'implementazione di nodi di file che incorporano adattatori InfiniBand a doppia porta in grado teoricamente di gestire 50 GBps di larghezza di banda.
+Per sfruttare l'intera larghezza di banda bidirezionale PCIe, assicurarsi che una porta di ciascun adattatore InfiniBand si colleghi al fabric di storage e l'altra porta si colleghi a un nodo a blocchi.
 
 La figura seguente mostra il design del cablaggio utilizzato per sfruttare l'intera larghezza di banda bidirezionale PCIe.
 

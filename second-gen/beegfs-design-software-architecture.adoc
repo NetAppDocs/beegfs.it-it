@@ -33,12 +33,12 @@ Ciascun servizio del server BeeGFS dispone di un proprio indirizzo IP che può s
 +
 L'implementazione basata su Ansible gestisce il rafforzamento del comportamento del percorso inverso (RP) e del protocollo di risoluzione degli indirizzi (ARP), oltre a garantire che quando gli IP mobili vengono avviati e arrestati; i corrispondenti percorsi e le regole IP vengono creati dinamicamente per consentire alla configurazione di rete multihomed di funzionare correttamente.
 
-* *La configurazione multi-rail del client BeeGFS* _Multi-rail_ si riferisce alla capacità di un'applicazione di utilizzare più "guide" di rete indipendenti per aumentare le performance.
+* *La configurazione multi-rail del client BeeGFS* _Multi-rail_ si riferisce alla capacità di un'applicazione di utilizzare più connessioni di rete indipendenti, o "rails", per aumentare le prestazioni.
 +
-Sebbene BeeGFS possa utilizzare RDMA per la connettività, BeeGFS utilizza IPoIB per semplificare il rilevamento e la creazione di connessioni RDMA. Per consentire ai client BeeGFS di utilizzare più interfacce InfiniBand, è possibile configurare ciascun client con un indirizzo IP situato in una subnet diversa e quindi configurare le interfacce preferite per metà dei servizi del server BeeGFS in ciascuna subnet.
+BeeGFS implementa il supporto multi-rail per consentire l'utilizzo di più interfacce IB in una singola subnet IPoIB. Questa funzionalità consente di abilitare funzioni come il bilanciamento dinamico del carico sulle schede di rete RDMA, ottimizzando l'utilizzo delle risorse di rete. Si integra anche con NVIDIA GPUDirect Storage (GDS), che offre una maggiore larghezza di banda del sistema e riduce la latenza e l'utilizzo sulla CPU del client.
 
 +
-Nel diagramma seguente, le interfacce evidenziate in verde chiaro si trovano in una subnet IP (ad esempio, `100.127.0.0/16`) e le interfacce di colore verde scuro si trovano in un'altra subnet (ad esempio, `100.128.0.0/16`).
+Questa documentazione fornisce istruzioni per le configurazioni di singole subnet IPoIB. Sono supportate configurazioni di subnet IPoIB doppie, ma non offrono gli stessi vantaggi delle configurazioni di subnet singola.
 
 +
 La figura seguente mostra il bilanciamento del traffico tra più interfacce client BeeGFS.
@@ -51,7 +51,7 @@ Poiché ogni file in BeeGFS viene in genere sottoposto a striping su più serviz
 
 +
 ....
-root@ictad21h01:/mnt/beegfs# beegfs-ctl --getentryinfo myfile
+root@beegfs01:/mnt/beegfs# beegfs-ctl --getentryinfo myfile
 Entry type: file
 EntryID: 11D-624759A9-65
 Metadata node: meta_01_tgt_0101 [ID: 101]
@@ -65,13 +65,6 @@ Stripe pattern details:
   + 201 @ stor_02_tgt_0201 [ID: 201]
   + 202 @ stor_02_tgt_0201 [ID: 201]
 ....
-+
-L'utilizzo di due subnet IPoIB è una distinzione logica. Se lo si desidera, è possibile utilizzare una singola subnet fisica InfiniBand (rete di storage).
-
-+
-
-NOTE: Il supporto multi-rail è stato aggiunto in BeeGFS 7.3.0 per consentire l'utilizzo di più interfacce IB in una singola subnet IPoIB. La progettazione della soluzione BeeGFS su NetApp è stata sviluppata prima della disponibilità generale di BeeGFS 7.3.0, dimostrando così l'utilizzo di due subnet IP per utilizzare due interfacce IB sui client BeeGFS. Uno dei vantaggi dell'approccio a più subnet IP consiste nell'eliminare la necessità di configurare il multihoming sui nodi client BeeGFS (per ulteriori informazioni, vedere https://doc.beegfs.io/7.3.0/advanced_topics/rdma_support.html["Supporto di BeeGFS RDMA"^]).
-
 
 
 
@@ -98,7 +91,7 @@ Nell'esempio precedente, client e servizi server preferiscono comunicare con il 
 
 I nodi di file BeeGFS sono configurati in un cluster ad alta disponibilità (ha) per facilitare il failover dei servizi BeeGFS tra più nodi di file.
 
-La progettazione del cluster ha si basa su due progetti Linux ha ampiamente utilizzati: Corosync per l'appartenenza al cluster e Pacemaker per la gestione delle risorse del cluster. Per ulteriori informazioni, vedere https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_high_availability_clusters/assembly_overview-of-high-availability-configuring-and-managing-high-availability-clusters["Training Red Hat per add-on ad alta disponibilità"^].
+La progettazione del cluster ha si basa su due progetti Linux ha ampiamente utilizzati: Corosync per l'appartenenza al cluster e Pacemaker per la gestione delle risorse del cluster. Per ulteriori informazioni, vedere https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/9/html/configuring_and_managing_high_availability_clusters/assembly_overview-of-high-availability-configuring-and-managing-high-availability-clusters["Training Red Hat per add-on ad alta disponibilità"^].
 
 NetApp ha creato ed esteso diversi agenti di risorse OCF (Open Cluster Framework) per consentire al cluster di avviare e monitorare in modo intelligente le risorse BeeGFS.
 
