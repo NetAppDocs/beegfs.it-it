@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-performance-tuning.html 
+permalink: second-gen/beegfs-design-performance-tuning.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: 'La soluzione BeeGFS include consigli per l"ottimizzazione delle performance basati su test di verifica.' 
 ---
@@ -10,7 +10,7 @@ summary: 'La soluzione BeeGFS include consigli per l"ottimizzazione delle perfor
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

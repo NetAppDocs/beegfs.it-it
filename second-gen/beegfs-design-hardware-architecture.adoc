@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-hardware-architecture.html 
+permalink: second-gen/beegfs-design-hardware-architecture.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: La configurazione hardware per BeeGFS su NetApp include nodi di file e cablaggio di rete. 
 ---
@@ -10,7 +10,7 @@ summary: La configurazione hardware per BeeGFS su NetApp include nodi di file e 
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -26,7 +26,7 @@ Gli adattatori InfiniBand devono essere inseriti nei riser o negli slot PCI appr
 
 La figura seguente mostra la configurazione NUMA del nodo del file.
 
-image:../media/beegfs-design-image5-small.png[""]
+image:beegfs-design-image5-small.png["Configurazione NUMA"]
 
 I processi BeeGFS vengono bloccati in una particolare zona NUMA per garantire che le interfacce utilizzate si trovino nella stessa zona. Questa configurazione evita la necessità di un accesso remoto sulla connessione tra socket. La connessione tra socket è talvolta nota come collegamento QPI o GMI2; anche nelle moderne architetture di processore, può essere un collo di bottiglia quando si utilizza una rete ad alta velocità come HDR InfiniBand.
 
@@ -44,7 +44,7 @@ Nella figura seguente, notare che:
 * Le porte nel nodo NUMA 1 si connettono al secondo nodo a blocchi.
 
 
-image:../media/beegfs-design-image6.png[""]
+image:beegfs-design-image6.png["Cablaggio di rete"]
 
 
 NOTE: Quando si utilizzano cavi splitter per collegare lo switch di archiviazione ai nodi file, un cavo deve diramarsi e connettersi alle porte indicate in verde chiaro. Un altro cavo dovrebbe diramarsi e collegarsi alle porte delineate in verde scuro. Inoltre, per le reti di storage con switch ridondanti, le porte indicate in verde chiaro devono essere collegate a uno switch, mentre le porte in verde scuro devono essere collegate a un altro switch.
@@ -61,6 +61,6 @@ Per sfruttare l'intera larghezza di banda bidirezionale PCIe, assicurarsi che un
 
 La figura seguente mostra il design del cablaggio utilizzato per sfruttare l'intera larghezza di banda bidirezionale PCIe.
 
-image:../media/beegfs-design-image7.png[""]
+image:beegfs-design-image7.png["Larghezza di banda bidirezionale HCA"]
 
 Per ogni servizio BeeGFS, utilizzare lo stesso adattatore per connettere la porta preferita utilizzata per il traffico client con il percorso al controller dei nodi a blocchi che è il principale proprietario di tali volumi di servizi. Per ulteriori informazioni, vedere link:beegfs-design-software-architecture.html["Configurazione del software"].

@@ -1,0 +1,63 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-overview.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration 
+summary: Scopri come amministrare i cluster BeeGFS ha dopo che sono stati implementati. 
+---
+= Panoramica, concetti chiave e terminologia
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Scopri come amministrare i cluster BeeGFS ha dopo che sono stati implementati.
+
+
+
+== Panoramica
+
+Questa sezione è destinata agli amministratori dei cluster che devono gestire i cluster BeeGFS ha dopo la loro implementazione. Anche coloro che hanno familiarità con i cluster ha Linux dovrebbero leggere attentamente questa guida, poiché esistono diverse differenze nella gestione del cluster, in particolare per quanto riguarda la riconfigurazione dovuta all'utilizzo di Ansible.
+
+
+
+== Concetti chiave
+
+Anche se alcuni di questi concetti sono stati introdotti nella link:../get-started/beegfs-terms.html["termini e concetti"]pagina principale, è utile reintrodurli nel contesto di un cluster BeeGFS ha:
+
+**Nodo cluster:** un server che esegue i servizi Pacemaker e Corosync e che partecipa al cluster ha.
+
+**Nodo file:** nodo cluster utilizzato per eseguire uno o più servizi di gestione, metadati o storage BeeGFS.
+
+**Nodo a blocchi:** un sistema storage NetApp e-Series che fornisce storage a blocchi ai nodi di file. Questi nodi non fanno parte del cluster BeeGFS ha in quanto offrono funzionalità ha standalone proprie. Ciascun nodo è costituito da due storage controller che forniscono alta disponibilità al livello di blocco.
+
+**Servizio BeeGFS:** Un servizio di gestione, metadati o storage BeeGFS. Ogni nodo di file eseguirà uno o più servizi che utilizzeranno i volumi sul nodo di blocco per memorizzare i propri dati.
+
+**Building Block:** implementazione standardizzata di file node BeeGFS, nodi a blocchi e-Series e servizi BeeGFS in esecuzione su di essi che semplifica la scalabilità di un cluster/file system BeeGFS ha in base a un'architettura verificata di NetApp. Sono supportati anche i cluster ha personalizzati, ma spesso seguono un approccio simile a building block per semplificare la scalabilità.
+
+**Cluster BeeGFS ha:** un numero scalabile di nodi di file utilizzati per eseguire i servizi BeeGFS supportati da nodi a blocchi per memorizzare i dati BeeGFS in modo altamente disponibile. Basato su componenti open-source collaudati nel settore, Pacemaker e Corosync utilizzano Ansible per il packaging e l'implementazione.
+
+**Servizi cluster:** si riferisce ai servizi Pacemaker e Corosync in esecuzione su ciascun nodo che partecipa al cluster. Nota è possibile che un nodo non esegua alcun servizio BeeGFS e partecipi al cluster come nodo "Tiebreaker" nel caso in cui vi sia solo la necessità di due nodi di file.
+
+**Risorse del cluster:** per ogni servizio BeeGFS in esecuzione nel cluster vengono visualizzate una risorsa di monitoraggio BeeGFS e un gruppo di risorse contenente risorse per destinazioni BeeGFS, indirizzi IP (IP mobili) e il servizio BeeGFS stesso.
+
+**Ansible:** Uno strumento per il provisioning del software, la gestione della configurazione e l'implementazione delle applicazioni, che consente l'infrastruttura come codice. È il modo in cui i cluster BeeGFS ha vengono confezionati per semplificare il processo di implementazione, riconfigurazione e aggiornamento di BeeGFS su NetApp.
+
+**Pcs:** interfaccia a riga di comando disponibile da qualsiasi nodo di file nel cluster utilizzato per eseguire query e controllare lo stato dei nodi e delle risorse nel cluster.
+
+
+
+== Terminologia comune
+
+**Failover:** ciascun servizio BeeGFS dispone di un nodo di file preferito su cui verrà eseguito, a meno che tale nodo non si guasti. Quando un servizio BeeGFS viene eseguito su un nodo di file non preferito/secondario, si dice che sia in failover.
+
+**Failover:** l'atto di spostare i servizi BeeGFS da un nodo di file non preferito al nodo preferito.
+
+**Coppia ha:** due nodi di file che possono accedere allo stesso insieme di nodi a blocchi sono talvolta indicati come coppia ha. Si tratta di un termine comune utilizzato in NetApp per fare riferimento a due controller o nodi storage che possono "assumere" l'uno con l'altro.
+
+**Modalità di manutenzione:** disabilita il monitoraggio di tutte le risorse e impedisce al pacemaker di spostare o gestire in altro modo le risorse nel cluster (vedere anche la sezione a link:clusters-maintenance-mode.html["modalità di manutenzione"^]).
+
+**Cluster ha:** uno o più file node che eseguono servizi BeeGFS che possono eseguire il failover tra più nodi nel cluster per creare un file system BeeGFS ad alta disponibilità. Spesso i file node sono configurati in coppie ha in grado di eseguire un sottoinsieme dei servizi BeeGFS nel cluster.

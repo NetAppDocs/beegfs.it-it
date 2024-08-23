@@ -14,145 +14,147 @@ sidebar:
   - title: Inizia subito
     entries:
     - title: Contenuto di questo sito
-      url: "/whats-included.html"
+      url: "/get-started/whats-included.html"
     - title: Termini e concetti
-      url: "/beegfs-terms.html"
+      url: "/get-started/beegfs-terms.html"
   - title: Utilizzare architetture verificate
     entries:
     - title: Panoramica e requisiti
       entries:
       - title: Panoramica della soluzione
-        url: "/beegfs-solution-overview.html"
+        url: "/second-gen/beegfs-solution-overview.html"
       - title: Generazioni di design
-        url: "/beegfs-gens.html"
+        url: "/second-gen/beegfs-gens.html"
       - title: Panoramica dell'architettura
-        url: "/beegfs-architecture-overview.html"
+        url: "/second-gen/beegfs-architecture-overview.html"
       - title: Requisiti tecnici
-        url: "/beegfs-technology-requirements.html"
+        url: "/second-gen/beegfs-technology-requirements.html"
     - title: Esaminare la progettazione della soluzione
       entries:
       - title: Panoramica del design
-        url: "/beegfs-design-overview.html"
+        url: "/second-gen/beegfs-design-overview.html"
       - title: Configurazione dell'hardware
-        url: "/beegfs-design-hardware-architecture.html"
+        url: "/second-gen/beegfs-design-hardware-architecture.html"
       - title: Configurazione del software
-        url: "/beegfs-design-software-architecture.html"
+        url: "/second-gen/beegfs-design-software-architecture.html"
       - title: Verifica del progetto
-        url: "/beegfs-design-solution-verification.html"
+        url: "/second-gen/beegfs-design-solution-verification.html"
       - title: Linee guida per il dimensionamento
-        url: "/beegfs-design-solution-sizing-guidelines.html"
+        url: "/second-gen/beegfs-design-solution-sizing-guidelines.html"
       - title: Tuning delle performance
-        url: "/beegfs-design-performance-tuning.html"
+        url: "/second-gen/beegfs-design-performance-tuning.html"
       - title: Opzione ad alta capacità
-        url: "/beegfs-design-high-capacity-building-block.html"
+        url: "/second-gen/beegfs-design-high-capacity-building-block.html"
     - title: Implementare la soluzione
       entries:
       - title: Panoramica dell'implementazione
-        url: "/beegfs-deploy-overview.html"
+        url: "/second-gen/beegfs-deploy-overview.html"
       - title: Scopri di più sull'inventario Ansible
-        url: "/beegfs-deploy-learn-ansible.html"
+        url: "/second-gen/beegfs-deploy-learn-ansible.html"
       - title: Esaminare le Best practice
-        url: "/beegfs-deploy-bestpractice.html"
+        url: "/second-gen/beegfs-deploy-bestpractice.html"
       - title: Implementare l'hardware
-        url: "/beegfs-deploy-hardware.html"
+        url: "/second-gen/beegfs-deploy-hardware.html"
       - title: Implementare il software
         entries:
         - title: Impostare i nodi di file e blocchi
-          url: "/beegfs-deploy-setup-nodes.html"
+          url: "/second-gen/beegfs-deploy-setup-nodes.html"
         - title: Ottimizzare le impostazioni di sistema per le prestazioni
-          url: beegfs-deploy-file-node-tuning.html
+          url: "/second-gen/beegfs-deploy-file-node-tuning.html"
         - title: Impostare il nodo di controllo Ansible
-          url: "/beegfs-deploy-setting-up-an-ansible-control-node.html"
+          url: "/second-gen/beegfs-deploy-setting-up-an-ansible-control-node.html"
         - title: Creare l'inventario Ansible
-          url: "/beegfs-deploy-create-inventory.html"
+          url: "/second-gen/beegfs-deploy-create-inventory.html"
         - title: Definire i blocchi di base BeeGFS
-          url: "/beegfs-deploy-define-inventory.html"
+          url: "/second-gen/beegfs-deploy-define-inventory.html"
         - title: Implementare BeeGFS
-          url: "/beegfs-deploy-playbook.html"
+          url: "/second-gen/beegfs-deploy-playbook.html"
         - title: Configurare i client BeeGFS
-          url: "/beegfs-deploy-configure-clients.html"
+          url: "/second-gen/beegfs-deploy-configure-clients.html"
       - title: Scalare i cluster BeeGFS
-        url: "/beegfs-deploy-scale-building-blocks.html"
+        url: "/second-gen/beegfs-deploy-scale-building-blocks.html"
       - title: Percentuali di volume consigliate
-        url: "/beegfs-deploy-recommended-volume-percentages.html"
+        url: "/second-gen/beegfs-deploy-recommended-volume-percentages.html"
       - title: Opzione ad alta capacità
-        url: "/beegfs-deploy-high-capacity-building-block.html"
+        url: "/second-gen/beegfs-deploy-high-capacity-building-block.html"
   - title: Utilizzare architetture personalizzate
     entries:
     - title: Panoramica e requisiti
-      url: "/custom-architectures-overview.html"
+      url: "/custom/architectures-overview.html"
     - title: Configurazione iniziale
       entries:
       - title: Installazione e cablaggio della bulloneria
-        url: "/custom-architectures-setup-cable-hw.html"
+        url: "/custom/architectures-setup-cable-hw.html"
       - title: Impostare i nodi di file e blocchi
-        url: "/custom-architectures-setup-nodes.html"
+        url: "/custom/architectures-setup-nodes.html"
       - title: Impostare il nodo di controllo Ansible
-        url: "/custom-architectures-setup-ansible-control-node.html"
+        url: "/custom/architectures-setup-ansible-control-node.html"
     - title: Definire il file system BeeGFS
       entries:
       - title: Panoramica di Ansible Inventory
-        url: "/custom-architectures-inventory-overview.html"
+        url: "/custom/architectures-inventory-overview.html"
       - title: Pianificare il file system
-        url: "/custom-architectures-plan-file-system.html"
+        url: "/custom/architectures-plan-file-system.html"
       - title: Definire i nodi di file e blocchi
         entries:
         - title: Configurare singoli nodi di file
-          url: "/custom-architectures-inventory-configure-file-nodes.html"
+          url: "/custom/architectures-inventory-configure-file-nodes.html"
         - title: Configurare singoli nodi a blocchi
-          url: "/custom-architectures-inventory-configure-block-nodes.html"
+          url: "/custom/architectures-inventory-configure-block-nodes.html"
         - title: Specificare la configurazione del nodo file comune
-          url: "/custom-architectures-inventory-common-file-node-configuration.html"
+          url: "/custom/architectures-inventory-common-file-node-configuration.html"
         - title: Specificare la configurazione del nodo del blocco comune
-          url: "/custom-architectures-inventory-common-block-node-configuration.html"
+          url: "/custom/architectures-inventory-common-block-node-configuration.html"
       - title: Definire i servizi BeeGFS
         entries:
         - title: Servizio di gestione BeeGFS
-          url: "/custom-architectures-inventory-beegfs-management.html"
+          url: "/custom/architectures-inventory-beegfs-management.html"
         - title: Servizi di metadati BeeGFS
-          url: "/custom-architectures-inventory-beegfs-metadata.html"
+          url: "/custom/architectures-inventory-beegfs-metadata.html"
         - title: Servizi di storage BeeGFS
-          url: "/custom-architectures-inventory-beegfs-storage.html"
+          url: "/custom/architectures-inventory-beegfs-storage.html"
       - title: Mappare i servizi BeeGFS ai nodi di file
-        url: "/custom-architectures-inventory-map-services-to-file-nodes.html"
+        url: "/custom/architectures-inventory-map-services-to-file-nodes.html"
     - title: Implementare il file system BeeGFS
       entries:
       - title: Panoramica di Ansible Playbook
-        url: "/custom-architectures-deploy-playbook-overview.html"
+        url: "/custom/architectures-deploy-playbook-overview.html"
       - title: Implementare il cluster BeeGFS ha
-        url: "/custom-architectures-deploy-ha-cluster.html"
+        url: "/custom/architectures-deploy-ha-cluster.html"
       - title: Implementare i client BeeGFS
-        url: "/custom-architectures-deploy-beegfs-clients.html"
+        url: "/custom/architectures-deploy-beegfs-clients.html"
       - title: Verificare l'implementazione di BeeGFS
-        url: "/custom-architectures-deploy-verify.html"
+        url: "/custom/architectures-deploy-verify.html"
   - title: Amministrare i cluster BeeGFS
     entries:
     - title: Panoramica, concetti chiave e terminologia
-      url: "/administer-clusters-overview.html"
+      url: "/administer/clusters-overview.html"
     - title: Quando utilizzare Ansible vs. PC
-      url: "/administer-clusters-ansible-pcs.html"
+      url: "/administer/clusters-ansible-pcs.html"
     - title: Esaminare lo stato del cluster
-      url: "/administer-clusters-examine-state.html"
-    - title: Riconfigurare e aggiornare
+      url: "/administer/clusters-examine-state.html"
+    - title: Riconfigurare il cluster ha e BeeGFS
+      url: "/administer/clusters-reconfigure.html"
+    - title: Update dei componenti del cluster ha
       entries:
-      - title: Riconfigurare il cluster ha e BeeGFS
-        url: "/administer-clusters-reconfigure.html"
-      - title: Aggiornare il cluster ha e BeeGFS
-        url: "/administer-clusters-update.html"
+      - title: Aggiornare la versione BeeGFS
+        url: "/administer/clusters-update-beegfs.html"
+      - title: Upgrade dello storage array E-Series
+        url: "/administer/clusters-update-storage-array.html"
     - title: Assistenza e manutenzione
       entries:
       - title: Servizi di failover e failback
-        url: "/administer-clusters-failover-failback.html"
+        url: "/administer/clusters-failover-failback.html"
       - title: Impostare il cluster in modalità di manutenzione
-        url: "/administer-clusters-maintenance-mode.html"
+        url: "/administer/clusters-maintenance-mode.html"
       - title: Arrestare e avviare il cluster
-        url: "/administer-clusters-stop-start-cluster.html"
+        url: "/administer/clusters-stop-start-cluster.html"
       - title: Sostituire i nodi del file
-        url: "/administer-clusters-replace-file-nodes.html"
+        url: "/administer/clusters-replace-file-nodes.html"
       - title: Espandere o ridurre il cluster
-        url: "/administer-clusters-expand-shrink-cluster.html"
+        url: "/administer/clusters-expand-shrink-cluster.html"
     - title: Risolvere i problemi
-      url: "/administer-clusters-troubleshoot.html"
+      url: "/administer/clusters-troubleshoot.html"
   - title: Note legali
     url: "/legal-notices.html"
 product-family:

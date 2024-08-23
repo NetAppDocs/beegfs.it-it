@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-setup-nodes.html 
+permalink: second-gen/beegfs-deploy-setup-nodes.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: 'Configurare la rete sul BMC (Baseboard Management Controller) di ciascun server e configurare la porta di gestione su ciascun controller.' 
 ---
@@ -10,7 +10,7 @@ summary: 'Configurare la rete sul BMC (Baseboard Management Controller) di ciasc
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

@@ -1,0 +1,30 @@
+---
+sidebar: sidebar 
+permalink: custom/architectures-setup-ansible-control-node.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: Impostare un nodo di controllo Ansible per implementare e gestire il file system. 
+---
+= Impostare Ansible Control Node
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Impostare un nodo di controllo Ansible per implementare e gestire il file system.
+
+
+
+== Panoramica
+
+Un nodo di controllo Ansible è una macchina Linux fisica o virtuale utilizzata per gestire il cluster. Deve soddisfare i seguenti requisiti:
+
+* Soddisfare il link:../second-gen/beegfs-technology-requirements.html#ansible-control-node-requirements["requisiti"^]ruolo di ha BeeGFS, incluse le versioni installate di Ansible, Python e qualsiasi altro pacchetto Python.
+* Incontra il funzionario link:https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html#control-node-requirements["Requisiti dei nodi di controllo Ansible"^] incluse le versioni del sistema operativo.
+* Avere accesso SSH e HTTPS a tutti i nodi di file e blocchi.
+
+
+La procedura di installazione dettagliata è disponibile link:../second-gen/beegfs-deploy-setting-up-an-ansible-control-node.html["qui"^].

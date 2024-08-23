@@ -1,0 +1,297 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-troubleshoot.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, troubleshooting 
+summary: Risoluzione dei problemi di un cluster BeeGFS ha. 
+---
+= Risolvere i problemi
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Risoluzione dei problemi di un cluster BeeGFS ha.
+
+
+
+== Panoramica
+
+Questa sezione illustra come analizzare e risolvere i problemi di vari guasti e altri scenari che potrebbero verificarsi quando si utilizza un cluster BeeGFS ha.
+
+
+
+== Guide per la risoluzione dei problemi
+
+
+
+=== Analisi di guasti imprevisti
+
+Quando un nodo viene inaspettatamente recintato e i relativi servizi vengono spostati in un altro nodo, il primo passo dovrebbe essere vedere se il cluster indica eventuali guasti alle risorse nella parte inferiore di `pcs status`. In genere, se la scherma è stata completata correttamente e le risorse sono state riavviate su un altro nodo, non sarà presente nulla.
+
+In genere, il passaggio successivo consiste nell'eseguire una ricerca nei log di sistema utilizzando `journalctl` Su uno qualsiasi dei nodi di file rimanenti (i registri di pacemaker sono sincronizzati su tutti i nodi). Se si conosce l'ora in cui si è verificato l'errore, è possibile avviare la ricerca poco prima che si sia verificato l'errore (generalmente si consiglia di almeno dieci minuti prima):
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>"
+----
+Le sezioni seguenti mostrano il testo comune che è possibile inserire nei registri per restringere ulteriormente l'analisi.
+
+
+
+==== Procedure per investigare/risolvere
+
+
+
+===== Fase 1: Controllare se il monitor BeeGFS ha rilevato un guasto:
+
+Se il failover è stato attivato dal monitor BeeGFS, viene visualizzato un errore (in caso contrario, passare alla fase successiva).
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>" | grep -i unexpected
+[...]
+Jul 01 15:51:03 beegfs_01 pacemaker-schedulerd[9246]:  warning: Unexpected result (error: BeeGFS service is not active!) was recorded for monitor of meta_08-monitor on beegfs_02 at Jul  1 15:51:03 2022
+----
+In questo caso, il servizio BeeGFS meta_08 si è arrestato per qualche motivo. Per continuare la risoluzione dei problemi si dovrebbe avviare begfs_02 ed esaminare i log per il servizio a `/var/log/beegfs-meta-meta_08_tgt_0801.log`. Ad esempio, il servizio BeeGFS potrebbe aver riscontrato un errore dell'applicazione a causa di un problema interno o del nodo.
+
+
+TIP: A differenza dei registri di Pacemaker, i registri dei servizi BeeGFS non vengono distribuiti a tutti i nodi del cluster. Per analizzare questi tipi di errori, sono necessari i log del nodo originale in cui si è verificato l'errore.
+
+I possibili problemi che potrebbero essere segnalati dal monitor includono:
+
+* Destinazioni non accessibili.
++
+** Descrizione: Indica che i volumi a blocchi non erano accessibili.
+** Risoluzione dei problemi:
++
+*** Se anche il servizio non è stato avviato sul nodo di file alternativo, verificare che il nodo di blocco sia integro.
+*** Verificare l'eventuale presenza di problemi fisici che impediscano l'accesso ai nodi di blocco da questo nodo di file, ad esempio adattatori o cavi InfiniBand difettosi.
+
+
+
+
+* Rete non raggiungibile.
++
+** Descrizione: Nessuno degli adattatori utilizzati dai client per connettersi a questo servizio BeeGFS era in linea.
+** Risoluzione dei problemi:
++
+*** In caso di impatto su più/tutti i nodi di file, controllare se si è verificato un errore nella rete utilizzata per collegare i client BeeGFS e il file system.
+*** Verificare l'eventuale presenza di problemi fisici che impediscano l'accesso ai client da questo nodo di file, ad esempio cavi o adattatori InfiniBand difettosi.
+
+
+
+
+* Servizio BeeGFS non attivo.
++
+** Descrizione: Un servizio BeeGFS si è arrestato inaspettatamente.
+** Risoluzione dei problemi:
++
+*** Nel nodo del file che ha riportato l'errore, controllare i log del servizio BeeGFS interessato per verificare se ha rilevato un blocco. In questo caso, aprire un caso con il supporto NetApp per poter indagare sul crash.
+*** Se non vengono segnalati errori nel log di BeeGFS, controllare i log del journal per verificare se systemd ha registrato un motivo per cui il servizio è stato arrestato. In alcuni scenari, il servizio BeeGFS potrebbe non aver avuto la possibilità di registrare alcun messaggio prima che il processo venisse terminato (ad esempio, se qualcuno ha eseguito `kill -9 <PID>`).
+
+
+
+
+
+
+
+
+===== Fase 2: Controllare se il nodo ha lasciato inaspettatamente il cluster
+
+Nel caso in cui il nodo abbia subito un guasto hardware catastrofico (ad esempio, la scheda di sistema è morta) o si sia verificato un problema di kernel panic o software simile, il monitor BeeGFS non segnala alcun errore. Cercare invece il nome host e dovrebbero essere visualizzati messaggi da Pacemaker che indicano che il nodo è stato perso inaspettatamente:
+
+[source, console]
+----
+journalctl --since "<YYYY-MM-DD HH:MM:SS>" | grep -i <HOSTNAME>
+[...]
+Jul 01 16:18:01 beegfs_01 pacemaker-attrd[9245]:  notice: Node beegfs_02 state is now lost
+Jul 01 16:18:01 beegfs_01 pacemaker-controld[9247]:  warning: Stonith/shutdown of node beegfs_02 was not expected
+----
+
+
+===== Fase 3: Verificare che il pacemaker sia in grado di individuare il nodo
+
+In tutti gli scenari si dovrebbe vedere il tentativo di pacemaker di recinzione del nodo per verificare che sia effettivamente offline (i messaggi esatti possono variare a seconda della causa del recinzione):
+
+[source, console]
+----
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Cluster node beegfs_02 will be fenced: peer is no longer part of the cluster
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Node beegfs_02 is unclean
+Jul 01 16:18:02 beegfs_01 pacemaker-schedulerd[9246]:  warning: Scheduling Node beegfs_02 for STONITH
+----
+Se l'azione di scherma viene completata correttamente, vengono visualizzati messaggi come:
+
+[source, console]
+----
+Jul 01 16:18:14 beegfs_01 pacemaker-fenced[9243]:  notice: Operation 'off' [2214070] (call 27 from pacemaker-controld.9247) for host 'beegfs_02' with device 'fence_redfish_2' returned: 0 (OK)
+Jul 01 16:18:14 beegfs_01 pacemaker-fenced[9243]:  notice: Operation 'off' targeting beegfs_02 on beegfs_01 for pacemaker-controld.9247@beegfs_01.786df3a1: OK
+Jul 01 16:18:14 beegfs_01 pacemaker-controld[9247]:  notice: Peer beegfs_02 was terminated (off) by beegfs_01 on behalf of pacemaker-controld.9247: OK
+----
+Se l'azione di scherma non è riuscita per qualche motivo, i servizi BeeGFS non potranno essere riavviati su un altro nodo per evitare il rischio di corruzione dei dati. Si tratta di un problema da analizzare separatamente, ad esempio se il dispositivo di scherma (PDU o BMC) non fosse accessibile o non fosse configurato correttamente.
+
+
+
+=== Address Failed Resource Actions (azioni risorsa indirizzo non riuscito) (trovato in fondo allo stato di pcs)
+
+Se una risorsa richiesta per eseguire un servizio BeeGFS non riesce, il monitor BeeGFS attiva un failover. In questo caso, è probabile che nella parte inferiore di non siano elencate "azioni di risorsa non riuscite" `pcs status` e che sia necessario fare riferimento alla procedura descritta in link:clusters-failover-failback.html["failback dopo un failover non pianificato"^].
+
+In caso contrario, dovrebbero essere presenti solo due scenari in cui verranno visualizzate le "azioni delle risorse non riuscite".
+
+
+
+==== Procedure per investigare/risolvere
+
+
+
+===== Scenario 1: È stato rilevato un problema temporaneo o permanente con un agente di scherma che è stato riavviato o spostato in un altro nodo.
+
+Alcuni agenti di scherma sono più affidabili di altri e ciascuno implementerà il proprio metodo di monitoraggio per garantire che il dispositivo di scherma sia pronto. In particolare, l'agente Redfish scherma ha rilevato azioni di risorse non riuscite come le seguenti, anche se continuerà a mostrare avviato:
+
+[source, console]
+----
+  * fence_redfish_2_monitor_60000 on beegfs_01 'not running' (7): call=2248, status='complete', exitreason='', last-rc-change='2022-07-26 08:12:59 -05:00', queued=0ms, exec=0ms
+----
+Un agente di scherma che segnala azioni di risorse non riuscite su un nodo particolare non dovrebbe attivare un failover dei servizi BeeGFS in esecuzione su quel nodo. Dovrebbe semplicemente essere riavviato automaticamente sullo stesso nodo o su un altro nodo.
+
+Procedura per la risoluzione:
+
+. Se l'agente di scherma rifiuta costantemente di essere eseguito su tutti i nodi o su un sottoinsieme di nodi, controllare se tali nodi sono in grado di connettersi all'agente di scherma e verificare che l'agente di scherma sia configurato correttamente nell'inventario Ansible.
++
+.. Ad esempio, se un agente di scherma Redfish (BMC) è in esecuzione sullo stesso nodo in cui è responsabile della scherma e la gestione del sistema operativo e gli IP BMC si trovano sulla stessa interfaccia fisica, alcune configurazioni dello switch di rete non consentono la comunicazione tra le due interfacce (per evitare loop di rete). Per impostazione predefinita, il cluster ha tenterà di evitare di posizionare gli agenti di scherma sul nodo che sono responsabili della scherma, ma questo può accadere in alcuni scenari/configurazioni.
+
+
+. Una volta risolti tutti i problemi (o se il problema sembrava essere effimero), eseguire `pcs resource cleanup` per ripristinare le azioni delle risorse non riuscite.
+
+
+
+
+===== Scenario 2: Il monitor BeeGFS ha rilevato un problema e ha attivato un failover, ma per qualche motivo le risorse non sono state avviate su un nodo secondario.
+
+A condizione che sia attivata la funzione di scherma e che la risorsa non sia stata bloccata dall'arresto sul nodo originale (vedere la sezione relativa alla risoluzione dei problemi per "standby (on-fail)"), i motivi più probabili includono problemi di avvio della risorsa su un nodo secondario perché:
+
+* Il nodo secondario era già offline.
+* Un problema di configurazione fisica o logica ha impedito al secondario di accedere ai volumi di blocco utilizzati come destinazioni BeeGFS.
+
+
+Procedura per la risoluzione:
+
+. Per ogni voce nelle azioni delle risorse non riuscite:
++
+.. Confermare che l'azione della risorsa non riuscita era un'operazione di avvio.
+.. In base alla risorsa indicata e al nodo specificato nelle azioni delle risorse non riuscite:
++
+... Cercare e correggere eventuali problemi esterni che impediscano al nodo di avviare la risorsa specificata. Ad esempio, se l'indirizzo IP BeeGFS (floating IP) non si avvia, verificare che almeno una delle interfacce richieste sia connessa/online e cablata allo switch di rete corretto. Se una destinazione BeeGFS (dispositivo a blocchi / volume e-Series) non funziona, verificare che le connessioni fisiche ai nodi di blocco back-end siano collegate come previsto e verificare che i nodi di blocco siano integri.
+
+
+.. Se non ci sono problemi esterni evidenti e si desidera una causa principale per questo incidente, si consiglia di aprire un caso con il supporto NetApp per indagare prima di procedere, in quanto i seguenti passaggi potrebbero rendere difficile/impossibile l'analisi della causa principale (RCA).
+
+
+. Dopo aver risolto eventuali problemi esterni:
++
+.. Commentare eventuali nodi non funzionali dal file Ansible inventory.yml ed eseguire nuovamente il playbook Ansible completo per assicurarsi che tutte le configurazioni logiche siano configurate correttamente sui nodi secondari.
++
+... Nota: Non dimenticare di rimuovere il commento da questi nodi e di eseguire nuovamente il playbook una volta che i nodi sono in buono stato e sei pronto per il failback.
+
+
+.. In alternativa, è possibile tentare di ripristinare manualmente il cluster:
++
+... Posizionare di nuovo online i nodi offline utilizzando: `pcs cluster start <HOSTNAME>`
+... Cancellare tutte le azioni delle risorse non riuscite utilizzando: `pcs resource cleanup`
+... Eseguire lo stato dei PC e verificare che tutti i servizi inizano come previsto.
+... Se necessario, eseguire `pcs resource relocate run` per spostare nuovamente le risorse nel nodo preferito (se disponibile).
+
+
+
+
+
+
+
+
+== Problemi comuni
+
+
+
+=== I servizi BeeGFS non eseguono il failover o il failback quando richiesto
+
+*Probabile problema:* il `pcs resource relocate` il comando run è stato eseguito, ma non è mai stato completato correttamente.
+
+*Come controllare:* Esegui `pcs constraint --full` E verificare la presenza di eventuali vincoli di posizione con un ID di `pcs-relocate-<RESOURCE>`.
+
+*Come risolvere:* Esegui `pcs resource relocate clear` quindi rieseguire `pcs constraint --full` per verificare che i vincoli aggiuntivi vengano rimossi.
+
+
+
+=== Un nodo nello stato di PC mostra "standby (on-fail)" quando la scherma è disattivata
+
+*Probabile problema:* pacemaker non è riuscito a confermare che tutte le risorse sono state interrotte sul nodo che ha avuto esito negativo.
+
+*Come risolvere:*
+
+. Eseguire `pcs status` e verificare la presenza di risorse che non sono "avviate" o che mostrano errori nella parte inferiore dell'output e risolvere eventuali problemi.
+. Per riportare il nodo in linea eseguire `pcs resource cleanup --node=<HOSTNAME>`.
+
+
+
+
+=== Dopo un failover imprevisto, le risorse mostrano "Started (on-fail)" (avviato (on-fail)) in stato PC quando la scherma è attivata
+
+*Probabile problema:* si è verificato Un problema che ha attivato un failover, ma Pacemaker non è riuscito a verificare che il nodo sia stato recintato. Questo potrebbe verificarsi a causa di una configurazione errata del recinto o di un problema con l'agente di recinzione (ad esempio: La PDU è stata disconnessa dalla rete).
+
+*Come risolvere:*
+
+. Verificare che il nodo sia effettivamente spento.
++
+
+IMPORTANT: Se il nodo specificato non è effettivamente disattivato, ma esegue risorse o servizi cluster, si VERIFICHERÀ un danneggiamento dei dati o un errore del cluster.
+
+. Confermare manualmente la scherma con: `pcs stonith confirm <NODE>`
+
+
+A questo punto i servizi dovrebbero terminare il failover e essere riavviati su un altro nodo integro.
+
+
+
+== Attività comuni di risoluzione dei problemi
+
+
+
+=== Riavviare i singoli servizi BeeGFS
+
+In genere, se un servizio BeeGFS deve essere riavviato (ad esempio per facilitare una modifica della configurazione), questa operazione deve essere eseguita aggiornando l'inventario Ansible e rieseguendo il manuale. In alcuni scenari potrebbe essere consigliabile riavviare singoli servizi per facilitare la risoluzione dei problemi più rapida, ad esempio per modificare il livello di registrazione senza dover attendere l'esecuzione dell'intero playbook.
+
+
+IMPORTANT: A meno che non vengano aggiunte modifiche manuali all'inventario Ansible, queste verranno ripristinate alla prossima esecuzione del playbook Ansible.
+
+
+
+==== Opzione 1: Riavvio controllato dal sistema
+
+Se esiste il rischio che il servizio BeeGFS non si riavvii correttamente con la nuova configurazione, impostare innanzitutto il cluster in modalità di manutenzione per evitare che il monitor BeeGFS rilevi che il servizio è stato arrestato e che venga attivato un failover indesiderato:
+
+[source, console]
+----
+pcs property set maintenance-mode=true
+----
+Se necessario, apportare eventuali modifiche alla configurazione dei servizi all'indirizzo `/mnt/<SERVICE_ID>/*_config/beegfs-*.conf` (esempio: `/mnt/meta_01_tgt_0101/metadata_config/beegfs-meta.conf`) quindi utilizzare systemd per riavviarlo:
+
+[source, console]
+----
+systemctl restart beegfs-*@<SERVICE_ID>.service
+----
+Esempio: `systemctl restart beegfs-meta@meta_01_tgt_0101.service`
+
+
+
+==== Opzione 2: Riavvio controllato da pacemaker
+
+Se non si è preoccupati per la nuova configurazione, il servizio potrebbe arrestarsi in modo imprevisto (ad esempio, semplicemente cambiando il livello di registrazione) oppure ci si trova in una finestra di manutenzione e non si è preoccupati per i tempi di inattività, è sufficiente riavviare il monitor BeeGFS per il servizio che si desidera riavviare:
+
+[source, console]
+----
+pcs resource restart <SERVICE>-monitor
+----
+Ad esempio, per riavviare il servizio di gestione BeeGFS: `pcs resource restart mgmt-monitor`

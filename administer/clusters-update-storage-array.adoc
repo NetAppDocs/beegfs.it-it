@@ -1,0 +1,98 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-update-storage-array.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, update, upgrade, SANtricityOS, firmware, drive 
+summary: Passaggi per aggiornare gli storage array E-Series del cluster ha. 
+---
+= Upgrade dello storage array E-Series
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Segui questi passaggi per aggiornare gli storage array E-Series del cluster ha (nodi a blocchi).
+
+
+
+== Panoramica
+
+Mantenere aggiornati gli array di storage NetApp E-Series del cluster ha con il firmware più recente garantisce prestazioni ottimali e maggiore sicurezza. Gli aggiornamenti del firmware per l'array di storage vengono applicati utilizzando il sistema operativo SANtricity, NVSRAM e i file del firmware del disco.
+
+
+IMPORTANT: Durante gli upgrade degli storage array con il cluster ha online, si consiglia di impostare il cluster in modalità di manutenzione per tutti gli upgrade.
+
+
+
+== Passaggi di aggiornamento del nodo a blocchi
+
+I seguenti passaggi descrivono come aggiornare il firmware degli storage array utilizzando la `Netapp_Eseries.Santricity` raccolta Ansible. Prima di continuare, consultare link:https://docs.netapp.com/us-en/e-series/upgrade-santricity/overview-upgrade-consider-task.html["Considerazioni sull'upgrade"^]per l'aggiornamento dei sistemi E-Series.
+
+
+NOTE: L'aggiornamento a SANtricity OS 11,80 o versioni successive è possibile solo a partire da 11.70.5P1. Prima di eseguire ulteriori upgrade, lo storage array deve essere aggiornato a 11.70.5P1.
+
+. Conferma che il tuo nodo di controllo Ansible sta utilizzando la raccolta Ansible SANtricity più recente.
++
+** Per gli aggiornamenti del ritiro con accesso a. link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galaxy"^], eseguire il seguente comando:
++
+[source, console]
+----
+ansible-galaxy collection install netapp_eseries.santricity --upgrade
+----
+** Per gli aggiornamenti offline, scaricare il tarball link:https://galaxy.ansible.com/ui/repo/published/netapp_eseries/santricity/["Ansible Galaxy"^]della raccolta da , trasferirlo al nodo di controllo ed eseguire:
++
+[source, console]
+----
+ansible-galaxy collection install netapp_eseries-santricity-<VERSION>.tar.gz --upgrade
+----
++
+Vedere link:https://docs.ansible.com/ansible/latest/collections_guide/collections_installing.html["Installazione delle raccolte"^] per ulteriori informazioni.
+
+
+
+. Procurarsi il firmware più recente per l'array di archiviazione e le unità.
++
+.. Scaricare i file del firmware.
++
+*** *SANtricity OS e NVSRAM:* accedere alla link:https://mysupport.netapp.com/site/products/all/details/eseries-santricityos/downloads-tab["Sito di supporto NetApp"^]e scaricare la versione più recente del sistema operativo SANtricity e NVSRAM per il modello di array di storage.
+*** *Firmware dell'unità:* accedere a link:https://mysupport.netapp.com/site/downloads/firmware/e-series-disk-firmware["Sito del firmware del disco E-Series"^]e scaricare il firmware più recente per ciascun modello di unità dell'array di archiviazione.
+
+
+.. Memorizza i file del firmware del disco, NVSRAM e del sistema operativo SANtricity nella `<inventory_directory>/packages` directory del nodo di controllo Ansible.
+
+
+. Se necessario, aggiorna i file di inventario Ansible del tuo cluster per includere tutti gli storage array (nodi a blocchi) che richiedono aggiornamenti. Per indicazioni, vedere la link:../custom/architectures-inventory-overview.html["Panoramica di Ansible Inventory"^] sezione.
+. Assicurarsi che il cluster sia in uno stato ottimale con ogni servizio BeeGFS sul relativo nodo preferito. Per ulteriori informazioni, fare riferimento alla link:clusters-examine-state.html["Esaminare lo stato del cluster"^] sezione.
+. Portare il quadro strumenti in modalità di manutenzione seguendo le istruzioni riportate in link:clusters-maintenance-mode.html["Impostare il cluster in modalità di manutenzione"^].
+. Crea un nuovo playbook Ansible chiamato `update_block_node_playbook.yml`. Popola il playbook con i seguenti contenuti, sostituendo il sistema operativo SANtricity, NVSRAM e le versioni del firmware del disco nel percorso di upgrade desiderato:
++
+....
+- hosts: eseries_storage_systems
+  gather_facts: false
+  any_errors_fatal: true
+  collections:
+    - netapp_eseries.santricity
+  vars:
+    eseries_firmware_firmware: "packages/<SantricityOS>.dlp"
+    eseries_firmware_nvsram: "packages/<NVSRAM>.dlp"
+    eseries_drive_firmware_firmware_list:
+      - "packages/<drive_firmware>.dlp"
+    eseries_drive_firmware_upgrade_drives_online: true
+
+  tasks:
+    - name: Configure NetApp E-Series block nodes.
+      import_role:
+        name: nar_santricity_management
+....
+. Per avviare gli aggiornamenti, esegui il seguente comando dal nodo di controllo Ansible:
++
+[listing]
+----
+ansible-playbook -i inventory.yml update_block_node_playbook.yml
+----
+. Una volta completato il playbook, verifica che ciascuno storage array si trovi in uno stato ottimale.
+. Spostare il cluster dalla modalità di manutenzione e verificare che sia in uno stato ottimale con ogni servizio BeeGFS sul nodo preferito.
+

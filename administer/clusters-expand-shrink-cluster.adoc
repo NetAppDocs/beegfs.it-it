@@ -1,0 +1,65 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-expand-shrink-cluster.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, replace 
+summary: Aggiungere o rimuovere i building block dal cluster. 
+---
+= Espandere o ridurre il cluster
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Aggiungere o rimuovere i building block dal cluster.
+
+
+
+== Panoramica
+
+Questa sezione descrive varie considerazioni e opzioni per regolare le dimensioni del cluster BeeGFS ha. In genere, la dimensione del cluster viene regolata aggiungendo o rimuovendo gli elementi di base, che in genere sono due nodi di file configurati come coppia ha. È inoltre possibile aggiungere o rimuovere singoli nodi di file (o altri tipi di nodi di cluster), se necessario.
+
+
+
+== Aggiunta di un building block al cluster
+
+
+
+=== Considerazioni
+
+La crescita del cluster mediante l'aggiunta di ulteriori building block è un processo semplice. Prima di iniziare, tenere presenti le restrizioni relative al numero minimo e massimo di nodi del cluster in ciascun cluster ha singolo e determinare se è necessario aggiungere nodi al cluster ha esistente o creare un nuovo cluster ha. In genere, ciascun building block è costituito da due nodi di file, ma tre nodi sono il numero minimo di nodi per cluster (per stabilire il quorum) e dieci sono il numero massimo consigliato (testato). Per gli scenari avanzati è possibile aggiungere un singolo nodo "Tiebreaker" che non esegue alcun servizio BeeGFS durante l'implementazione di un cluster a due nodi. Contatta il supporto NetApp se stai prendendo in considerazione un'implementazione di questo tipo.
+
+Quando si decide come espandere il cluster, tenere presente queste restrizioni e qualsiasi crescita futura prevista del cluster. Ad esempio, se si dispone di un cluster a sei nodi e si desidera aggiungere altri quattro nodi, si consiglia di avviare un nuovo cluster ha.
+
+
+TIP: Tenere presente che un singolo file system BeeGFS può essere costituito da più cluster ha indipendenti. Ciò consente ai file system di continuare a scalare oltre i limiti consigliati/rigidi dei componenti del cluster ha sottostanti.
+
+
+
+=== Fasi
+
+Quando si aggiunge un building block al cluster, sarà necessario creare `host_vars` i file per ogni nuovo nodo di file e nodo dei blocchi (array E-Series). I nomi di questi host devono essere aggiunti all'inventario, insieme alle nuove risorse da creare. I `group_vars` file corrispondenti dovranno essere creati per ogni nuova risorsa. Per link:../custom/architectures-overview.html["utilizzo di architetture personalizzate"^]ulteriori informazioni, vedere la sezione.
+
+Dopo aver creato i file corretti, è sufficiente eseguire nuovamente l'automazione utilizzando il comando:
+
+[source, console]
+----
+ansible-playbook -i <inventory>.yml <playbook>.yml
+----
+
+
+== Rimozione di un Building Block dal cluster
+
+È necessario tenere presente una serie di considerazioni quando è necessario dismettere un building block, ad esempio:
+
+* Quali servizi BeeGFS vengono eseguiti in questo building block?
+* I nodi di file vengono ritirati e i nodi di blocco devono essere collegati ai nuovi nodi di file?
+* Se l'intero building block viene ritirato, i dati devono essere spostati in un nuovo building block, dispersi in nodi esistenti nel cluster o spostati in un nuovo file system BeeGFS o in un altro sistema storage?
+* Questo può accadere durante un'interruzione o dovrebbe essere fatto senza interruzioni?
+* Il building block è attivamente in uso o contiene principalmente dati che non sono più attivi?
+
+
+A causa dei diversi possibili punti di partenza e degli stati finali desiderati, contatta il supporto NetApp in modo da poter identificare e implementare la strategia migliore in base al tuo ambiente e ai tuoi requisiti.

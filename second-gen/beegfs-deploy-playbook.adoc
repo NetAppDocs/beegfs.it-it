@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-playbook.html 
+permalink: second-gen/beegfs-deploy-playbook.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: 'L"implementazione e la gestione della configurazione implica l"esecuzione di uno o più playbook contenenti le attività che Ansible deve eseguire e portare il sistema nello stato desiderato.' 
 ---
@@ -10,7 +10,7 @@ summary: 'L"implementazione e la gestione della configurazione implica l"esecuzi
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -103,7 +103,7 @@ ansible-playbook -i inventory.yml playbook.yml --forks 20
 ....
 +
 
-NOTE: In particolare per implementazioni più grandi, sovrascrivendo il numero predefinito di forcelle (5) utilizzando `forks` Si consiglia di aumentare il numero di host configurati in parallelo da Ansible. Per ulteriori informazioni, vedere  https://www.ansible.com/blog/ansible-performance-tuning["Ottimizzazione delle performance di Ansible"^] e. https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["Controllo dell'esecuzione del playbook"^].) L'impostazione del valore massimo dipende dalla potenza di elaborazione disponibile sul nodo di controllo Ansible. L'esempio precedente di 20 è stato eseguito su un nodo di controllo virtuale Ansible con 4 CPU (Intel(R) Xeon(R) Gold 6146 CPU @ 3,20 GHz).
+NOTE: In particolare per implementazioni di dimensioni maggiori, `forks` si consiglia di ignorare il numero predefinito di forcelle (5) utilizzando il parametro per aumentare il numero di host configurati in parallelo da Ansible. Per ulteriori informazioni, vedere https://docs.ansible.com/ansible/latest/user_guide/playbooks_strategies.html["Controllo dell'esecuzione del playbook"^]. L'impostazione del valore massimo dipende dalla potenza di elaborazione disponibile sul nodo di controllo Ansible. L'esempio precedente di 20 è stato eseguito su un nodo di controllo virtuale Ansible con 4 CPU (Intel(R) Xeon(R) Gold 6146 CPU @ 3,20 GHz).
 
 +
 A seconda delle dimensioni dell'implementazione e delle prestazioni di rete tra il nodo di controllo Ansible e i nodi di blocco e file BeeGFS, il tempo di implementazione potrebbe variare.

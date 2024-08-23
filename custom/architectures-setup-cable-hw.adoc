@@ -1,0 +1,68 @@
+---
+sidebar: sidebar 
+permalink: custom/architectures-setup-cable-hw.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: 'Procedure necessarie per installare e collegare l"hardware utilizzato per eseguire BeeGFS su NetApp.' 
+---
+= Installazione e cavo hardware
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Procedure necessarie per installare e collegare l'hardware utilizzato per eseguire BeeGFS su NetApp.
+
+
+
+== Pianificare l'installazione
+
+Ciascun file system BeeGFS è costituito da un certo numero di nodi di file che eseguono i servizi BeeGFS utilizzando lo storage back-end fornito da un certo numero di nodi a blocchi. I file node sono configurati in uno o più cluster ad alta disponibilità per fornire la fault tolerance per i servizi BeeGFS. Ogni nodo a blocchi è già una coppia ha attiva/attiva. Il numero minimo di nodi di file supportati in ciascun cluster ha è tre e il numero massimo di nodi di file supportati in ciascun cluster è dieci. I file system BeeGFS possono scalare oltre dieci nodi implementando più cluster ha indipendenti che lavorano insieme per fornire un singolo namespace del file system.
+
+In genere, ogni cluster ha viene implementato come una serie di "building block" in cui alcuni nodi di file (server x86) sono collegati direttamente a un certo numero di nodi a blocchi (in genere sistemi storage e-Series). Questa configurazione crea un cluster asimmetrico, in cui i servizi BeeGFS possono essere eseguiti solo su alcuni nodi di file che hanno accesso allo storage a blocchi di back-end utilizzato per le destinazioni BeeGFS. Il bilanciamento dei nodi file-to-block in ciascun building block e del protocollo di storage in uso per le connessioni dirette dipende dai requisiti di una particolare installazione.
+
+Un'architettura di cluster ha alternativa utilizza un fabric di storage (noto anche come SAN (Storage Area Network) tra i nodi di file e blocchi per stabilire un cluster simmetrico. Ciò consente l'esecuzione dei servizi BeeGFS su qualsiasi nodo di file in un cluster ha specifico. Poiché i cluster generalmente simmetrici non sono così convenienti a causa dell'hardware SAN aggiuntivo, questa documentazione presuppone l'utilizzo di un cluster asimmetrico implementato come una serie di uno o più building block.
+
+
+CAUTION: Assicurarsi che l'architettura del file system desiderata per una particolare implementazione di BeeGFS sia ben compresa prima di procedere con l'installazione.
+
+
+
+== Hardware per rack
+
+Quando si pianifica l'installazione, è importante che tutte le apparecchiature di ciascun building block siano installate in rack adiacenti. La procedura consigliata prevede il racking dei nodi di file immediatamente sopra i nodi di blocco in ciascun building block. Seguire la documentazione relativa ai modelli di file e. link:https://docs.netapp.com/us-en/e-series/getting-started/getup-run-concept.html["blocco"^] nodi utilizzati durante l'installazione di guide e hardware nel rack.
+
+Esempio di un singolo building block:
+
+image:buildingblock-sr665v3.png["Esempio di building block"]
+
+Esempio di un'installazione BeeGFS di grandi dimensioni in cui sono presenti più elementi di base in ciascun cluster ha e più cluster ha nel file system:
+
+image:beegfs-design-image3-small.png["Esempio di distribuzione BeeGFS"]
+
+
+
+== Nodi di blocco e file via cavo
+
+In genere, le porte HIC dei nodi a blocchi e-Series vengono collegate direttamente alle porte dell'adattatore del canale host designato (per i protocolli InfiniBand) o dell'adattatore del bus host (per Fibre Channel e altri protocolli) dei nodi di file. Il modo esatto per stabilire queste connessioni dipenderà dall'architettura del file system desiderata, ecco un esempiolink:../second-gen/beegfs-design-hardware-architecture.html["Basato sull'architettura verificata di seconda generazione di BeeGFS su NetApp"^]:
+
+image:buildingblock-sr665v3.png["Esempio di cablaggio tra file BeeGFS e nodo di blocco"]
+
+
+
+== Collegare i nodi di file alla rete client
+
+Ogni nodo di file avrà un certo numero di porte InfiniBand o Ethernet designate per il traffico del client BeeGFS. A seconda dell'architettura, ciascun nodo di file disporrà di una o più connessioni a una rete client/storage dalle performance elevate, potenzialmente a più switch per la ridondanza e l'aumento della larghezza di banda. Di seguito viene riportato un esempio di cablaggio del client che utilizza switch di rete ridondanti, in cui le porte evidenziate in verde scuro e verde chiaro sono collegate a switch separati:
+
+image:networkcable-sr665v3.png["Esempio di cablaggio del client BeeGFS"]
+
+
+
+== Gestione delle connessioni rete e alimentazione
+
+Stabilire le connessioni di rete necessarie per le reti in-band e out-of-band.
+
+Collegare tutti gli alimentatori assicurandosi che ciascun nodo di file e blocchi sia collegato a più unità di distribuzione dell'alimentazione per la ridondanza (se disponibile).

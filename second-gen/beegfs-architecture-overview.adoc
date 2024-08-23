@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-architecture-overview.html 
+permalink: second-gen/beegfs-architecture-overview.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: La soluzione BeeGFS su NetApp include considerazioni di progettazione architetturale utilizzate per determinare le apparecchiature, il cablaggio e le configurazioni specifiche richieste per supportare i carichi di lavoro validati. 
 ---
@@ -10,7 +10,7 @@ summary: La soluzione BeeGFS su NetApp include considerazioni di progettazione a
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -47,7 +47,7 @@ Il file system BeeGFS include i seguenti servizi principali:
 
 La figura seguente mostra i componenti della soluzione BeeGFS e le relazioni utilizzate con i sistemi NetApp e-Series.
 
-image:../media/beegfs-components.png[""]
+image:beegfs-components.png["Componenti BeeGFS"]
 
 In qualità di file system parallelo, BeeGFS esegue lo striping dei propri file su più nodi server per massimizzare le performance di lettura/scrittura e la scalabilità. I nodi server lavorano insieme per fornire un singolo file system che può essere montato e accessibile contemporaneamente da altri nodi server, comunemente noti come _client_. Questi client possono visualizzare e utilizzare il file system distribuito in modo simile a un file system locale come NTFS, XFS o ext4.
 
@@ -64,7 +64,7 @@ NOTE: Sebbene l'edizione della community BeeGFS possa essere utilizzata gratuita
 
 La figura seguente confronta le architetture ha shared-nothing e shared-disk.
 
-image:../media/beegfs-design-image1.png[""]
+image:beegfs-design-image1.png["Confronto sull'architettura HA"]
 
 Per ulteriori informazioni, vedere https://www.netapp.com/blog/high-availability-beegfs/["Annuncio dell'alta disponibilità per BeeGFS supportato da NetApp"^].
 
@@ -93,7 +93,7 @@ La soluzione BeeGFS on NetApp ha verificato i nodi elencati di seguito.
 
 I building block della soluzione (mostrati nella figura seguente) utilizzano i server dei nodi di file verificati per il livello di file BeeGFS e due sistemi storage EF600 come livello di blocchi.
 
-image:../media/beegfs-design-image2-small.png[""]
+image:beegfs-design-image2-small.png["Building Block"]
 
 La soluzione BeeGFS su NetApp viene eseguita in tutti gli elementi di base dell'implementazione. Il primo building block implementato deve eseguire i servizi di gestione, metadati e storage di BeeGFS (noto come building block di base). Tutti i building block successivi possono essere configurati con il software per estendere metadati e servizi di storage o per fornire esclusivamente servizi storage. Questo approccio modulare consente di scalare il file system in base alle esigenze di un carico di lavoro utilizzando al tempo stesso le stesse piattaforme hardware sottostanti e il design a building block.
 
@@ -102,7 +102,7 @@ La soluzione BeeGFS su NetApp viene eseguita in tutti gli elementi di base dell'
 
 NOTE: Per stabilire il quorum nel cluster di failover sono necessari almeno due building block. Un cluster a due nodi presenta limitazioni che potrebbero impedire il corretto funzionamento del failover. È possibile configurare un cluster a due nodi incorporando un terzo dispositivo come tiebreaker; tuttavia, questa documentazione non lo descrive.
 
-image:../media/beegfs-design-image3.png[""]
+image:beegfs-design-image3.png["Scalabilità del cluster ha BeeGFS"]
 
 
 

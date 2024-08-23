@@ -1,0 +1,153 @@
+---
+sidebar: sidebar 
+permalink: custom/architectures-deploy-ha-cluster.html 
+keywords: BeeGFS on NetApp, NetApp Custom Architectures, EF600 
+summary: Specificare le attività da eseguire per implementare il cluster BeeGFS ha utilizzando un manuale. 
+---
+= Implementare il cluster BeeGFS ha
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Specificare le attività da eseguire per implementare il cluster BeeGFS ha utilizzando un manuale.
+
+
+
+== Panoramica
+
+Questa sezione descrive come assemblare il manuale standard utilizzato per implementare/gestire BeeGFS su NetApp.
+
+
+
+== Fasi
+
+
+
+=== Creare il manuale Ansible Playbook
+
+Creare il file `playbook.yml` e compilarlo come segue:
+
+. Per prima cosa, definire una serie di attività (comunemente denominate a. link:https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#playbook-syntax["gioca"^]) Che dovrebbe essere eseguito solo sui nodi a blocchi NetApp e-Series. Viene utilizzata un'attività di pausa per richiedere conferma prima di eseguire l'installazione (per evitare l'esecuzione accidentale di un playbook), quindi importare `nar_santricity_management` ruolo. Questo ruolo gestisce l'applicazione di qualsiasi configurazione generale del sistema definita in `group_vars/eseries_storage_systems.yml` o individuale `host_vars/<BLOCK NODE>.yml` file.
++
+[source, yaml]
+----
+- hosts: eseries_storage_systems
+  gather_facts: false
+  collections:
+    - netapp_eseries.santricity
+  tasks:
+    - name: Verify before proceeding.
+      pause:
+        prompt: "Are you ready to proceed with running the BeeGFS HA role? Depending on the size of the deployment and network performance between the Ansible control node and BeeGFS file and block nodes this can take awhile (10+ minutes) to complete."
+    - name: Configure NetApp E-Series block nodes.
+      import_role:
+        name: nar_santricity_management
+----
+. Definire il gioco che verrà eseguito su tutti i nodi di file e blocchi:
++
+[source, yaml]
+----
+- hosts: all
+  any_errors_fatal: true
+  gather_facts: false
+  collections:
+    - netapp_eseries.beegfs
+----
+. All'interno di questo gioco è possibile definire facoltativamente un set di "pre-task" che devono essere eseguiti prima di implementare il cluster ha. Questo può essere utile per verificare/installare qualsiasi prerequisito come Python. Possiamo anche effettuare controlli prima del volo, ad esempio verificando che i tag Ansible forniti siano supportati:
++
+[source, yaml]
+----
+  pre_tasks:
+    - name: Ensure a supported version of Python is available on all file nodes.
+      block:
+        - name: Check if python is installed.
+          failed_when: false
+          changed_when: false
+          raw: python --version
+          register: python_version
+
+        - name: Check if python3 is installed.
+          raw: python3 --version
+          failed_when: false
+          changed_when: false
+          register: python3_version
+          when: 'python_version["rc"] != 0 or (python_version["stdout"] | regex_replace("Python ", "")) is not version("3.0", ">=")'
+
+        - name: Install python3 if needed.
+          raw: |
+            id=$(grep "^ID=" /etc/*release* | cut -d= -f 2 | tr -d '"')
+            case $id in
+              ubuntu) sudo apt install python3 ;;
+              rhel|centos) sudo yum -y install python3 ;;
+              sles) sudo zypper install python3 ;;
+            esac
+          args:
+            executable: /bin/bash
+          register: python3_install
+          when: python_version['rc'] != 0 and python3_version['rc'] != 0
+          become: true
+
+        - name: Create a symbolic link to python from python3.
+          raw: ln -s /usr/bin/python3 /usr/bin/python
+          become: true
+          when: python_version['rc'] != 0
+      when: inventory_hostname not in groups[beegfs_ha_ansible_storage_group]
+
+    - name: Verify any provided tags are supported.
+      fail:
+        msg: "{{ item }} tag is not a supported BeeGFS HA tag. Rerun your playbook command with --list-tags to see all valid playbook tags."
+      when: 'item not in ["all", "storage", "beegfs_ha", "beegfs_ha_package", "beegfs_ha_configure", "beegfs_ha_configure_resource", "beegfs_ha_performance_tuning", "beegfs_ha_backup", "beegfs_ha_client"]'
+      loop: "{{ ansible_run_tags }}"
+----
+. Infine, questo gioco importa il ruolo BeeGFS ha per la versione di BeeGFS che si desidera implementare:
++
+[source, yaml]
+----
+  tasks:
+    - name: Verify the BeeGFS HA cluster is properly deployed.
+      import_role:
+        name: beegfs_ha_7_4 # Alternatively specify: beegfs_ha_7_3.
+----
++
+
+NOTE: Viene mantenuto un ruolo BeeGFS ha per ciascuna versione principale.minore supportata di BeeGFS. Questo consente agli utenti di scegliere quando aggiornare le versioni principali/secondarie. Attualmente (`beegfs_7_3`(`beegfs_7_2`sono supportati BeeGFS 7,3.x ) o BeeGFS 7,2.x ). Per impostazione predefinita, entrambi i ruoli implementeranno la versione più recente delle patch BeeGFS al momento del rilascio, anche se gli utenti possono scegliere di eseguire l'override e distribuire la patch più recente, se lo desiderano. Per link:https://github.com/NetApp/beegfs/blob/master/docs/beegfs_ha/upgrade.md["guida all'upgrade"^]ulteriori dettagli, fare riferimento alle informazioni più recenti.
+
+. Facoltativo: Se si desidera definire attività aggiuntive, tenere presente se le attività devono essere indirizzate a. `all` Host (inclusi i sistemi storage e-Series) o solo i nodi di file. Se necessario, definire un nuovo gioco specifico per i nodi di file utilizzando `- hosts: ha_cluster`.
+
+
+Fare clic su link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/playbook.yml["qui"^] per un esempio di un file di playbook completo.
+
+
+
+=== Installare NetApp Ansible Collections
+
+L'insieme BeeGFS per Ansible e tutte le dipendenze vengono mantenute su link:https://galaxy.ansible.com/netapp_eseries/beegfs["Ansible Galaxy"^]. Sul nodo di controllo Ansible eseguire il seguente comando per installare la versione più recente:
+
+[source, bash]
+----
+ansible-galaxy collection install netapp_eseries.beegfs
+----
+Sebbene non sia generalmente consigliato, è anche possibile installare una versione specifica della raccolta:
+
+[source, bash]
+----
+ansible-galaxy collection install netapp_eseries.beegfs:==<MAJOR>.<MINOR>.<PATCH>
+----
+
+
+=== Eseguire il Playbook
+
+Dalla directory del nodo di controllo Ansible contenente `inventory.yml` e. `playbook.yml` eseguire il playbook come segue:
+
+[source, bash]
+----
+ansible-playbook -i inventory.yml playbook.yml
+----
+In base alle dimensioni del cluster, l'implementazione iniziale può richiedere oltre 20 minuti. Se l'implementazione non riesce per qualsiasi motivo, correggere eventuali problemi (ad esempio, cablaggio errato, nodo non avviato, ecc.) e riavviare il playbook Ansible.
+
+Quando link:architectures-inventory-common-file-node-configuration.html["configurazione di un nodo di file comune"^]si specifica , se si sceglie l'opzione predefinita per far sì che Ansible gestisca automaticamente l'autenticazione basata sulla connessione, `connAuthFile` è ora possibile trovare un usato come segreto condiviso all'indirizzo `<playbook_dir>/files/beegfs/<sysMgmtdHost>_connAuthFile` (per impostazione predefinita). Tutti i client che hanno bisogno di accedere al file system dovranno utilizzare questo segreto condiviso. Questo viene gestito automaticamente se i client vengono configurati con link:architectures-deploy-beegfs-clients.html["Ruolo del client BeeGFS"^].

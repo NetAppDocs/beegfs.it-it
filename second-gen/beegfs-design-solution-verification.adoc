@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-design-solution-verification.html 
+permalink: second-gen/beegfs-design-solution-verification.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: La progettazione di seconda generazione per la soluzione BeeGFS su NetApp è stata verificata utilizzando tre profili di configurazione a blocchi. 
 ---
@@ -10,7 +10,7 @@ summary: La progettazione di seconda generazione per la soluzione BeeGFS su NetA
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -27,7 +27,7 @@ I building block erano collegati a due switch NVIDIA Quantum InfiniBand (MQM8700
 
 La figura seguente mostra la configurazione BeeGFS utilizzata per validare la soluzione BeeGFS su NetApp.
 
-image:beegfs-design-image12.png[""]
+image:beegfs-design-image12.png["Configurazione della convalida BeeGFS"]
 
 
 
@@ -57,22 +57,22 @@ mpirun --allow-run-as-root --mca btl tcp -np 48 -map-by node -hostfile 10xnodes 
 .Un building block di base BeeGFS (gestione, metadati e storage)
 La figura seguente mostra i risultati del test IOR con un singolo building block di base BeeGFS (gestione, metadati e storage).
 
-image:beegfs-design-image13.png[""]
+image:beegfs-design-image13.png["Risultati IOR del building block di base BeeGFS singolo"]
 
 .Metadati BeeGFS + building block dello storage
 La figura seguente mostra i risultati del test IOR con un singolo metadata BeeGFS + building block dello storage.
 
-image:beegfs-design-image14.png[""]
+image:beegfs-design-image14.png["Singoli metadati BeeGFS e building block di storage risultati IOR"]
 
 .Building block BeeGFS solo per lo storage
 La figura seguente mostra i risultati del test IOR con un singolo building block BeeGFS solo per lo storage.
 
-image:beegfs-design-image15.png[""]
+image:beegfs-design-image15.png["Singoli risultati IOR di storage BeeGFS"]
 
 .Tre blocchi di base BeeGFS
 La figura seguente mostra i risultati del test IOR con tre blocchi di base BeeGFS.
 
-image:beegfs-design-image16.png[""]
+image:beegfs-design-image16.png["Tre elementi di base BeeGFS bloccano i risultati IOR"]
 
 Come previsto, la differenza di performance tra il building block di base e i successivi metadati + building block di storage è trascurabile. Il confronto tra i metadati e il building block di storage e un building block di solo storage mostra un leggero aumento delle performance di lettura dovuto ai dischi aggiuntivi utilizzati come target di storage. Tuttavia, non vi è alcuna differenza significativa nelle prestazioni di scrittura. Per ottenere performance più elevate, è possibile aggiungere più elementi di base insieme per scalare le performance in modo lineare.
 
@@ -88,7 +88,7 @@ La modalità di caching nativa utilizza la paging-cache del kernel Linux sul cli
 
 Il diagramma seguente mostra i risultati del test IOR con tre blocchi di base BeeGFS e un singolo client.
 
-image:beegfs-design-image17.png[""]
+image:beegfs-design-image17.png["Tre building block BeeGFS con risultati IOR client singoli"]
 
 
 NOTE: Lo striping di BeeGFS per questi test è stato impostato su una dimensione del blocco di 1 MB con otto destinazioni per file.
@@ -111,12 +111,12 @@ Le performance dei metadati sono state misurate prima con uno e due metadati + b
 .Un solo metadata BeeGFS + building block di storage
 Il seguente diagramma mostra i risultati di MDTest con un solo metadata BeeGFS + blocchi di base dello storage.
 
-image:beegfs-design-image18.png[""]
+image:beegfs-design-image18.png["Singoli metadati BeeGFS e building block di storage risultati MDTest"]
 
 .Due metadati BeeGFS + blocchi di base per lo storage
 Il seguente diagramma mostra i risultati di MDTest con due metadati BeeGFS + blocchi di base dello storage.
 
-image:beegfs-design-image19.png[""]
+image:beegfs-design-image19.png["Due building block di storage e metadati BeeGFS per i risultati di MDTest"]
 
 
 

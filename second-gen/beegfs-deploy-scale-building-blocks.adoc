@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-scale-building-blocks.html 
+permalink: second-gen/beegfs-deploy-scale-building-blocks.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Configurare Pacemaker e Corosync per scalare oltre cinque blocchi costitutivi. 
 ---
@@ -10,7 +10,7 @@ summary: Configurare Pacemaker e Corosync per scalare oltre cinque blocchi costi
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]

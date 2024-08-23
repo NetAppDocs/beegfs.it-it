@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-deploy-hardware.html 
+permalink: second-gen/beegfs-deploy-hardware.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: 'Ciascun building block è costituito da due nodi di file x86 validati collegati direttamente tramite HDR (200 GB) InfiniBand a due nodi di blocco NetApp.' 
 ---
@@ -10,7 +10,7 @@ summary: 'Ciascun building block è costituito da due nodi di file x86 validati 
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -33,7 +33,7 @@ I seguenti passaggi sono identici per ogni building block nel cluster, indipende
 Rack dei blocchi in modo che i due nodi di file BeeGFS si trovino sopra i nodi di blocco BeeGFS. La figura seguente mostra la configurazione hardware corretta per il building block BeeGFS utilizzando i server Lenovo ThinkSystem SR665 V3 come nodi file (vista posteriore).
 
 +
-image:../media/buildingblock-sr665v3.png[""]
+image:buildingblock-sr665v3.png["Building Block"]
 
 +
 
@@ -44,13 +44,13 @@ NOTE: La configurazione dell'alimentatore per i casi di utilizzo in produzione d
 .. Se il building block verrà utilizzato per eseguire i metadati e i servizi di storage BeeGFS e le unità più piccole verranno utilizzate per i volumi di metadati, verificare che siano popolate negli slot più esterni, come mostrato nella figura seguente.
 .. Per tutte le configurazioni di building block, se un enclosure di dischi non è completamente popolato, assicurarsi che negli slot 0–11 e 12–23 venga inserito un numero uguale di dischi per ottenere prestazioni ottimali.
 +
-image:../media/driveslots.png[""]
+image:driveslots.png["EF600 slot per unità disco"]
 
 
 
 . Collegare i nodi di blocco e di file utilizzando link:beegfs-technology-requirements.html#block-file-cables["1m cavi in rame con collegamento diretto HDR 200GB InfiniBand"], in modo che corrispondano alla topologia mostrata nella figura seguente.
 +
-image:../media/directattachcable-sr665v3.png[""]
+image:directattachcable-sr665v3.png["Cavo di collegamento diretto SR665V3"]
 
 +
 
@@ -64,7 +64,7 @@ Quando si utilizzano cavi splitter per collegare lo switch di archiviazione ai n
 Inoltre, per le reti di storage con switch ridondanti, le porte indicate in verde chiaro devono essere collegate a uno switch, mentre le porte in verde scuro devono essere collegate a un altro switch.
 
 +
-image:../media/networkcable.png[""]
+image:networkcable-sr665v3.png["Cablaggio della rete di storage"]
 
 . Se necessario, assemblare gli elementi di base aggiuntivi seguendo le stesse linee guida per il cablaggio.
 +

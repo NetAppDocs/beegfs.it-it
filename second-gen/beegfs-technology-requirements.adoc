@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: beegfs-technology-requirements.html 
+permalink: second-gen/beegfs-technology-requirements.html 
 keywords: BeeGFS on NetApp, NetApp Verified Architecture, EF600 
 summary: Per implementare la soluzione BeeGFS su NetApp, assicurati che il tuo ambiente soddisfi i requisiti tecnologici. 
 ---
@@ -10,7 +10,7 @@ summary: Per implementare la soluzione BeeGFS su NetApp, assicurati che il tuo a
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ./media/
+:imagesdir: ../media/
 
 
 [role="lead"]
@@ -30,7 +30,7 @@ Prima di iniziare, assicurarsi che l'hardware soddisfi le seguenti specifiche pe
  a| 
 2
  a| 
-[[beegfs-file-nodes]]nodi di file BeeGFS
+Nodi di file BeeGFS
  a| 
 Ciascun nodo file deve soddisfare o superare le specifiche dei nodi file consigliati per raggiungere le prestazioni previste.
 
@@ -70,12 +70,12 @@ Ciascun nodo file deve soddisfare o superare le specifiche dei nodi file consigl
 
 
 
-| 2 | [[eseries-Block-Nodes]]nodi a blocchi e-Series (array EF600)  a| 
-*Memoria:* 256GB GB (128GB GB per controller). *Adattatore:* 200GB/HDR a 2 porte (NVMe/IB). *Unità:* configurate in base alla capacità desiderata.
+| 2 | Nodi a blocchi E-Series (array EF600)  a| 
+*Memoria:* 256GB GB (128GB GB per controller). *Adattatore:* 200GB/HDR a 2 porte (NVMe/IB). *Unità:* configurate in base ai metadati e alla capacità di archiviazione desiderati.
 
 
 
-| 8 | [[infiniband-Adapters]]adattatori di schede host InfiniBand (per nodi file).  a| 
+| 8 | Adattatori schede host InfiniBand (per nodi file).  a| 
 Gli adattatori della scheda host variano in base al modello di server utilizzato per il nodo file. I consigli per i nodi file verificati includono:
 
 * *Lenovo ThinkSystem SR665 V3 Server:*
@@ -104,7 +104,7 @@ Lo switch della rete storage deve essere in grado di raggiungere velocità Infin
 
 === Requisiti di cablaggio
 
-[Block-file-cables]*connessioni dirette da nodi di blocco a nodi di file.*
+*Connessioni dirette dai nodi di blocco ai nodi di file.*
 
 [cols="10%,70%,20%"]
 |===
@@ -113,7 +113,7 @@ Lo switch della rete storage deve essere in grado di raggiungere velocità Infin
 
 | 8 | MCP1650-H001E30 (cavo in rame passivo NVIDIA, QSFP56, 200GB/s) | 1 m 
 |===
-[File-switch-cables]*connessioni dai nodi file allo switch della rete di archiviazione.* Selezionare l'opzione di cavo appropriata dalla tabella seguente in base allo switch per lo storage InfiniBand. + la lunghezza del cavo consigliata è di 2m m; tuttavia, può variare a seconda dell'ambiente del cliente.
+*Connessioni dai nodi di file allo switch della rete di archiviazione.* Selezionare l'opzione di cavo appropriata dalla tabella seguente in base allo switch storage InfiniBand. + la lunghezza del cavo consigliata è di 2m m; tuttavia, può variare a seconda dell'ambiente del cliente.
 
 [cols="20%,10%,15%,55%"]
 |===
