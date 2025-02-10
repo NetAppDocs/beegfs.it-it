@@ -54,7 +54,7 @@ Una volta che il nodo è online, portarlo fuori dallo standby con:
 
 [source, console]
 ----
-pcs cluster node unstandby <HOSTNAME>
+pcs node unstandby <HOSTNAME>
 ----
 Infine, ricollocare tutti i servizi BeeGFS nei nodi preferiti con:
 
