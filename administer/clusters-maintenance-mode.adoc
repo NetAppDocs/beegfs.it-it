@@ -37,9 +37,9 @@ Per verificare se il cluster è in modalità di manutenzione, eseguire:
 
 [source, console]
 ----
-pcs property show maintenance-mode
+pcs property config
 ----
-Questo restituisce false quando il cluster funziona normalmente. Per attivare la modalità di manutenzione, eseguire:
+La `maintenance-mode` proprietà non viene visualizzata se il cluster funziona normalmente. Se il cluster è attualmente in modalità di manutenzione, la proprietà visualizzerà come `true`. Per attivare la modalità di manutenzione, eseguire:
 
 [source, console]
 ----

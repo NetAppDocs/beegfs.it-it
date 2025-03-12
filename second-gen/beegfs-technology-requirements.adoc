@@ -51,21 +51,6 @@ Ciascun nodo file deve soddisfare o superare le specifiche dei nodi file consigl
 
 
 
-* *Lenovo ThinkSystem SR665*
-+
-** *Processori:* 2x AMD EPYC 7343 16C 3,2 GHz (configurato come due zone NUMA).
-** *Memoria:* 256GB GB (16x 16GB TruDDR4 3200MHz RDIMM-A)
-** *Espansione PCIe:* quattro slot PCIe Gen4 x16 (due per zona NUMA)
-** *Varie:*
-+
-*** Due unità in RAID 1 per il sistema operativo (SATA da 1TB 7,2K TB o superiore)
-*** Porta 1GbE per la gestione del sistema operativo in banda
-*** 1GbE BMC con API Redfish per la gestione fuori banda dei server
-*** Doppi alimentatori hot swap e ventole ad alte prestazioni
-
-
-
-
 
 
 
@@ -81,11 +66,6 @@ Gli adattatori della scheda host variano in base al modello di server utilizzato
 * *Lenovo ThinkSystem SR665 V3 Server:*
 +
 ** MCX755106AS-HEAT ConnectX-7, NDR200, QSFP112, 2 porte, PCIe Gen5 x16, adattatore InfiniBand
-
-
-* *Lenovo ThinkSystem SR665 Server:*
-+
-** MCX653106A-HDAT ConnectX-6, HDR, QSFP-56, 2 porte, PCIe Gen4 x16, adattatore InfiniBand
 
 
 
@@ -115,21 +95,27 @@ Lo switch della rete storage deve essere in grado di raggiungere velocità Infin
 |===
 *Connessioni dai nodi di file allo switch della rete di archiviazione.* Selezionare l'opzione di cavo appropriata dalla tabella seguente in base allo switch storage InfiniBand. + la lunghezza del cavo consigliata è di 2m m; tuttavia, può variare a seconda dell'ambiente del cliente.
 
-[cols="20%,10%,15%,55%"]
+[cols="20%,15%,10%,55%"]
 |===
-| Modello di switch | Quantità | Tipo di cavo | Codice ricambio 
+| Modello di switch | Tipo di cavo | Quantità | Codice ricambio 
 
 
-| NVIDIA QM9700 | 4 | Fibra attiva | MFA7U10-H002 (cavo NVIDIA per fibra attiva, InfiniBand da 400GB GB/s a 2x 200GB GB/s, OSFP a 2x QSFP56) 
+.4+| NVIDIA QM9700 .3+| Fibra attiva (inclusi i ricetrasmettitori) | 2 | MMA4Z00-NS (multimodale, IB/ETH, 800GB GB/s 2x400 GB/s a due porte OSFP) 
 
 
-| NVIDIA QM9700 | 4 | Rame passivo | MCP7Y60-H002 (cavo in rame passivo NVIDIA, da InfiniBand 400GB GB/s a 2x 200GB GB/s, da OSFP a 2x QSFP56) 
+| 4 | MFP7E20-Nxxx (cavo in fibra splitter multimodale da 4 canali a due a 2 canali) 
 
 
-| NVIDIA MQM8700 | 8 | Fibra attiva | MFS1S00-H003E (cavo NVIDIA in fibra attiva, InfiniBand 200GB GB/s, QSFP56 m) 
+| 8 | MMA1Z00-NS400 (multimodale, IB/ETH, QSFP-112 a una porta da 400GB GB/s) 
 
 
-| NVIDIA MQM8700 | 8 | Rame passivo | MCP1650-H002E26 (cavo in rame passivo NVIDIA, InfiniBand 200GB GB/s, QSFP56 m) 
+| Rame passivo | 2 | MCP7Y40-N002 (cavo splitter in rame passivo NVIDIA, da InfiniBand 800GB GB/s a 4x 200GB GB/s, da OSFP a 4x QSFP112) 
+
+
+.2+| NVIDIA MQM8700 | Fibra attiva | 8 | MFS1S00-H003E (cavo NVIDIA in fibra attiva, InfiniBand 200GB GB/s, QSFP56 m) 
+
+
+| Rame passivo | 8 | MCP1650-H002E26 (cavo in rame passivo NVIDIA, InfiniBand 200GB GB/s, QSFP56 m) 
 |===
 
 
@@ -159,15 +145,12 @@ IMPORTANT: I file node richiedono un abbonamento valido a RedHat Enterprise Linu
 | Kernel Linux | 5.14.0-362.24.1.el9_3.x86_64 
 
 
-| Driver InfiniBand/RDMA | MLNX_OFED_LINUX-23,10-3,2.2,0-LTS 
-
-
  a| 
 Firmware HCA
  a| 
-*ConnectX-7 HCA firmware* FW: 28.39.1002 + PXE: 3.7.0201 + UEFI: 14.32.0012
+*ConnectX-7 HCA firmware* FW: 28.42.1000 + PXE: 3.7.0500 + UEFI: 14.35.0015
 
-*ConnectX-6 HCA firmware* FW: 20.31.1014 + PXE: 3.6.0403 + UEFI: 14.24.0013
+*ConnectX-6 HCA firmware* FW: 20.43.1014 + PXE: 3.7.0500 + UEFI: 14.36.0016
 
 |===
 
@@ -179,10 +162,10 @@ Firmware HCA
 | Software | Versione 
 
 
-| Sistema operativo SANtricity | 11.80.0 
+| Sistema operativo SANtricity | 11.90R1 
 
 
-| NVSRAM | N6000-880834-D08.dlp 
+| NVSRAM | N6000-890834-D02.dlp 
 
 
 | Firmware del disco | Più recente disponibile per i modelli di unità in uso. 
@@ -201,15 +184,16 @@ La seguente tabella elenca i requisiti software implementati automaticamente nel
 | BeeGFS | 7.4.4 
 
 
-| Corosync | 3.1.5-4 
+| Corosync | 3.1.7-1 
 
 
-| Pacemaker | 2.1.4-5 
+| Pacemaker | 2.1.6-10 
 
 
-| Opensm  a| 
-Opensm-5.17.2 (da MLNX_OFED_LINUX-23,10-3,2.2,0-LTS)
+| Agenti di recinzione (scorfano rosso/apc) | 4.10.0-55 
 
+
+| Driver InfiniBand/RDMA | MLNX_OFED_LINUX-23,10-3,2.2,0-LTS 
 |===
 
 

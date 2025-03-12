@@ -1,0 +1,233 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-update-hca-firmware.html 
+keywords: BeeGFS on NetApp, HA, Cluster, Administration, Update, Upgrade, HCA, ConnectX, Firmware, Card, Adapter 
+summary: 'Procedura per aggiornare il firmware dell"adattatore ConnectX-7 del nodo file.' 
+---
+= Aggiornare il firmware dell'adattatore del nodo del file
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Per aggiornare gli adattatori ConnectX-7 del nodo file al firmware più recente, procedere come segue.
+
+
+
+== Panoramica
+
+Potrebbe essere necessario aggiornare il firmware della scheda ConnectX-7 per supportare un nuovo driver MLNX_OFED, abilitare nuove funzioni o correggere bug. Questa guida utilizzerà l'utilità di NVIDIA `mlxfwmanager` per gli aggiornamenti delle schede, grazie alla sua facilità d'uso ed efficienza.
+
+
+
+== Considerazioni sull'upgrade
+
+In questa guida vengono descritti due approcci per l'aggiornamento del firmware della scheda ConnectX-7: Un aggiornamento in corso e un aggiornamento del cluster a due nodi. Scegliere l'approccio di aggiornamento appropriato in base alle dimensioni del cluster. Prima di eseguire gli aggiornamenti del firmware, verificare che:
+
+* È installato un driver MLNX_OFED supportato. Fare riferimento alla link:../second-gen/beegfs-technology-requirements.html["requisiti tecnologici"^].
+* Esistono backup validi per il file system BeeGFS e la configurazione del cluster pacemaker.
+* Il cluster è in uno stato sano.
+
+
+
+
+== Preparazione dell'aggiornamento del firmware
+
+Si consiglia di utilizzare l'utilità di NVIDIA `mlxfwmanager` per aggiornare il firmware dell'adattatore di un nodo, fornito con il driver MLNX_OFED di NVIDIA. Prima di avviare gli aggiornamenti, scaricare l'immagine del firmware della scheda da link:https://network.nvidia.com/support/firmware/firmware-downloads/["Sito di supporto di NVIDIA"^] e memorizzarla su ciascun nodo file.
+
+
+NOTE: Per gli adattatori Lenovo ConnectX-7, utilizzare `mlxfwmanager_LES` lo strumento, disponibile alla pagina di NVIDIAlink:https://network.nvidia.com/support/firmware/lenovo-intelligent-cluster/["Firmware OEM"^].
+
+
+
+== Approccio di aggiornamento continuo
+
+Questo approccio è consigliato per qualsiasi cluster ha con più di due nodi. Questo approccio implica l'aggiornamento del firmware dell'adattatore su un file nodo alla volta, consentendo al cluster ha di mantenere le richieste di assistenza, anche se durante questo periodo si consiglia di non eseguire interventi di i/O.
+
+. Verificare che il cluster sia in uno stato ottimale, con ogni servizio BeeGFS in esecuzione sul nodo preferito. Per ulteriori informazioni, fare riferimento alla link:clusters-examine-state.html["Esaminare lo stato del cluster"^] sezione.
+. Scegliere un nodo file da aggiornare e impostarlo in modalità standby, che svuota (o sposta) tutti i servizi BeeGFS da quel nodo:
++
+[source, console]
+----
+pcs node standby <HOSTNAME>
+----
+. Verificare che i servizi del nodo siano esauriti eseguendo:
++
+[source, console]
+----
+pcs status
+----
++
+Verificare che non vi siano servizi che segnalano come `Started` sul nodo in standby.
+
++
+
+NOTE: A seconda delle dimensioni del cluster, lo spostamento dei servizi BeeGFS nel nodo sorella può richiedere secondi o minuti. Se un servizio BeeGFS non si avvia sul nodo gemellato, fare riferimento a link:clusters-troubleshoot.html["Guide per la risoluzione dei problemi"^].
+
+. Aggiornare il firmware dell'adattatore utilizzando `mlxfwmanager`.
++
+[source, console]
+----
+ mlxfwmanager -i <path/to/firmware.bin> -u
+----
++
+Tenere presente `PCI Device Name` per ciascun adattatore che riceve gli aggiornamenti del firmware.
+
+. Ripristinare ciascuna scheda di rete utilizzando l' `mlxfwreset`utilità per applicare il nuovo firmware.
++
+
+NOTE: Alcuni aggiornamenti del firmware potrebbero richiedere un riavvio per applicare l'aggiornamento. Fare riferimento alla link:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["Le limitazioni di mlxfwreset di NVIDIA"^] per le istruzioni. Se è necessario riavviare il sistema, riavviare il sistema invece di reimpostare gli adattatori.
+
++
+.. Arrestare il servizio opensm:
++
+[source, console]
+----
+systemctl stop opensm
+----
+.. Eseguire il seguente comando per ognuno di quelli `PCI Device Name` annotati in precedenza.
++
+[source, console]
+----
+mlxfwreset -d <pci_device_name> reset -y
+----
+.. Avviare il servizio opensm:
++
+[source, console]
+----
+systemctl start opensm
+----
+
+
+. Eseguire `ibstat` e verificare che tutti gli adattatori funzionino alla versione firmware desiderata:
++
+[source, console]
+----
+ibstat
+----
+. Avviare i servizi del gruppo pacemaker sul nodo:
++
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+. Porta il nodo fuori dallo standby:
++
+[source, console]
+----
+pcs node unstandby <HOSTNAME>
+----
+. Riposizionare tutti i servizi BeeGFS nel nodo preferito:
++
+[source, console]
+----
+pcs resource relocate run
+----
+
+
+Ripetere questi passaggi per ciascun nodo file nel cluster fino a quando tutte le schede di rete non sono state aggiornate.
+
+
+
+== Approccio all'update del cluster a due nodi
+
+Questo approccio è consigliato per i cluster ha con solo due nodi. Questo approccio è simile a un aggiornamento in corso, ma include passaggi aggiuntivi per evitare tempi di inattività del servizio quando i servizi cluster di un nodo vengono arrestati.
+
+. Verificare che il cluster sia in uno stato ottimale, con ogni servizio BeeGFS in esecuzione sul nodo preferito. Per ulteriori informazioni, fare riferimento alla link:clusters-examine-state.html["Esaminare lo stato del cluster"^] sezione.
+. Scegliere un nodo file da aggiornare e posizionare il nodo in modalità standby, che svuota (o sposta) tutti i servizi BeeGFS da quel nodo:
++
+[source, console]
+----
+pcs node standby <HOSTNAME>
+----
+. Verificare che le risorse del nodo siano esaurite eseguendo:
++
+[source, console]
+----
+pcs status
+----
++
+Verificare che non vi siano servizi che segnalano come `Started` sul nodo in standby.
+
++
+
+TIP: A seconda delle dimensioni del cluster, possono essere necessari secondi o minuti affinché i servizi BeeGFS eseguano il report come `Started` sul nodo sorella. Se un servizio BeeGFS non si avvia, fare riferimento alla link:clusters-troubleshoot.html["Guide per la risoluzione dei problemi"^].
+
+. Portare il quadro strumenti in modalità di manutenzione.
++
+[source, console]
+----
+pcs property set maintenance-mode=true
+----
+. Aggiornare il firmware dell'adattatore utilizzando `mlxfwmanager`.
++
+[source, console]
+----
+ mlxfwmanager -i <path/to/firmware.bin> -u
+----
++
+Tenere presente `PCI Device Name` per ciascun adattatore che riceve gli aggiornamenti del firmware.
+
+. Ripristinare ciascuna scheda di rete utilizzando l' `mlxfwreset`utilità per applicare il nuovo firmware.
++
+
+NOTE: Alcuni aggiornamenti del firmware potrebbero richiedere un riavvio per applicare l'aggiornamento. Fare riferimento alla link:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["Le limitazioni di mlxfwreset di NVIDIA"^] per le istruzioni. Se è necessario riavviare il sistema, riavviare il sistema invece di reimpostare gli adattatori.
+
++
+.. Arrestare il servizio opensm:
++
+[source, console]
+----
+systemctl stop opensm
+----
+.. Eseguire il seguente comando per ognuno di quelli `PCI Device Name` annotati in precedenza.
++
+[source, console]
+----
+mlxfwreset -d <pci_device_name> reset -y
+----
+.. Avviare il servizio opensm:
++
+[source, console]
+----
+systemctl start opensm
+----
+
+
+. Eseguire `ibstat` e verificare che tutti gli adattatori funzionino alla versione firmware desiderata:
++
+[source, console]
+----
+ibstat
+----
+. Avviare i servizi del gruppo pacemaker sul nodo:
++
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+. Porta il nodo fuori dallo standby:
++
+[source, console]
+----
+pcs node unstandby <HOSTNAME>
+----
+. Portare il quadro strumenti fuori dalla modalità di manutenzione.
++
+[source, console]
+----
+pcs property set maintenance-mode=false
+----
+. Riposizionare tutti i servizi BeeGFS nel nodo preferito:
++
+[source, console]
+----
+pcs resource relocate run
+----
+
+
+Ripetere questi passaggi per ciascun nodo file nel cluster fino a quando tutte le schede di rete non sono state aggiornate.

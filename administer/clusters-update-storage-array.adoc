@@ -14,13 +14,13 @@ summary: Passaggi per aggiornare gli storage array E-Series del cluster ha.
 
 
 [role="lead"]
-Segui questi passaggi per aggiornare gli storage array E-Series del cluster ha (nodi a blocchi).
+Per aggiornare i componenti dello storage array e-Series del cluster ha, procedere come segue.
 
 
 
 == Panoramica
 
-Mantenere aggiornati gli array di storage NetApp E-Series del cluster ha con il firmware più recente garantisce prestazioni ottimali e maggiore sicurezza. Gli aggiornamenti del firmware per l'array di storage vengono applicati utilizzando il sistema operativo SANtricity, NVSRAM e i file del firmware del disco.
+Mantenere aggiornati gli array di storage NetApp E-Series del cluster ha con il firmware più recente garantisce prestazioni ottimali e maggiore sicurezza. Gli aggiornamenti del firmware per l'array di storage vengono applicati attraverso il sistema operativo SANtricity, l'NVSRAM e i file del firmware del disco.
 
 
 IMPORTANT: Durante gli upgrade degli storage array con il cluster ha online, si consiglia di impostare il cluster in modalità di manutenzione per tutti gli upgrade.
@@ -65,7 +65,7 @@ Vedere link:https://docs.ansible.com/ansible/latest/collections_guide/collection
 
 
 . Se necessario, aggiorna i file di inventario Ansible del tuo cluster per includere tutti gli storage array (nodi a blocchi) che richiedono aggiornamenti. Per indicazioni, vedere la link:../custom/architectures-inventory-overview.html["Panoramica di Ansible Inventory"^] sezione.
-. Assicurarsi che il cluster sia in uno stato ottimale con ogni servizio BeeGFS sul relativo nodo preferito. Per ulteriori informazioni, fare riferimento alla link:clusters-examine-state.html["Esaminare lo stato del cluster"^] sezione.
+. Assicurarsi che il cluster sia in uno stato ottimale con ogni servizio BeeGFS sul nodo preferito. Per ulteriori informazioni, fare riferimento alla link:clusters-examine-state.html["Esaminare lo stato del cluster"^] sezione.
 . Portare il quadro strumenti in modalità di manutenzione seguendo le istruzioni riportate in link:clusters-maintenance-mode.html["Impostare il cluster in modalità di manutenzione"^].
 . Crea un nuovo playbook Ansible chiamato `update_block_node_playbook.yml`. Popola il playbook con i seguenti contenuti, sostituendo il sistema operativo SANtricity, NVSRAM e le versioni del firmware del disco nel percorso di upgrade desiderato:
 +

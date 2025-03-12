@@ -80,7 +80,6 @@
   <block id="6c1cf36b91fdf2375e857652291bab2e" category="paragraph">In genere, l'unico motivo per attivare manualmente la modalità di manutenzione è impedire che il cluster reagisca alle modifiche esterne dell'ambiente. Se un singolo nodo del cluster richiede una riparazione fisica, non utilizzare la modalità di manutenzione e posizionare semplicemente tale nodo in standby seguendo la procedura descritta in precedenza. Si noti che la riesecuzione di Ansible attiva automaticamente la modalità di manutenzione del cluster, facilitando la maggior parte della manutenzione del software, inclusi aggiornamenti e modifiche alla configurazione.</block>
   <block id="f3a29486bed19a90f2da6d007818b427" category="section-title">Fasi</block>
   <block id="bbf6745fae83e12806200feeb795f0ef" category="paragraph">Per verificare se il cluster è in modalità di manutenzione, eseguire:</block>
-  <block id="4a6b1ae7d59c5bf02b1b5759e9f9b8e7" category="paragraph">Questo restituisce false quando il cluster funziona normalmente. Per attivare la modalità di manutenzione, eseguire:</block>
   <block id="4ecbc8384cde54344112e6ab08db42be" category="paragraph">Puoi verificare eseguendo lo stato dei PC e assicurandoti che tutte le risorse mostrino "(unmanaged)". Per uscire dalla modalità di manutenzione del cluster, eseguire:</block>
   <block id="9afe1c93907babebeb4d7a466e216a3e" category="summary">Aggiungere o rimuovere i building block dal cluster.</block>
   <block id="da82c1c93eafcb34930ae3da89361e1e" category="doc">Espandere o ridurre il cluster</block>
@@ -134,7 +133,6 @@
   <block id="9e94ba8f70ed52b0ae6c2a8725f97a9f" category="paragraph">Per avviare i servizi e le risorse del cluster su tutti i nodi eseguire:</block>
   <block id="80bd5673b361d19dc46e6b882f98b061" category="paragraph">Oppure avviare i servizi su un nodo specifico con:</block>
   <block id="56ad9ec5396c5f035697d1e62c4b0926" category="paragraph">A questo punto eseguire<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block> Verificare inoltre che i servizi del cluster e BeeGFS vengano avviati su tutti i nodi e che i servizi siano in esecuzione sui nodi previsti.</block>
-  <block id="f2cc0b0e79d5eccda5009e593729ce23" category="admonition">A seconda delle dimensioni del cluster, l'interruzione dell'intero cluster può richiedere alcuni minuti (da secondi a minuti) o la visualizzazione avviata in<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block>. Se<block ref="88f9ea6da6d01a3e529f8aa41e0e4643" prefix=" " category="inline-code"></block> Si blocca per più di cinque minuti, prima di eseguire "Ctrl+C" per annullare il comando, accedere a ciascun nodo del cluster e utilizzare<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block> Per verificare se i servizi cluster (Corosync/Pacemaker) sono ancora in esecuzione su quel nodo. Da qualsiasi nodo in cui il cluster è ancora attivo, è possibile controllare quali risorse bloccano il cluster. Risolvere manualmente il problema e il comando dovrebbe essere completo o può essere rieseguito per interrompere eventuali servizi rimanenti.</block>
   <block id="1819205ce38618cd2752bb84e2b73e58" category="summary">Risoluzione dei problemi di un cluster BeeGFS ha.</block>
   <block id="d60c463bb4096f3ed4bd1618626dfe10" category="doc">Risolvere i problemi</block>
   <block id="b162a91192a0936d7593cb252c65dfd8" category="paragraph">Questa sezione illustra come analizzare e risolvere i problemi di vari guasti e altri scenari che potrebbero verificarsi quando si utilizza un cluster BeeGFS ha.</block>
@@ -690,7 +688,6 @@
   <block id="eb57eb77389d7d4e71c5790c9c6ec1a7" category="cell">BeeGFS</block>
   <block id="51cf7c858a71d06ee12a42cfbff97da7" category="cell">Corosync</block>
   <block id="d95adee972ae170512bd3bdbce557054" category="cell">Pacemaker</block>
-  <block id="0a0d34e3921098e12d40efeb9e5b64ff" category="cell">Opensm</block>
   <block id="13f2a3097f055e043d74b20940df2658" category="section-title">Requisiti dei nodi di controllo Ansible</block>
   <block id="83d32979307efd813f41ef5070206fd3" category="paragraph">La soluzione BeeGFS su NetApp viene implementata e gestita da un nodo di controllo Ansible. Per ulteriori informazioni, consultare<block ref="4410f583cbabaee2389115371eb2ab02" category="inline-link-rx"></block>.</block>
   <block id="158a122309f0454b31e4853755a5962a" category="paragraph">I requisiti software elencati nelle tabelle seguenti sono specifici della versione della raccolta NetApp BeeGFS Ansible elencata di seguito.</block>
@@ -1728,15 +1725,9 @@
   <block id="c618fd1e9213f6ba6e4961e3d1165110" category="list-text">Porta 1GbE per la gestione del sistema operativo in banda</block>
   <block id="db812d54d604d8c71ffd5e4be563e3e5" category="list-text">1GbE BMC con API Redfish per la gestione fuori banda dei server</block>
   <block id="15cf8b6d2674b1d9c9b0383ecfee8929" category="list-text">Doppi alimentatori hot swap e ventole ad alte prestazioni</block>
-  <block id="1fb2f6fd0ecd0371486e7642b03c5dee" category="list-text">*Lenovo ThinkSystem SR665*</block>
-  <block id="78cbac434e403c43ef215a8541f8e62a" category="list-text">*Processori:* 2x AMD EPYC 7343 16C 3,2 GHz (configurato come due zone NUMA).</block>
-  <block id="634d6174b88e5856171cb65f69c870d6" category="list-text">*Memoria:* 256GB GB (16x 16GB TruDDR4 3200MHz RDIMM-A)</block>
-  <block id="7d381836b9e0d0145f8901a9e826a329" category="list-text">*Espansione PCIe:* quattro slot PCIe Gen4 x16 (due per zona NUMA)</block>
   <block id="1e36a3ec484f8d613eabadcfb7010a41" category="paragraph">Gli adattatori della scheda host variano in base al modello di server utilizzato per il nodo file. I consigli per i nodi file verificati includono:</block>
   <block id="22d9c94f9f4ead6ee028aeb105c59845" category="list-text">*Lenovo ThinkSystem SR665 V3 Server:*</block>
   <block id="6ea32d47808c9a0a8b4ad8ce7c3d46a8" category="list-text">MCX755106AS-HEAT ConnectX-7, NDR200, QSFP112, 2 porte, PCIe Gen5 x16, adattatore InfiniBand</block>
-  <block id="2f02d951d56eb9f3451bbc826c3e8750" category="list-text">*Lenovo ThinkSystem SR665 Server:*</block>
-  <block id="a6db2cf27367b5061d9dcb3d029e4836" category="list-text">MCX653106A-HDAT ConnectX-6, HDR, QSFP-56, 2 porte, PCIe Gen4 x16, adattatore InfiniBand</block>
   <block id="b74051cf2ad1a189f8a05453712ca47a" category="cell">Switch della rete di storage</block>
   <block id="abf33d394022ed774955ca8b4e892340" category="paragraph">Lo switch della rete storage deve essere in grado di raggiungere velocità InfiniBand da 200GB GB/s. I modelli di interruttori consigliati includono:</block>
   <block id="d7405c22a666ad0d0cb249c209ed8a2a" category="list-text">*NVIDIA QM9700 Quantum 2 NDR InfiniBand switch*</block>
@@ -1751,9 +1742,7 @@
   <block id="0f0a45940e8946022b971d4ccdf6154e" category="cell">NVIDIA QM9700</block>
   <block id="a87ff679a2f3e71d9181a67b7542122c" category="cell">4</block>
   <block id="979ceabbdb73904b7beec8a0d58c32b8" category="cell">Fibra attiva</block>
-  <block id="270f13016300dfe6e2fe7c681978bef9" category="cell">MFA7U10-H002 (cavo NVIDIA per fibra attiva, InfiniBand da 400GB GB/s a 2x 200GB GB/s, OSFP a 2x QSFP56)</block>
   <block id="f629de18a131cfa25b9f36ef4690fc92" category="cell">Rame passivo</block>
-  <block id="bebb3995ccd5809442d1bb1bc0a25e3a" category="cell">MCP7Y60-H002 (cavo in rame passivo NVIDIA, da InfiniBand 400GB GB/s a 2x 200GB GB/s, da OSFP a 2x QSFP56)</block>
   <block id="f3b15dfb9c8e8d6298034f5cc32a59cd" category="cell">NVIDIA MQM8700</block>
   <block id="30657be0f3a2fdc8c171bce10af72efc" category="cell">MFS1S00-H003E (cavo NVIDIA in fibra attiva, InfiniBand 200GB GB/s, QSFP56 m)</block>
   <block id="c1850fdcdcbbaf2fb48f3055382d5a41" category="cell">MCP1650-H002E26 (cavo in rame passivo NVIDIA, InfiniBand 200GB GB/s, QSFP56 m)</block>
@@ -1761,14 +1750,7 @@
   <block id="099646c88bdb63cce0ec389f4c842fed" category="cell">5.14.0-362.24.1.el9_3.x86_64</block>
   <block id="de4e152f23f311bbd0da3bd3cc07390d" category="cell">MLNX_OFED_LINUX-23,10-3,2.2,0-LTS</block>
   <block id="8c21a74db8c25bd18866fe78a889642f" category="paragraph">Firmware HCA</block>
-  <block id="cf135b5c065c2f500279337fc59c78ac" category="paragraph">*ConnectX-7 HCA firmware* FW: 28.39.1002 + PXE: 3.7.0201 + UEFI: 14.32.0012</block>
-  <block id="932d22339e7f2f10a02d7bf453b85501" category="paragraph">*ConnectX-6 HCA firmware* FW: 20.31.1014 + PXE: 3.6.0403 + UEFI: 14.24.0013</block>
-  <block id="41d49156a74390ee5d03e3516c1dca6b" category="cell">11.80.0</block>
-  <block id="36744b059ba2d833befd7109b0ba5167" category="cell">N6000-880834-D08.dlp</block>
   <block id="141a8d7da406be785ba26084a46e1c00" category="cell">7.4.4</block>
-  <block id="92f9c52d96ebf7ac8dc2f41e6e11647a" category="cell">3.1.5-4</block>
-  <block id="c60a2cf4eb7f8efdd97013c9acb1f45b" category="cell">2.1.4-5</block>
-  <block id="a1a2ed259d1be22e6373097baea242eb" category="paragraph">Opensm-5.17.2 (da MLNX_OFED_LINUX-23,10-3,2.2,0-LTS)</block>
   <block id="5487c77147bdac492714cd2896a16557" category="cell">6.x installato tramite pip: ansible-6.0.0 e ansible-core &gt;= 2.13.0</block>
   <block id="b1e65a5d34a577630a4fc7840358333f" category="cell">3,9 (o versione successiva)</block>
   <block id="1f6e93b1ea11aa12e871822a2cabfc76" category="cell">Encryption-43,0.0, netaddr-1,3.0, ipaddr-2.2.0</block>
@@ -1799,8 +1781,6 @@
   <block id="cd35a558180e5a60f1da5ebd80b06ed2" category="paragraph">Per ulteriori dettagli e opzioni di configurazione alternative, vedere la procedura per configurare l'autenticazione della connessione nella <block ref="dc7fd2b3ea1b2b4a060b953a1b281371" category="inline-link-macro-rx"></block>sezione .</block>
   <block id="8d4ce44e7e1f685f22f0480066f6dadc" category="summary">Passaggi per aggiornare gli storage array E-Series del cluster ha.</block>
   <block id="fecb4be6b37a9fda6b207eaf97363fed" category="doc">Upgrade dello storage array E-Series</block>
-  <block id="26f796a7ab5fa8e4b49e64f8f8bf2a80" category="paragraph">Segui questi passaggi per aggiornare gli storage array E-Series del cluster ha (nodi a blocchi).</block>
-  <block id="e134ac69d8641d9208d2cf890fad5275" category="paragraph">Mantenere aggiornati gli array di storage NetApp E-Series del cluster ha con il firmware più recente garantisce prestazioni ottimali e maggiore sicurezza. Gli aggiornamenti del firmware per l'array di storage vengono applicati utilizzando il sistema operativo SANtricity, NVSRAM e i file del firmware del disco.</block>
   <block id="40039e282631364c07ceaedf99c2cf6c" category="admonition">Durante gli upgrade degli storage array con il cluster ha online, si consiglia di impostare il cluster in modalità di manutenzione per tutti gli upgrade.</block>
   <block id="e23311179b5a9fe1039e35e28290b482" category="section-title">Passaggi di aggiornamento del nodo a blocchi</block>
   <block id="4a77379e9fcc01e35b7933a91b02a2bb" category="inline-link-macro">Considerazioni sull'upgrade</block>
@@ -1816,7 +1796,6 @@
   <block id="bad7f30f1449c1f5ab5e97ce89aee762" category="list-text">*Firmware dell'unità:* accedere a <block ref="dc6c914f008159d5969a25304ddfb479" category="inline-link-macro-rx"></block>e scaricare il firmware più recente per ciascun modello di unità dell'array di archiviazione.</block>
   <block id="c26b41b932786e55f3bf481a6938083e" category="list-text">Memorizza i file del firmware del disco, NVSRAM e del sistema operativo SANtricity nella<block ref="971398284b1e828e40efc6b6630f0369" prefix=" " category="inline-code"></block> directory del nodo di controllo Ansible.</block>
   <block id="09a777fce4515aa1a8dcd86346441924" category="list-text">Se necessario, aggiorna i file di inventario Ansible del tuo cluster per includere tutti gli storage array (nodi a blocchi) che richiedono aggiornamenti. Per indicazioni, vedere la <block ref="f7bda10e421919e9d8ced89dacaba34f" category="inline-link-macro-rx"></block> sezione.</block>
-  <block id="44ab0407eb93bf62fd987a8132e5a912" category="list-text">Assicurarsi che il cluster sia in uno stato ottimale con ogni servizio BeeGFS sul relativo nodo preferito. Per ulteriori informazioni, fare riferimento alla <block ref="1d1f85855f64d7b14ac7c0ae29a52511" category="inline-link-macro-rx"></block> sezione.</block>
   <block id="f525483091b48c05e08ecf537a6c9e5a" category="list-text">Portare il quadro strumenti in modalità di manutenzione seguendo le istruzioni riportate in <block ref="4b8504199df3a0ade85c92603634e18f" category="inline-link-macro-rx"></block>.</block>
   <block id="390c5fa21f5dea398732a7b3b4024304" category="list-text">Crea un nuovo playbook Ansible chiamato<block ref="bdc450c9ffd9674cb7c88bcb24bfedb8" prefix=" " category="inline-code"></block>. Popola il playbook con i seguenti contenuti, sostituendo il sistema operativo SANtricity, NVSRAM e le versioni del firmware del disco nel percorso di upgrade desiderato:</block>
   <block id="13ec6a1291f9e3d303bbc7f6bece60a3" category="list-text">Per avviare gli aggiornamenti, esegui il seguente comando dal nodo di controllo Ansible:</block>
@@ -1923,4 +1902,95 @@
   <block id="49e794dd3d68025fd6943b67048e4f27" category="paragraph">La seconda generazione di BeeGFS su NetApp è ottimizzata per soddisfare i requisiti di performance dei carichi di lavoro esigenti, tra cui high-performance computing (HPC), machine learning (ML), deep learning (DL) e altre tecniche di intelligenza artificiale (ai). Grazie all'integrazione di un'architettura ha (High Availability, alta disponibilità) a disco condiviso, questo design garantisce la durata e la disponibilità dei dati, rendendoli ideali per le aziende e altre organizzazioni che non possono permettersi downtime o perdite di dati. Il design di seconda generazione include componenti quali i server PCIe Gen5 e il supporto per gli switch NVIDIA® Quantum™ InfiniBand da QM9700 400GB GB/s. Questa soluzione non solo è stata verificata da NetApp, ma ha anche superato la qualifica esterna come opzione di storage per NVIDIA DGX™ A100 SuperPOD, con certificazione estesa per i sistemi DGX SuperPOD H100, H200 e B200.</block>
   <block id="7da4cabbb2f4c4e53ccb9660355b7dd1" category="list-text">Sistemi NVIDIA DGX SuperPOD dotati di DGX con GPU A100, H100, H200 e B200.</block>
   <block id="e02a1b9bf28135b2931b63ac814ff7ac" category="sidebar">NVA-1174 - BeeGFS su NetApp EF-Series con sistemi NVIDIA DGX SuperPOD</block>
+  <block id="049125cf8ec62098912c4f2c8db9f61b" category="paragraph">La<block ref="e6211db0073064ade016ad4558767968" prefix=" " category="inline-code"></block> proprietà non viene visualizzata se il cluster funziona normalmente. Se il cluster è attualmente in modalità di manutenzione, la proprietà visualizzerà come<block ref="b326b5062b2f0e69046810717534cb09" prefix=" " category="inline-code"></block>. Per attivare la modalità di manutenzione, eseguire:</block>
+  <block id="ae7cd547e02c1f67adce822f49e1815f" category="admonition">A seconda delle dimensioni del cluster, l'arresto dell'intero cluster può richiedere secondi o minuti o la visualizzazione come avviato in<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block>. se<block ref="88f9ea6da6d01a3e529f8aa41e0e4643" prefix=" " category="inline-code"></block> si blocca per più di cinque minuti, prima di eseguire "Ctrl+C" per annullare il comando, accedere a ciascun nodo del cluster e utilizzare<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block> per verificare se i servizi cluster (Corosync/Pacemaker) sono ancora in esecuzione su quel nodo. Da qualsiasi nodo in cui il cluster è ancora attivo, è possibile controllare quali risorse bloccano il cluster. Risolvere manualmente il problema e il comando dovrebbe essere completo o può essere rieseguito per interrompere eventuali servizi rimanenti.</block>
+  <block id="5dfbb07786784ecd0c0829f3624766bf" category="summary">Procedura per aggiornare i pacchetti pacemaker e Corosync in un cluster ha.</block>
+  <block id="256ad8b6e95e34f8784f6b80bcf07e62" category="doc">Aggiornare i pacchetti pacemaker e Corosync in un cluster ha</block>
+  <block id="f9b43d72a27351762f4809a45ab3809e" category="paragraph">Per aggiornare i pacchetti pacemaker e Corosync in un cluster ha, procedere come segue.</block>
+  <block id="93bcc5a6e49472d3ee328b74217072a4" category="paragraph">L'aggiornamento di Pacemaker e Corosync garantisce al cluster i vantaggi derivanti da nuove funzioni, patch di sicurezza e miglioramenti delle prestazioni.</block>
+  <block id="d5870f2e8bb30d5fd8dba0f3bcba2ff2" category="section-title">Approccio all'upgrade</block>
+  <block id="3910bde80db45114f03b57a1cea719d7" category="inline-link-macro">Aggiornamento di un quadro pacemaker</block>
+  <block id="fbe527032decd848e5233378716880ef" category="paragraph">Ci sono due approcci consigliati per aggiornare un cluster: Un aggiornamento in corso o un arresto completo del cluster. Ogni approccio ha i propri vantaggi e svantaggi. La procedura di aggiornamento può variare a seconda della versione del pacemaker in uso. Fare riferimento alla documentazione di ClusterLabs <block ref="f46eb388ba6d1748ea24c2340bf59c47" category="inline-link-macro-rx"></block>per determinare l'approccio da utilizzare. Prima di adottare un approccio all'aggiornamento, verificare che:</block>
+  <block id="3875a0129b5e7200d99ab95798b4ca49" category="list-text">I nuovi pacchetti pacemaker e Corosync sono supportati all'interno della soluzione BeeGFS di NetApp.</block>
+  <block id="14bc480662de00a882a587d6c753c533" category="list-text">Esistono backup validi per il file system BeeGFS e la configurazione del cluster pacemaker.</block>
+  <block id="efd7093d185f1f3506d2f99fa2406088" category="list-text">Il cluster è in uno stato sano.</block>
+  <block id="22e44c8383bdd51e7823eed40de12db4" category="section-title">Rolling upgrade</block>
+  <block id="49939651104a8f4bf473311d280796b9" category="paragraph">Questo metodo prevede la rimozione di ciascun nodo dal cluster, l'aggiornamento e la reintroduzione nel cluster fino a quando tutti i nodi non eseguono la nuova versione. Questo approccio mantiene operativo il cluster, ideale per cluster ha di maggiori dimensioni, con il rischio di eseguire versioni miste durante il processo. Questo approccio deve essere evitato in un cluster a due nodi.</block>
+  <block id="4fe0553e4bb27a05a3680575a66540a7" category="list-text">Verificare che il cluster sia in uno stato ottimale, con ogni servizio BeeGFS in esecuzione sul nodo preferito. Per ulteriori informazioni, fare riferimento alla <block ref="1d1f85855f64d7b14ac7c0ae29a52511" category="inline-link-macro-rx"></block> sezione.</block>
+  <block id="afcf7685b4b8a18d898e6c84f2b84166" category="list-text">Per aggiornare il nodo, impostarlo in modalità standby per scaricare (o spostare) tutti i servizi BeeGFS:</block>
+  <block id="36b48c4e047e7d7107eaa995708914b1" category="list-text">Verificare che i servizi del nodo siano esauriti eseguendo:</block>
+  <block id="9c1adfab509ac587de61a03c43cda767" category="paragraph">Assicurarsi che non vengano segnalati servizi come<block ref="8428552d86c0d262a542a528af490afa" prefix=" " category="inline-code"></block> sul nodo in standby.</block>
+  <block id="2b26b4d53851d442c712564adfb4b445" category="admonition">A seconda delle dimensioni del cluster, possono essere necessari secondi o minuti per lo spostamento dei servizi nel nodo sorella. Se un servizio BeeGFS non si avvia sul nodo gemellato, fare riferimento a <block ref="c31c76dcbaad8e2836998d58888cb639" category="inline-link-macro-rx"></block>.</block>
+  <block id="e2939fee46b1883f2b4fb3fec03f83fb" category="list-text">Arrestare il cluster sul nodo:</block>
+  <block id="7a3db5a8197b212244d160de60f682da" category="list-text">Aggiornare i pacchetti pacemaker, Corosync e pz sul nodo:</block>
+  <block id="054ce71db50c3d6b29d6ddfda5264cc9" category="admonition">I comandi del gestore dei pacchetti variano a seconda del sistema operativo. I seguenti comandi si riferiscono ai sistemi che eseguono RHEL 8 e successivi.</block>
+  <block id="0a761ff507fc5bb4859d6d425b2b120a" category="list-text">Avviare i servizi del gruppo pacemaker sul nodo:</block>
+  <block id="7a98d33ee2035dc15b33a6ccaea4753b" category="list-text">Se il<block ref="3ecf2642759a04bd3616642bd56bed59" prefix=" " category="inline-code"></block> pacchetto è stato aggiornato, autenticare nuovamente il nodo con il cluster:</block>
+  <block id="039f324455c000e0dad7b93f641cd7bf" category="list-text">Verificare che la configurazione del pacemaker sia ancora valida con<block ref="419527551374e0fe5024d6bb1f3f2814" prefix=" " category="inline-code"></block> lo strumento.</block>
+  <block id="51c1fa488cc911104720c97dad8ec5eb" category="admonition">Questa operazione deve essere verificata solo una volta durante l'upgrade del cluster.</block>
+  <block id="265a35348bf91dcba3e55e3454e3c155" category="list-text">Porta il nodo fuori dallo standby:</block>
+  <block id="ea285586c4e419f14cfb8b432dd0d4b6" category="list-text">Riposizionare tutti i servizi BeeGFS nel nodo preferito:</block>
+  <block id="1fa806fcbe49745af0c2b70e8779b73d" category="list-text">Ripetere i passaggi precedenti per ciascun nodo del cluster finché tutti i nodi non eseguono le versioni Pacemaker, Corosync e pz desiderate.</block>
+  <block id="d90c1dfacfcfe6034c62dbbf554aa336" category="list-text">Infine, eseguire<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block> e verificare che il quadro strumenti sia in buone condizioni e<block ref="60c21e5e7bb2f6f1f478a497d52448f3" prefix=" " category="inline-code"></block> riporta la versione pacemaker desiderata.</block>
+  <block id="894166f580af39476db30ddf0b39e93c" category="admonition">Se il<block ref="60c21e5e7bb2f6f1f478a497d52448f3" prefix=" " category="inline-code"></block> report "versione fissa", un nodo nel quadro strumenti è ancora in esecuzione con la versione precedente di pacemaker e deve essere aggiornato. Se un nodo aggiornato non è in grado di riconnettersi al cluster o se le risorse non si avviano, controllare i registri del cluster e consultare le note di rilascio del pacemaker o le guide dell'utente per problemi noti relativi all'aggiornamento.</block>
+  <block id="2360c7132bb0f703a6af1f784e30721f" category="section-title">Arresto completo del cluster</block>
+  <block id="c56b96ad19ba7ad1a0a28a5dd92fccd7" category="paragraph">Con questo approccio, tutti i nodi e le risorse del cluster vengono arrestati, i nodi vengono aggiornati e il cluster viene riavviato. Questo approccio è necessario se le versioni Pacemaker e Corosync non supportano una configurazione a versione mista.</block>
+  <block id="ada4df9ccfff1547c1f09456386caf07" category="list-text">Arrestare il software del cluster (pacemaker e Corosync) su tutti i nodi.</block>
+  <block id="ec37f5378eeba13984a263685014a655" category="admonition">A seconda delle dimensioni del cluster, l'arresto dell'intero cluster può richiedere secondi o minuti.</block>
+  <block id="26dce8ee8153faa4816d7468ec720330" category="list-text">Una volta arrestati i servizi cluster su tutti i nodi, aggiornare i pacchetti pacemaker, Corosync e pz su ciascun nodo in base alle proprie esigenze.</block>
+  <block id="142f756ea3d035f02b974a98db74916c" category="list-text">Dopo aver eseguito l'upgrade di tutti i nodi, avviare il software cluster su tutti i nodi:</block>
+  <block id="492e09d8d491f90ea20fad54f615816a" category="list-text">Se il<block ref="3ecf2642759a04bd3616642bd56bed59" prefix=" " category="inline-code"></block> pacchetto è stato aggiornato, eseguire nuovamente l'autenticazione di ciascun nodo nel cluster:</block>
+  <block id="fe0b373cea492c0574adf218141f90b9" category="list-text">Infine, eseguire<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block> e verificare che il quadro strumenti funzioni correttamente e<block ref="60c21e5e7bb2f6f1f478a497d52448f3" prefix=" " category="inline-code"></block> riporta la versione pacemaker corretta.</block>
+  <block id="c07d2f5207c17b96abd3e5c6aa314715" category="admonition">Se il<block ref="60c21e5e7bb2f6f1f478a497d52448f3" prefix=" " category="inline-code"></block> report "versione fissa", un nodo nel quadro strumenti è ancora in esecuzione con la versione precedente di pacemaker e deve essere aggiornato.</block>
+  <block id="6b923a0944f4926d7adb6a03c07c9a69" category="summary">Procedura per aggiornare il firmware dell'adattatore ConnectX-7 del nodo file.</block>
+  <block id="8fce27499bf82a3c6907d5382138d466" category="doc">Aggiornare il firmware dell'adattatore del nodo del file</block>
+  <block id="c344aab4fba3911c1af618a881763c15" category="paragraph">Per aggiornare gli adattatori ConnectX-7 del nodo file al firmware più recente, procedere come segue.</block>
+  <block id="89cdf8293572c88c65745474062df951" category="paragraph">Potrebbe essere necessario aggiornare il firmware della scheda ConnectX-7 per supportare un nuovo driver MLNX_OFED, abilitare nuove funzioni o correggere bug. Questa guida utilizzerà l'utilità di NVIDIA<block ref="073f22c545d6312ca19220ec3d6d9547" prefix=" " category="inline-code"></block> per gli aggiornamenti delle schede, grazie alla sua facilità d'uso ed efficienza.</block>
+  <block id="d41774d5dcaa69f5393d8da7101754ec" category="paragraph">In questa guida vengono descritti due approcci per l'aggiornamento del firmware della scheda ConnectX-7: Un aggiornamento in corso e un aggiornamento del cluster a due nodi. Scegliere l'approccio di aggiornamento appropriato in base alle dimensioni del cluster. Prima di eseguire gli aggiornamenti del firmware, verificare che:</block>
+  <block id="1d79fc0255b694c56bd5dea749c741cd" category="list-text">È installato un driver MLNX_OFED supportato. Fare riferimento alla <block ref="178d97073525b373723b8dda031e8548" category="inline-link-macro-rx"></block>.</block>
+  <block id="e9b1ac80ddb831f90b95b913fae55a9f" category="section-title">Preparazione dell'aggiornamento del firmware</block>
+  <block id="6b9b7c71638c919ff18548623403c799" category="inline-link-macro">Sito di supporto di NVIDIA</block>
+  <block id="28adaa75c816b77283bde4522b8cc249" category="paragraph">Si consiglia di utilizzare l'utilità di NVIDIA<block ref="073f22c545d6312ca19220ec3d6d9547" prefix=" " category="inline-code"></block> per aggiornare il firmware dell'adattatore di un nodo, fornito con il driver MLNX_OFED di NVIDIA. Prima di avviare gli aggiornamenti, scaricare l'immagine del firmware della scheda da <block ref="1a2b49373c8b50530166a64f6ed91a90" category="inline-link-macro-rx"></block> e memorizzarla su ciascun nodo file.</block>
+  <block id="415a4f653138a852500ffee84bf5c1b4" category="inline-link-macro">Firmware OEM</block>
+  <block id="4f4c0bb368cf9ad01cdc3ff868ebf17c" category="admonition">Per gli adattatori Lenovo ConnectX-7, utilizzare<block ref="afeb1af9ee3dad5422ab912ec5ed916d" prefix=" " category="inline-code"></block> lo strumento, disponibile alla pagina di NVIDIA<block ref="01d7d47a93ae1e4d58f3e91b6cd1d0c0" category="inline-link-macro-rx"></block>.</block>
+  <block id="da3485dbd4b4e5883fb3b1f4e9556949" category="section-title">Approccio di aggiornamento continuo</block>
+  <block id="1f97f3d9707d91def548aa8a2e62b91d" category="paragraph">Questo approccio è consigliato per qualsiasi cluster ha con più di due nodi. Questo approccio implica l'aggiornamento del firmware dell'adattatore su un file nodo alla volta, consentendo al cluster ha di mantenere le richieste di assistenza, anche se durante questo periodo si consiglia di non eseguire interventi di i/O.</block>
+  <block id="a6e5bc149cec5a68a62c041d3c6a0b33" category="list-text">Scegliere un nodo file da aggiornare e impostarlo in modalità standby, che svuota (o sposta) tutti i servizi BeeGFS da quel nodo:</block>
+  <block id="a6f5d5c821201989f4f5f4b1434bbab2" category="list-text">Verificare che i servizi del nodo siano esauriti eseguendo:</block>
+  <block id="879176c1b609d9d4155509330b98a7dc" category="paragraph">Verificare che non vi siano servizi che segnalano come<block ref="8428552d86c0d262a542a528af490afa" prefix=" " category="inline-code"></block> sul nodo in standby.</block>
+  <block id="9d2557a9c1e296e086e87e0ea139e32b" category="admonition">A seconda delle dimensioni del cluster, lo spostamento dei servizi BeeGFS nel nodo sorella può richiedere secondi o minuti. Se un servizio BeeGFS non si avvia sul nodo gemellato, fare riferimento a <block ref="c31c76dcbaad8e2836998d58888cb639" category="inline-link-macro-rx"></block>.</block>
+  <block id="d15de38a9cc8343b26b76e04866effdf" category="list-text">Aggiornare il firmware dell'adattatore utilizzando<block ref="073f22c545d6312ca19220ec3d6d9547" prefix=" " category="inline-code"></block>.</block>
+  <block id="4d87c4ea16f4cf2adbeefb288c4840e6" category="paragraph">Tenere presente<block ref="0e4a508dbc00c0684c2ed58952be4420" prefix=" " category="inline-code"></block> per ciascun adattatore che riceve gli aggiornamenti del firmware.</block>
+  <block id="69b31d926cd00aa9de80cf7b14eab218" category="list-text">Ripristinare ciascuna scheda di rete utilizzando l'<block ref="45e6a20266bfc1fa2c25471ddf52308b" prefix=" " category="inline-code"></block>utilità per applicare il nuovo firmware.</block>
+  <block id="25eb42c85a64acec04cf19a3ad2b7395" category="inline-link-macro">Le limitazioni di mlxfwreset di NVIDIA</block>
+  <block id="435a7ccec9f9ff6251954e95de4d0077" category="admonition">Alcuni aggiornamenti del firmware potrebbero richiedere un riavvio per applicare l'aggiornamento. Fare riferimento alla <block ref="ebfc57e157ebe1ff1768e220a8dc329c" category="inline-link-macro-rx"></block> per le istruzioni. Se è necessario riavviare il sistema, riavviare il sistema invece di reimpostare gli adattatori.</block>
+  <block id="d974fd8f7ae3828a4b95f6e90d4c579a" category="list-text">Arrestare il servizio opensm:</block>
+  <block id="6a878a1cd043169c82c66374f6fec2a5" category="list-text">Eseguire il seguente comando per ognuno di quelli<block ref="0e4a508dbc00c0684c2ed58952be4420" prefix=" " category="inline-code"></block> annotati in precedenza.</block>
+  <block id="bd1516e27db5d9760920cc6ac65637f7" category="list-text">Avviare il servizio opensm:</block>
+  <block id="e8dd47a8d6e5d7d4ce23864009576781" category="list-text">Eseguire<block ref="64284c8d228536994c2b22912d2dfd88" prefix=" " category="inline-code"></block> e verificare che tutti gli adattatori funzionino alla versione firmware desiderata:</block>
+  <block id="afdebfdd553f315294b6e2613a68bac2" category="paragraph">Ripetere questi passaggi per ciascun nodo file nel cluster fino a quando tutte le schede di rete non sono state aggiornate.</block>
+  <block id="2e24e5f97c6ecd461030eb1eb884379b" category="section-title">Approccio all'update del cluster a due nodi</block>
+  <block id="305a0f364da0ff85c6c92c4680866c24" category="paragraph">Questo approccio è consigliato per i cluster ha con solo due nodi. Questo approccio è simile a un aggiornamento in corso, ma include passaggi aggiuntivi per evitare tempi di inattività del servizio quando i servizi cluster di un nodo vengono arrestati.</block>
+  <block id="8daaa6355694edbaba2cb5a9b13ce781" category="list-text">Scegliere un nodo file da aggiornare e posizionare il nodo in modalità standby, che svuota (o sposta) tutti i servizi BeeGFS da quel nodo:</block>
+  <block id="370d6736b9730ee3ed471c975dca3040" category="list-text">Verificare che le risorse del nodo siano esaurite eseguendo:</block>
+  <block id="04adfc113361937ceba2fcd8d61b3c92" category="admonition">A seconda delle dimensioni del cluster, possono essere necessari secondi o minuti affinché i servizi BeeGFS eseguano il report come<block ref="8428552d86c0d262a542a528af490afa" prefix=" " category="inline-code"></block> sul nodo sorella. Se un servizio BeeGFS non si avvia, fare riferimento alla <block ref="c31c76dcbaad8e2836998d58888cb639" category="inline-link-macro-rx"></block>.</block>
+  <block id="322895ffeb919484b312ccccded9b8ac" category="list-text">Portare il quadro strumenti in modalità di manutenzione.</block>
+  <block id="936f1016c7b40dcadce05d9585e03c4c" category="list-text">Portare il quadro strumenti fuori dalla modalità di manutenzione.</block>
+  <block id="7190ac3ac7ea745d4c9a31ade586f240" category="paragraph">Per aggiornare i componenti dello storage array e-Series del cluster ha, procedere come segue.</block>
+  <block id="91ba484bdb8dfae4fcf9b5f1cb4c9407" category="paragraph">Mantenere aggiornati gli array di storage NetApp E-Series del cluster ha con il firmware più recente garantisce prestazioni ottimali e maggiore sicurezza. Gli aggiornamenti del firmware per l'array di storage vengono applicati attraverso il sistema operativo SANtricity, l'NVSRAM e i file del firmware del disco.</block>
+  <block id="f04c5fdc9e10396af2f82ce9565f65a5" category="list-text">Assicurarsi che il cluster sia in uno stato ottimale con ogni servizio BeeGFS sul nodo preferito. Per ulteriori informazioni, fare riferimento alla <block ref="1d1f85855f64d7b14ac7c0ae29a52511" category="inline-link-macro-rx"></block> sezione.</block>
+  <block id="d5c73bafdf627c28554a39d3e655f1bf" category="cell">Fibra attiva (inclusi i ricetrasmettitori)</block>
+  <block id="c44b2ed9fc36044ebe1e8b9057c4a281" category="cell">MMA4Z00-NS (multimodale, IB/ETH, 800GB GB/s 2x400 GB/s a due porte OSFP)</block>
+  <block id="53fff94cbca4161cd31d168451033f2e" category="cell">MFP7E20-Nxxx (cavo in fibra splitter multimodale da 4 canali a due a 2 canali)</block>
+  <block id="804e83e6974e7f6076f940326b985a83" category="cell">MMA1Z00-NS400 (multimodale, IB/ETH, QSFP-112 a una porta da 400GB GB/s)</block>
+  <block id="b2f1f9abf8117b3cde0475d1adf7a64f" category="cell">MCP7Y40-N002 (cavo splitter in rame passivo NVIDIA, da InfiniBand 800GB GB/s a 4x 200GB GB/s, da OSFP a 4x QSFP112)</block>
+  <block id="fbe7b2959f641c0a45951417fc744ba8" category="paragraph">*ConnectX-7 HCA firmware* FW: 28.42.1000 + PXE: 3.7.0500 + UEFI: 14.35.0015</block>
+  <block id="63c2d436fc11f0bcdd598c38560aca3f" category="paragraph">*ConnectX-6 HCA firmware* FW: 20.43.1014 + PXE: 3.7.0500 + UEFI: 14.36.0016</block>
+  <block id="0d665a6c7072af8fddd1f64d9c741762" category="cell">11.90R1</block>
+  <block id="6c3a5f2fbe0e1eb20af96ccd813c89b0" category="cell">N6000-890834-D02.dlp</block>
+  <block id="2c31ce9dbdba754d30ac4980d7d504df" category="cell">3.1.7-1</block>
+  <block id="fec83cb9bb84cd6342be622a93d94a1b" category="cell">2.1.6-10</block>
+  <block id="088914339db9effda3ac57ec2e9439b6" category="cell">Agenti di recinzione (scorfano rosso/apc)</block>
+  <block id="f726fcf5784fc25f630a32e650f8b5a0" category="cell">4.10.0-55</block>
+  <block id="f8b6aa2ae96c25a05a0cc6e26a9236d7" category="sidebar">Aggiornare i pacchetti pacemaker e Corosync</block>
 </blocks>

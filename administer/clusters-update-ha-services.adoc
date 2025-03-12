@@ -1,0 +1,184 @@
+---
+sidebar: sidebar 
+permalink: administer/clusters-update-ha-services.html 
+keywords: Cluster, Administration, Update, Upgrade, Pacemaker, Corosync 
+summary: Procedura per aggiornare i pacchetti pacemaker e Corosync in un cluster ha. 
+---
+= Aggiornare i pacchetti pacemaker e Corosync in un cluster ha
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Per aggiornare i pacchetti pacemaker e Corosync in un cluster ha, procedere come segue.
+
+
+
+== Panoramica
+
+L'aggiornamento di Pacemaker e Corosync garantisce al cluster i vantaggi derivanti da nuove funzioni, patch di sicurezza e miglioramenti delle prestazioni.
+
+
+
+== Approccio all'upgrade
+
+Ci sono due approcci consigliati per aggiornare un cluster: Un aggiornamento in corso o un arresto completo del cluster. Ogni approccio ha i propri vantaggi e svantaggi. La procedura di aggiornamento può variare a seconda della versione del pacemaker in uso. Fare riferimento alla documentazione di ClusterLabs link:https://clusterlabs.org/projects/pacemaker/doc/3.0/Pacemaker_Administration/html/upgrading.html["Aggiornamento di un quadro pacemaker"^]per determinare l'approccio da utilizzare. Prima di adottare un approccio all'aggiornamento, verificare che:
+
+* I nuovi pacchetti pacemaker e Corosync sono supportati all'interno della soluzione BeeGFS di NetApp.
+* Esistono backup validi per il file system BeeGFS e la configurazione del cluster pacemaker.
+* Il cluster è in uno stato sano.
+
+
+
+
+=== Rolling upgrade
+
+Questo metodo prevede la rimozione di ciascun nodo dal cluster, l'aggiornamento e la reintroduzione nel cluster fino a quando tutti i nodi non eseguono la nuova versione. Questo approccio mantiene operativo il cluster, ideale per cluster ha di maggiori dimensioni, con il rischio di eseguire versioni miste durante il processo. Questo approccio deve essere evitato in un cluster a due nodi.
+
+. Verificare che il cluster sia in uno stato ottimale, con ogni servizio BeeGFS in esecuzione sul nodo preferito. Per ulteriori informazioni, fare riferimento alla link:clusters-examine-state.html["Esaminare lo stato del cluster"^] sezione.
+. Per aggiornare il nodo, impostarlo in modalità standby per scaricare (o spostare) tutti i servizi BeeGFS:
++
+[source, console]
+----
+pcs node standby <HOSTNAME>
+----
+. Verificare che i servizi del nodo siano esauriti eseguendo:
++
+[source, console]
+----
+pcs status
+----
++
+Assicurarsi che non vengano segnalati servizi come `Started` sul nodo in standby.
+
++
+
+NOTE: A seconda delle dimensioni del cluster, possono essere necessari secondi o minuti per lo spostamento dei servizi nel nodo sorella. Se un servizio BeeGFS non si avvia sul nodo gemellato, fare riferimento a link:clusters-troubleshoot.html["Guide per la risoluzione dei problemi"^].
+
+. Arrestare il cluster sul nodo:
++
+[source, console]
+----
+pcs cluster stop <HOSTNAME>
+----
+. Aggiornare i pacchetti pacemaker, Corosync e pz sul nodo:
++
+
+NOTE: I comandi del gestore dei pacchetti variano a seconda del sistema operativo. I seguenti comandi si riferiscono ai sistemi che eseguono RHEL 8 e successivi.
+
++
+[source, console]
+----
+dnf update pacemaker-<version>
+----
++
+[source, console]
+----
+dnf update corosync-<version>
+----
++
+[source, console]
+----
+dnf update pcs-<version>
+----
+. Avviare i servizi del gruppo pacemaker sul nodo:
++
+[source, console]
+----
+pcs cluster start <HOSTNAME>
+----
+. Se il `pcs` pacchetto è stato aggiornato, autenticare nuovamente il nodo con il cluster:
++
+[source, console]
+----
+pcs host auth <HOSTNAME>
+----
+. Verificare che la configurazione del pacemaker sia ancora valida con `crm_verify` lo strumento.
++
+
+NOTE: Questa operazione deve essere verificata solo una volta durante l'upgrade del cluster.
+
++
+[source, console]
+----
+crm_verify -L -V
+----
+. Porta il nodo fuori dallo standby:
++
+[source, console]
+----
+pcs node unstandby <HOSTNAME>
+----
+. Riposizionare tutti i servizi BeeGFS nel nodo preferito:
++
+[source, console]
+----
+pcs resource relocate run
+----
+. Ripetere i passaggi precedenti per ciascun nodo del cluster finché tutti i nodi non eseguono le versioni Pacemaker, Corosync e pz desiderate.
+. Infine, eseguire `pcs status` e verificare che il quadro strumenti sia in buone condizioni e `Current DC` riporta la versione pacemaker desiderata.
++
+
+NOTE: Se il `Current DC` report "versione fissa", un nodo nel quadro strumenti è ancora in esecuzione con la versione precedente di pacemaker e deve essere aggiornato. Se un nodo aggiornato non è in grado di riconnettersi al cluster o se le risorse non si avviano, controllare i registri del cluster e consultare le note di rilascio del pacemaker o le guide dell'utente per problemi noti relativi all'aggiornamento.
+
+
+
+
+
+=== Arresto completo del cluster
+
+Con questo approccio, tutti i nodi e le risorse del cluster vengono arrestati, i nodi vengono aggiornati e il cluster viene riavviato. Questo approccio è necessario se le versioni Pacemaker e Corosync non supportano una configurazione a versione mista.
+
+. Verificare che il cluster sia in uno stato ottimale, con ogni servizio BeeGFS in esecuzione sul nodo preferito. Per ulteriori informazioni, fare riferimento alla link:clusters-examine-state.html["Esaminare lo stato del cluster"^] sezione.
+. Arrestare il software del cluster (pacemaker e Corosync) su tutti i nodi.
++
+
+NOTE: A seconda delle dimensioni del cluster, l'arresto dell'intero cluster può richiedere secondi o minuti.
+
++
+[source, console]
+----
+pcs cluster stop --all
+----
+. Una volta arrestati i servizi cluster su tutti i nodi, aggiornare i pacchetti pacemaker, Corosync e pz su ciascun nodo in base alle proprie esigenze.
++
+
+NOTE: I comandi del gestore dei pacchetti variano a seconda del sistema operativo. I seguenti comandi si riferiscono ai sistemi che eseguono RHEL 8 e successivi.
+
++
+[source, console]
+----
+dnf update pacemaker-<version>
+----
++
+[source, console]
+----
+dnf update corosync-<version>
+----
++
+[source, console]
+----
+dnf update pcs-<version>
+----
+. Dopo aver eseguito l'upgrade di tutti i nodi, avviare il software cluster su tutti i nodi:
++
+[source, console]
+----
+pcs cluster start --all
+----
+. Se il `pcs` pacchetto è stato aggiornato, eseguire nuovamente l'autenticazione di ciascun nodo nel cluster:
++
+[source, console]
+----
+pcs host auth <HOSTNAME>
+----
+. Infine, eseguire `pcs status` e verificare che il quadro strumenti funzioni correttamente e `Current DC` riporta la versione pacemaker corretta.
++
+
+NOTE: Se il `Current DC` report "versione fissa", un nodo nel quadro strumenti è ancora in esecuzione con la versione precedente di pacemaker e deve essere aggiornato.
+
+
