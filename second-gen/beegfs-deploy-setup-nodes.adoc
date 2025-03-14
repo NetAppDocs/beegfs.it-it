@@ -49,10 +49,7 @@ NOTE: Sebbene non sia strettamente necessario, le sezioni successive presumono c
 ....
 subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpms --add=enabled:1
 ....
-. Aggiornare tutto il firmware HCA alla versione consigliata in link:beegfs-technology-requirements.html["Requisiti tecnologici"].
-+
-Questo aggiornamento può essere eseguito scaricando ed eseguendo una versione del tool mlxup che integra il firmware consigliato. È possibile scaricare questo strumento da https://network.nvidia.com/support/firmware/mlxup-mft/["Mlxup - Utility di aggiornamento e query"^] (link:https://docs.nvidia.com/networking/display/mlxupfwutility["guida per l'utente"^]).
-
+. Aggiornare tutto il firmware HCA alla versione consigliata in link:beegfs-technology-requirements.html["Requisiti tecnologici"] uso della link:..administer/clusters-update-hca-firmware.html["Aggiornare il firmware dell'adattatore del nodo del file"^]guida.
 
 
 
@@ -63,11 +60,11 @@ Configurare i nodi a blocchi EF600 configurando la porta di gestione su ciascun 
 
 . Configurare la porta di gestione su ciascun controller EF600.
 +
-Per istruzioni sulla configurazione delle porte, consultare https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["Centro di documentazione e-Series"^].
+Per istruzioni sulla configurazione delle porte, consultare la https://docs.netapp.com/us-en/e-series/install-hw-ef600/complete-setup-task.html#step-2-connect-and-configure-the-management-connection["Centro di documentazione e-Series"^].
 
 . Facoltativamente, impostare il nome dell'array di storage per ciascun sistema.
 +
-L'impostazione di un nome può semplificare il riferimento a ciascun sistema nelle sezioni successive. Per istruzioni sull'impostazione del nome dell'array, consultare https://docs.netapp.com/us-en/e-series/maintenance-ef600/hpp-overview-supertask-concept.html["Centro di documentazione e-Series"^].
+L'impostazione di un nome può semplificare il riferimento a ciascun sistema nelle sezioni successive. Per istruzioni sull'impostazione del nome della matrice, vedere https://docs.netapp.com/us-en/e-series-santricity/sm-interface/setup-wizard-overview.html#first-time-setup["Centro di documentazione e-Series"^] .
 
 
 

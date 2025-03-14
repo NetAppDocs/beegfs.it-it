@@ -119,9 +119,9 @@ Lo switch della rete storage deve essere in grado di raggiungere velocità Infin
 |===
 
 
-== Requisiti software
+== Requisiti software e firmware
 
-Per ottenere performance e affidabilità prevedibili, le release della soluzione BeeGFS su NetApp vengono testate con versioni specifiche dei componenti software necessari per implementare la soluzione.
+Per garantire prestazioni e affidabilità prevedibili, le versioni della soluzione BeeGFS on NetApp vengono testate con versioni specifiche dei componenti software e firmware. Queste versioni sono necessarie per l'implementazione della soluzione.
 
 
 
@@ -132,14 +132,7 @@ Per ottenere performance e affidabilità prevedibili, le release della soluzione
 | Software | Versione 
 
 
- a| 
-RedHat Enterprise Linux
- a| 
-RedHat 9.3 Server Physical con alta disponibilità (2 socket).
-
-
-IMPORTANT: I file node richiedono un abbonamento valido a RedHat Enterprise Linux Server e Red Hat Enterprise Linux High Availability Add-on.
-
+| RedHat Enterprise Linux | RedHat 9.3 Server Physical con alta disponibilità (2 socket). IMPORTANTE: I nodi di file richiedono un abbonamento a RedHat Enterprise Linux Server valido e il componente aggiuntivo Red Hat Enterprise Linux High Availability. 
 
 
 | Kernel Linux | 5.14.0-362.24.1.el9_3.x86_64 
@@ -208,10 +201,13 @@ I requisiti software elencati nelle tabelle seguenti sono specifici della versio
 | Software | Versione 
 
 
-| Ansible | 6.x installato tramite pip: ansible-6.0.0 e ansible-core >= 2.13.0 
+| Ansible | 10.x 
 
 
-| Python | 3,9 (o versione successiva) 
+| Ansible-core | >= 2.13.0 
+
+
+| Python | 3,10 
 
 
 | Pacchetti Python aggiuntivi | Encryption-43,0.0, netaddr-1,3.0, ipaddr-2.2.0 

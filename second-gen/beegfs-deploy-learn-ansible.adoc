@@ -14,15 +14,15 @@ summary: 'Prima di iniziare l"implementazione, assicurati di comprendere come ut
 
 
 [role="lead"]
-Prima di iniziare l'implementazione, assicurati di comprendere come utilizzare Ansible per configurare e implementare la soluzione BeeGFS su NetApp utilizzando la progettazione di blocchi di costruzione BeeGFS di seconda generazione.
+Prima di iniziare un'implementazione, familiarizza con il modo in cui Ansible è configurato e utilizzato per implementare la soluzione BeeGFS su NetApp.
 
-L'inventario Ansible definisce la configurazione per i nodi di file e blocchi e rappresenta il file system BeeGFS che si desidera implementare. L'inventario include host, gruppi e variabili che descrivono il file system BeeGFS desiderato. Gli inventari di esempio possono essere scaricati da https://github.com/netappeseries/beegfs/tree/master/getting_started/["NetApp e-Series BeeGFS GitHub"^].
+L'inventario Ansible è una struttura di directory in cui sono elencati i nodi di file e blocchi per il file system BeeGFS da implementare. Include host, gruppi e variabili che descrivono il file system BeeGFS desiderato. L'inventario Ansible deve essere memorizzato nel nodo di controllo Ansible, ossia su qualsiasi macchina con accesso ai nodi di file e blocchi utilizzati per eseguire il playbook Ansible. Gli inventari dei campioni possono essere scaricati da https://github.com/netappeseries/beegfs/tree/master/getting_started/["NetApp e-Series BeeGFS GitHub"^] .
 
 
 
 == Moduli e ruoli Ansible
 
-Per applicare la configurazione descritta dall'inventario Ansible, utilizza i vari ruoli e moduli Ansible forniti nella raccolta NetApp E-Series Ansible, in particolare il ruolo BeeGFS ha 7,4 (disponibile dal https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4["NetApp e-Series BeeGFS GitHub"^]) che implementa la soluzione end-to-end.
+Per applicare la configurazione descritta dall'inventario Ansible, utilizza i vari moduli e ruoli Ansible forniti nella raccolta Ansible NetApp e-Series (disponibile dal ) che implementano la soluzione end-to- https://github.com/netappeseries/beegfs/tree/master/roles/beegfs_ha_7_4["NetApp e-Series BeeGFS GitHub"^]end.
 
 Ogni ruolo nella raccolta NetApp e-Series Ansible è un'implementazione end-to-end completa della soluzione BeeGFS su NetApp. I ruoli utilizzano le raccolte NetApp e-Series SANtricity, host e BeeGFS che consentono di configurare il file system BeeGFS con ha (alta disponibilità). È quindi possibile eseguire il provisioning e il mapping dello storage, assicurandosi che lo storage del cluster sia pronto per l'uso.
 
@@ -35,11 +35,11 @@ NOTE: Anche se le fasi di implementazione tentano di fornire dettagli sufficient
 
 == Layout dell'inventario per un cluster BeeGFS ha
 
-Utilizzare la struttura di inventario Ansible per definire un cluster BeeGFS ha.
+Definire un cluster BeeGFS ha utilizzando la struttura di inventario Ansible.
 
-Chiunque abbia esperienza precedente con Ansible deve essere consapevole del fatto che il ruolo BeeGFS ha implementa un metodo personalizzato per scoprire quali variabili (o fatti) si applicano a ciascun host. Ciò è necessario per semplificare la creazione di un inventario Ansible che descriva le risorse che possono essere eseguite su più server.
+Chiunque abbia precedente esperienza di Ansible deve essere consapevole del fatto che il ruolo ha BeeGFS implementa un metodo personalizzato per scoprire quali variabili (o fatti) si applicano a ciascun host. Questo design semplifica la strutturazione dell'inventario Ansible per descrivere le risorse che possono essere eseguite su più server.
 
-Un inventario Ansible è costituito in genere dai file in `host_vars` e. `group_vars`e un `inventory.yml` file che assegna host a gruppi specifici (e potenzialmente gruppi ad altri gruppi).
+Un inventario Ansible generalmente è costituito dai file in `host_vars` e `group_vars`, insieme a un `inventory.yml` file che assegna gli host a gruppi specifici (e potenzialmente gruppi ad altri gruppi).
 
 
 NOTE: Non creare alcun file con il contenuto di questa sottosezione, che è da intendersi solo come esempio.
@@ -93,7 +93,7 @@ beegfs_targets:
           - size: 21.25
             owning_controller: A
 ....
-Questo layout consente di definire la configurazione del servizio, della rete e dello storage BeeGFS per ciascuna risorsa in un'unica posizione. Dietro le quinte, il ruolo BeeGFS aggrega la configurazione necessaria per ogni nodo di file e blocchi in base a questa struttura di inventario. Per ulteriori informazioni, consulta questo post del blog: https://www.netapp.com/blog/accelerate-deployment-of-ha-for-beegfs-with-ansible/["NetApp accelera l'implementazione di ha per BeeGFS con Ansible"^].
+Questo layout consente di definire la configurazione del servizio, della rete e dello storage BeeGFS per ciascuna risorsa in un'unica posizione. Dietro le quinte, il ruolo BeeGFS aggrega la configurazione necessaria per ogni nodo di file e blocchi in base a questa struttura di inventario.
 
 
 NOTE: L'ID del nodo BeeGFS numerico e stringa per ciascun servizio viene configurato automaticamente in base al nome del gruppo. Pertanto, oltre al requisito generale Ansible per l'univoci nome di gruppo, i gruppi che rappresentano un servizio BeeGFS devono terminare con un numero univoco per il tipo di servizio BeeGFS rappresentato dal gruppo. Ad esempio, sono consentiti meta_01 e stor_01, ma i metadati_01 e meta_01 non lo sono.

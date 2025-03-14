@@ -32,6 +32,13 @@ Intelligenza artificiale.
 
 
  a| 
+Nodo di controllo Ansible
+ a| 
+Una macchina fisica o virtuale utilizzata per eseguire l'interfaccia a riga di comando Ansible.
+
+
+
+ a| 
 Inventario di Ansible
  a| 
 Struttura di directory contenente file YAML utilizzati per descrivere il cluster BeeGFS ha desiderato.
@@ -46,14 +53,14 @@ Controller di gestione della baseboard. Talvolta indicato come processore di ser
 
 
  a| 
-nodi a blocchi
+Nodi di blocco
  a| 
-Sistemi storage.
+Sistemi di storage e-Series.
 
 
 
  a| 
-client
+Client
  a| 
 Nodi nel cluster HPC che eseguono applicazioni che devono utilizzare il file system. A volte chiamato anche nodi di calcolo o GPU.
 

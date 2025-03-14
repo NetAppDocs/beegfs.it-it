@@ -14,15 +14,15 @@ summary: È possibile implementare BeeGFS su NetApp in nodi di file e blocchi va
 
 
 [role="lead"]
-È possibile implementare BeeGFS su NetApp in nodi di file e blocchi validati utilizzando la progettazione di blocchi di costruzione BeeGFS di seconda generazione di NetApp.
+BeeGFS su NetApp può essere implementato su nodi di file e blocchi validati utilizzando Ansible con il design dei building block BeeGFS di NetApp.
 
 
 
 == Raccolte e ruoli Ansible
 
-La soluzione BeeGFS su NetApp viene implementata utilizzando Ansible, un noto motore DI automazione IT utilizzato per automatizzare le implementazioni delle applicazioni. Ansible utilizza una serie di file denominati collettivamente inventario, che modellano il file system BeeGFS che si desidera implementare.
+La soluzione BeeGFS su NetApp viene implementata utilizzando Ansible, un noto motore di automazione IT che automatizza le implementazioni delle applicazioni. Ansible utilizza una serie di file collettivamente noti come inventario, che modella il file system BeeGFS da implementare.
 
-Ansible consente ad aziende come NetApp di espandere le funzionalità integrate utilizzando le raccolte su Ansible Galaxy (vedere https://galaxy.ansible.com/netapp_eseries/santricity["Raccolta NetApp e-Series BeeGFS"^]). Le raccolte includono moduli che eseguono alcune funzioni o attività specifiche (come la creazione di un volume e-Series) e includono ruoli che possono chiamare più moduli e altri ruoli. Questo approccio automatizzato riduce il tempo necessario per implementare il file system BeeGFS e il cluster ha sottostante. Inoltre, semplifica l'aggiunta di building block per espandere i file system esistenti.
+Ansible consente ad aziende come NetApp di espandere le funzionalità integrate utilizzando le raccolte disponibili su Ansible Galaxy (vedi https://galaxy.ansible.com/netapp_eseries/santricity["Raccolta NetApp e-Series BeeGFS"^]). Le raccolte includono moduli che eseguono funzioni o task specifici (come la creazione di un volume e-Series) e ruoli che possono chiamare più moduli e altri ruoli. Questo approccio automatizzato riduce il tempo necessario per implementare il file system BeeGFS e il cluster ha sottostante. Inoltre, semplifica la manutenzione e l'espansione del cluster e del file system BeeGFS.
 
 Per ulteriori informazioni, vedere link:beegfs-deploy-learn-ansible.html["Scopri di più sull'inventario Ansible"].
 
@@ -40,7 +40,7 @@ Le procedure di implementazione coprono i seguenti profili di configurazione:
 * Un terzo building block che include solo i servizi di storage.
 
 
-Questi profili mostrano l'intera gamma di profili di configurazione consigliati per gli elementi di base di NetApp BeeGFS. Per ogni implementazione, il numero di metadati e di building block dello storage o building block dei soli servizi di storage può variare nelle procedure, a seconda dei requisiti di capacità e performance.
+Questi profili mostrano l'intera gamma di profili di configurazione consigliati per gli elementi di base di NetApp BeeGFS. Per ogni implementazione, il numero di building block di metadati e storage o di soli servizi di storage può variare in base ai requisiti di capacità e performance.
 
 
 
