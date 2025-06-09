@@ -26,7 +26,7 @@ I parametri di tuning disponibili che è possibile configurare includono:
 
 . *Impostazioni di sistema in UEFI/BIOS dei nodi di file.* per massimizzare le prestazioni, si consiglia di configurare le impostazioni di sistema sul modello di server utilizzato come nodi di file. È possibile configurare le impostazioni di sistema quando si impostano i nodi di file utilizzando il programma di configurazione del sistema (UEFI/BIOS) o le API Redfish fornite dal controller di gestione della baseboard (BMC).
 +
-Le impostazioni di sistema variano a seconda del modello di server utilizzato come nodo di file. Le impostazioni devono essere configurate manualmente in base al modello di server in uso. Per informazioni su come configurare le impostazioni di sistema per i nodi di file Lenovo SR665 validati, vedere link:beegfs-deploy-file-node-tuning.html["Ottimizzare le impostazioni del sistema del nodo di file per le performance"].
+Le impostazioni di sistema variano a seconda del modello di server utilizzato come nodo di file. Le impostazioni devono essere configurate manualmente in base al modello di server in uso. Per informazioni su come configurare le impostazioni di sistema per i nodi di file Lenovo SR665 V3 convalidati, vedere link:beegfs-deploy-file-node-tuning.html["Ottimizzare le impostazioni del sistema del nodo di file per le performance"] .
 
 . *Impostazioni predefinite per i parametri di configurazione richiesti.* i parametri di configurazione richiesti influiscono sulla modalità di configurazione dei servizi BeeGFS e sulla modalità di formattazione e montaggio dei volumi e-Series (dispositivi a blocchi) da parte di Pacemaker. Questi parametri di configurazione richiesti includono:
 +

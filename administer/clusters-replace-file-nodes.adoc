@@ -50,7 +50,7 @@ all:
 . Rimuovere il nodo precedente da uno degli altri nodi del cluster: `pcs cluster node remove <HOSTNAME>`.
 +
 
-IMPORTANT: NON PROCEDERE PRIMA DI ESEGUIRE QUESTO PASSAGGIO.
+CAUTION: NON PROCEDERE PRIMA DI ESEGUIRE QUESTO PASSAGGIO.
 
 . Sul nodo di controllo Ansible:
 +

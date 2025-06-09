@@ -45,9 +45,9 @@ Installare un sistema operativo supportato in base ai requisiti del nodo file el
 
 
 
-==== RedHat
+==== Red Hat
 
-Utilizza RedHat Subscription Manager per registrare e sottoscrivere il sistema per consentire l'installazione dei pacchetti richiesti dai repository ufficiali Red Hat e per limitare gli aggiornamenti alla versione supportata di Red Hat: `subscription-manager release --set=<MAJOR_VERSION>.<MINOR_VERSION>`. Per istruzioni, vedere https://access.redhat.com/solutions/253273["Come registrarsi e sottoscrivere un sistema RHEL"^] e.  https://access.redhat.com/solutions/2761031["Come limitare gli aggiornamenti"^].
+, vedere  https://access.redhat.com/solutions/253273["Come registrarsi e sottoscrivere un sistema RHEL"^] E  https://access.redhat.com/solutions/2761031["Come limitare gli aggiornamenti"^] .
 
 Abilitare il repository Red Hat contenente i pacchetti richiesti per l'alta disponibilità:
 

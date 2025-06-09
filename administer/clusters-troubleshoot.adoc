@@ -246,7 +246,7 @@ Procedura per la risoluzione:
 . Verificare che il nodo sia effettivamente spento.
 +
 
-IMPORTANT: Se il nodo specificato non è effettivamente disattivato, ma esegue risorse o servizi cluster, si VERIFICHERÀ un danneggiamento dei dati o un errore del cluster.
+CAUTION: Se il nodo specificato non è effettivamente disattivato, ma esegue risorse o servizi cluster, si VERIFICHERÀ un danneggiamento dei dati o un errore del cluster.
 
 . Confermare manualmente la scherma con: `pcs stonith confirm <NODE>`
 
@@ -264,7 +264,7 @@ A questo punto i servizi dovrebbero terminare il failover e essere riavviati su 
 In genere, se un servizio BeeGFS deve essere riavviato (ad esempio per facilitare una modifica della configurazione), questa operazione deve essere eseguita aggiornando l'inventario Ansible e rieseguendo il manuale. In alcuni scenari potrebbe essere consigliabile riavviare singoli servizi per facilitare la risoluzione dei problemi più rapida, ad esempio per modificare il livello di registrazione senza dover attendere l'esecuzione dell'intero playbook.
 
 
-IMPORTANT: A meno che non vengano aggiunte modifiche manuali all'inventario Ansible, queste verranno ripristinate alla prossima esecuzione del playbook Ansible.
+CAUTION: A meno che non vengano aggiunte modifiche manuali all'inventario Ansible, queste verranno ripristinate alla prossima esecuzione del playbook Ansible.
 
 
 

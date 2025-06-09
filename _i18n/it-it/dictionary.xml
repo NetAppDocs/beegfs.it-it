@@ -273,7 +273,6 @@
   <block id="99f83169540f1c3e08a1e696707dcbee" category="list-text">Per determinare se la scherma (stonith) è attivata o disattivata globalmente, eseguire:<block ref="f9bc36eebaadfbe3971849dbb1a7a291" prefix=" " category="inline-code"></block></block>
   <block id="88653da28715cbac123466935349c7b2" category="list-text">Per disattivare la funzione di scherma:<block ref="d3749d5705f2a9af97f05b0c5c91b235" prefix=" " category="inline-code"></block></block>
   <block id="79c811c32be072ba96828f7eaf67e191" category="list-text">Per attivare la funzione di scherma:<block ref="65795833f6c4653caabc1cbacafe84d8" prefix=" " category="inline-code"></block></block>
-  <block id="54dfcc160f4c7fc21df07ee9c7df6f86" category="paragraph">Nota: Questa impostazione verrà ignorata alla prossima esecuzione del playbook Ansible.</block>
   <block id="c8c3d1dbab26a87a3652e84d9f35d37f" category="summary">Quando si deve utilizzare Ansible rispetto allo strumento della riga di comando di PC per gestire il cluster ha?</block>
   <block id="932c5a738d1d867e858cd1dbc1391b1a" category="doc">Quando utilizzare Ansible rispetto allo strumento PC</block>
   <block id="272d3f535988cc62fbddd197f2ce0477" category="paragraph">Tutte le attività di implementazione e riconfigurazione del cluster devono essere completate utilizzando Ansible da un nodo di controllo Ansible esterno. Le modifiche temporanee nello stato del cluster (ad esempio, l'inserimento e l'uscita dei nodi in standby) vengono eseguite in genere accedendo a un nodo del cluster (preferibilmente uno che non è degradato o che sta per essere sottoposto a manutenzione) e utilizzando la riga di comando di PC.</block>
@@ -359,7 +358,6 @@
   <block id="5011bf6d8a37692913fce3a15a51f070" category="cell">8085</block>
   <block id="89f0938aa83de82ca99f8b06297ed69c" category="list-text">Sotto<block ref="14681f191ffa04a9b3cfd0d1d62d0b7c" prefix=" " category="inline-code"></block>, creare i file per i gruppi di risorse<block ref="204798ade8b6ac861bd335e908dea445" prefix=" " category="inline-code"></block> attraverso<block ref="febac7a5dad8d84a1faa80d56d8a70cb" prefix=" " category="inline-code"></block> utilizzando il seguente modello, inserire i valori segnaposto per ciascun servizio che fa riferimento all'esempio:</block>
   <block id="9b62ac6b206ab6cafe8dafa0990559c7" category="inline-link-macro">Percentuali consigliate di overprovisioning del pool di storage</block>
-  <block id="ab2ec57b0e9afdc73bcc69a962ee35c4" category="admonition">Per le dimensioni corrette da utilizzare, vedere <block ref="152d8bea233357f34ffa00ccf219bae3" category="inline-link-macro-rx"></block>.</block>
   <block id="b627976db3394ccf24342632cef6f4f1" category="cell">stor_01.yml</block>
   <block id="40f4da34bbe180214c23b9e55da4f772" category="cell">8013</block>
   <block id="5ef33d06ff783e8453c10b95db8c1253" category="cell">beegfs_s1_s2</block>
@@ -396,7 +394,6 @@
   <block id="d4d36ef3d915a0d2eaac8c62f1d8eff6" category="cell">meta_15.yml</block>
   <block id="b465a4b4c591a6f2e44fedac80e726d0" category="cell">meta_16.yml</block>
   <block id="91e38d134a7ca4a23006b0cf023d9011" category="list-text">Sotto<block ref="648847925d2f67d0e9aff6f86a7141c1" prefix=" " category="inline-code"></block> creare file per gruppi di risorse<block ref="e82765740642d7caa6320c506be59565" prefix=" " category="inline-code"></block> attraverso<block ref="26d2d73c912baae339181423e2a8cf85" prefix=" " category="inline-code"></block> utilizzando il seguente modello, inserire i valori segnaposto per ciascun servizio che fa riferimento all'esempio:</block>
-  <block id="ca61951791cd6f4d50294a908b9eee76" category="admonition">Per le dimensioni corrette da utilizzare, vedere <block ref="152d8bea233357f34ffa00ccf219bae3" category="inline-link-macro-rx"></block>..</block>
   <block id="71c1385fcc844d118e8b2688b0cfd2d6" category="cell">stor_09.yml</block>
   <block id="9282f3f43896f146dcbcc2d03d530b59" category="cell">beegfs_s9_s10</block>
   <block id="8f72ae1bf7ca7b8218a4bf9e719f5e7d" category="cell">stor_10.yml</block>
@@ -412,7 +409,6 @@
   <block id="dea1f079dcd8c8280e07dcd96ea8c075" category="section-title">Fase 4: Configurare l'inventario per un building block di solo storage</block>
   <block id="711be1acedea341e1f5455f007cdb22b" category="paragraph">Questi passaggi descrivono come configurare un inventario Ansible per un building block BeeGFS solo storage. La differenza principale tra l'impostazione della configurazione per un metadata + storage rispetto a un building block solo storage è l'omissione di tutti i gruppi di risorse di metadati e la modifica<block ref="4c7b810e50ba611dcdc51295c4338bf0" prefix=" " category="inline-code"></block> da 10 a 12 per ogni pool di storage.</block>
   <block id="5b6fe069463b7f5581a1864de036e765" category="list-text">Sotto<block ref="14681f191ffa04a9b3cfd0d1d62d0b7c" prefix=" " category="inline-code"></block>, creare i file per i gruppi di risorse<block ref="24a4e7d8beea152fbef989b5391e857b" prefix=" " category="inline-code"></block> attraverso<block ref="4df0910e4828ce9c7f4218f92cf86499" prefix=" " category="inline-code"></block> utilizzando il seguente modello, inserire i valori segnaposto per ciascun servizio che fa riferimento all'esempio:</block>
-  <block id="80f4c22d8a78e5d96cdf5bef28444426" category="admonition">Per le dimensioni corrette da utilizzare, vedere <block ref="152d8bea233357f34ffa00ccf219bae3" category="inline-link-macro-rx"></block>.</block>
   <block id="f9838993bed3d0e550ae346ed2e4355e" category="cell">stor_17.yml</block>
   <block id="8cf4aacf94a115dfc0190ee6782190d3" category="cell">beegfs_s17_s18</block>
   <block id="7876b49b042d07da9a565db780a9b186" category="cell">stor_18.yml</block>
@@ -486,7 +482,6 @@
   <block id="2b030b2e370bebb88648070cda0b66eb" category="section-title">Moduli e ruoli Ansible</block>
   <block id="27633c2a48532dabf935531ba52193df" category="paragraph">Ogni ruolo nella raccolta NetApp e-Series Ansible è un'implementazione end-to-end completa della soluzione BeeGFS su NetApp. I ruoli utilizzano le raccolte NetApp e-Series SANtricity, host e BeeGFS che consentono di configurare il file system BeeGFS con ha (alta disponibilità). È quindi possibile eseguire il provisioning e il mapping dello storage, assicurandosi che lo storage del cluster sia pronto per l'uso.</block>
   <block id="ca467fdffa66288bc6eeca1d49467e2e" category="paragraph">Sebbene i ruoli siano corredati da una documentazione approfondita, le procedure di implementazione descrivono come utilizzare il ruolo per implementare un'architettura verificata di NetApp utilizzando la progettazione di blocchi di costruzione BeeGFS di seconda generazione.</block>
-  <block id="7c1be9d0f9dc743e2a1540004da3eb1d" category="admonition">Anche se le fasi di implementazione tentano di fornire dettagli sufficienti per evitare che l'esperienza precedente con Ansible sia un prerequisito, si dovrebbe avere una certa familiarità con Ansible e la terminologia correlata.</block>
   <block id="e9b6dfb59ebbe3c2a8e47b9bec2ada24" category="section-title">Layout dell'inventario per un cluster BeeGFS ha</block>
   <block id="927527f499c87b83ee052f9a293c0293" category="admonition">Non creare alcun file con il contenuto di questa sottosezione, che è da intendersi solo come esempio.</block>
   <block id="a7a48a32496dcd14ea6f94f7d89ab599" category="paragraph">Sebbene questa configurazione sia predeterminata in base al profilo di configurazione, è necessario avere una comprensione generale del modo in cui tutto viene presentato come inventario Ansible, come segue:</block>
@@ -499,7 +494,6 @@
   <block id="7ed4e287a78a4cc348d1e60d143ceda8" category="paragraph">I parametri di tuning disponibili che è possibile configurare includono:</block>
   <block id="d8eb1bf5eeddb34869fa0aee2c5c3be0" category="list-text">*Impostazioni di sistema in UEFI/BIOS dei nodi di file.* per massimizzare le prestazioni, si consiglia di configurare le impostazioni di sistema sul modello di server utilizzato come nodi di file. È possibile configurare le impostazioni di sistema quando si impostano i nodi di file utilizzando il programma di configurazione del sistema (UEFI/BIOS) o le API Redfish fornite dal controller di gestione della baseboard (BMC).</block>
   <block id="bb2fcb1abe8d0829558e398d9acb4589" category="inline-link-macro">Ottimizzare le impostazioni del sistema del nodo di file per le performance</block>
-  <block id="adecdfd501fe0c9f7674b95abecb661b" category="paragraph">Le impostazioni di sistema variano a seconda del modello di server utilizzato come nodo di file. Le impostazioni devono essere configurate manualmente in base al modello di server in uso. Per informazioni su come configurare le impostazioni di sistema per i nodi di file Lenovo SR665 validati, vedere <block ref="891cfd1f8dbb99c09432be0144a5be81" category="inline-link-macro-rx"></block>.</block>
   <block id="6721128d9ea380f9965cc220f28619e1" category="list-text">*Impostazioni predefinite per i parametri di configurazione richiesti.* i parametri di configurazione richiesti influiscono sulla modalità di configurazione dei servizi BeeGFS e sulla modalità di formattazione e montaggio dei volumi e-Series (dispositivi a blocchi) da parte di Pacemaker. Questi parametri di configurazione richiesti includono:</block>
   <block id="93de4dab2e303d649f94f0880095e6ef" category="list-text">Parametri di configurazione del servizio BeeGFS</block>
   <block id="c5b3473e89672cc155d0436c6e60bd52" category="inline-link">Parametri di configurazione del servizio BeeGFS</block>
@@ -582,7 +576,6 @@
   <block id="290a84841d7341364c4abf862a74583f" category="list-text">Configurare le impostazioni di sistema per ottenere le massime prestazioni.</block>
   <block id="04c7f6322804081c61ca0d88cef85904" category="paragraph">È possibile configurare le impostazioni di sistema utilizzando il setup UEFI (precedentemente noto come BIOS) o le API Redfish fornite da molti BMC. Le impostazioni di sistema variano in base al modello di server utilizzato come nodo di file.</block>
   <block id="51d961299f8aa9bb882574aae2a219eb" category="inline-link-macro">Ottimizzare le impostazioni di sistema per le prestazioni</block>
-  <block id="354f37da23eacae1fc163775964a0a2e" category="paragraph">Per informazioni su come configurare le impostazioni di sistema per i nodi di file Lenovo SR665 validati, vedere <block ref="dbe1843153b6696d3dd846d3a25ea7b2" category="inline-link-macro-rx"></block>.</block>
   <block id="63b34e32fcac1724c46edd575672332b" category="paragraph">Non configurare gli IP su nessuna delle porte InfiniBand in questo momento.</block>
   <block id="e9074e57167186919a163cd099187dd0" category="admonition">Sebbene non sia strettamente necessario, le sezioni successive presumono che i nomi host siano numerati in sequenza (ad esempio h1-HN) e si riferiscono alle attività che devono essere completate su host con numero pari o dispari.</block>
   <block id="0123fb5bcbcd68deb7c43ec913e70705" category="inline-link">Come registrarsi e sottoscrivere un sistema RHEL</block>
@@ -599,7 +592,6 @@
   <block id="e95c3b26aabb0242b0a38d72568b125a" category="paragraph">Per massimizzare le performance, si consiglia di configurare le impostazioni di sistema sul modello di server utilizzato come nodi di file.</block>
   <block id="291e90fb83bca326d06b5479d0ae7197" category="paragraph">Le impostazioni di sistema variano a seconda del modello di server utilizzato come nodo di file. In questo argomento viene descritto come configurare le impostazioni di sistema per i nodi file del server Lenovo ThinkSystem SR665 validati.</block>
   <block id="cfa9d7ef51eae23751a0ea54765b99fd" category="section-title">Utilizzare l'interfaccia UEFI per regolare le impostazioni di sistema</block>
-  <block id="7afe745e5e5ded0e0cf311f6ab05ce41" category="paragraph">Il firmware di sistema del server Lenovo SR665 contiene numerosi parametri di tuning che possono essere impostati tramite l'interfaccia UEFI. Questi parametri di tuning possono influire su tutti gli aspetti del funzionamento del server e sulle prestazioni del server.</block>
   <block id="01d5e77f89697d310442aa744d5c4068" category="paragraph">In *UEFI Setup &gt; System Settings* (Configurazione UEFI &gt; Impostazioni di sistema), regolare le seguenti impostazioni di sistema:</block>
   <block id="6e2e169ab41f56781f3cd65629914fc6" category="section-title">Menu Operating Mode (modalità operativa)</block>
   <block id="f7adfd4c98207b1161c7b693c16fa9ea" category="cell">*Impostazioni di sistema*</block>
@@ -670,14 +662,12 @@
   <block id="a7f5f35426b927411fc9231b56382173" category="cell">Python</block>
   <block id="d35d779fe31977939a0a72c5c962d2af" category="cell">Pacchetti Python aggiuntivi</block>
   <block id="5510cedb08df4208db0688e41cea716f" category="section-title">Requisiti del nodo del file</block>
-  <block id="eae2868fd17cac4569887ad9ccca42c2" category="paragraph">RedHat Enterprise Linux</block>
   <block id="2488fead2064d4aeb886afc1a0010ee7" category="cell">Kernel Linux</block>
   <block id="f6883581bd882ffdf705127738982586" category="cell">Driver InfiniBand/RDMA</block>
   <block id="fbc534ed33feffdfe8fc56e7cde13e6e" category="section-title">Requisiti dei nodi a blocchi EF600</block>
   <block id="e791d47d690cbc6aa7c7f9434ebd2fa1" category="cell">Sistema operativo SANtricity</block>
   <block id="b384b3cf4ffa3a81a88e8687dd6ca028" category="cell">NVSRAM</block>
   <block id="b89cb5f38b54c6181858af1281dcaeef" category="cell">Firmware del disco</block>
-  <block id="df4607ba320342072b2dc12271b08d2f" category="cell">Più recente disponibile per i modelli di unità in uso.</block>
   <block id="2bf773d42bef6909b232e854a16b3ec1" category="summary">Configurare Pacemaker e Corosync per scalare oltre cinque blocchi costitutivi.</block>
   <block id="22892d2f5bfdfba001a02572258cca62" category="doc">Scala oltre cinque elementi di base</block>
   <block id="cfd24c157d6cd9f200eb8c3cf68ee7ed" category="paragraph">È possibile configurare Pacemaker e Corosync per scalare oltre cinque blocchi costitutivi (10 nodi di file). Tuttavia, i cluster più grandi presentano alcuni inconvenienti e, alla fine, Pacemaker e Corosync impongono un massimo di 32 nodi.</block>
@@ -829,7 +819,6 @@
   <block id="d21cb96c35176f0f0ea13876f354d072" category="inline-link-macro">Implementare BeeGFS utilizzando Ansible</block>
   <block id="a8169193bd5718bbe78111b3a1f874d7" category="list-text"><block ref="dffbd1bc941e2f4395de7cba04c6653b" category="inline-link-macro-rx"></block>.</block>
   <block id="f159952d71e33cd0a1ffbb2bcc4ce2ad" category="list-text"><block ref="75197807ccb18c9f99e8f2a2a3443aea" category="inline-link-macro-rx"></block>.</block>
-  <block id="d6dd015562e1d088d87d28007ecfa541" category="admonition">Le procedure di implementazione includono diversi esempi in cui il testo deve essere copiato in un file. Prestare particolare attenzione a eventuali commenti inline contrassegnati da " n." o "//" per qualsiasi elemento che debba o possa essere modificato per un'implementazione specifica. Ad esempio:<block ref="f791b43c55fc3520a5d297b1addbd507" prefix=" " category="inline-code"></block></block>
   <block id="02cf3373667b246c17c8d054c073a372" category="paragraph">Architetture derivate con variazioni nelle raccomandazioni di implementazione:</block>
   <block id="e69ebf3ec790efafa5cfc7b6502ccfe4" category="summary">La soluzione BeeGFS su NetApp include considerazioni di progettazione architetturale utilizzate per determinare le apparecchiature, il cablaggio e le configurazioni specifiche richieste per supportare i carichi di lavoro validati.</block>
   <block id="ebd8431a0b14e9588377860f5d21d80b" category="doc">Panoramica dell'architettura</block>
@@ -1225,7 +1214,6 @@
   <block id="8744d71fb56c3e75f875de0a416ea912" category="list-text">Installazione/configurazione del software sui nodi di file.</block>
   <block id="dcc4901f1f1938989ed2264f42fd1104" category="list-text">Stabilire il cluster ha e configurare le risorse BeeGFS e i servizi del file system.</block>
   <block id="077a8397a5f4ba0711faf87b91f8906c" category="paragraph">Il supporto per BeeGFS in Ansible viene rilasciato il <block ref="e5bec9f043c86b9afcbef28a688a4cdd" category="inline-link-macro-rx"></block> Insieme di ruoli e moduli che automatizzano l'implementazione e la gestione end-to-end dei cluster BeeGFS ha.</block>
-  <block id="5207de659c47ed66a8f04540f2cf7d28" category="paragraph">BeeGFS è dotato di versioni che seguono uno schema di controllo delle versioni di &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt; e l'insieme mantiene i ruoli per ogni versione supportata di &lt;major&gt;.&lt;minor&gt; di BeeGFS, ad esempio BeeGFS 7.2 o BeeGFS 7.3. Man mano che vengono rilasciati gli aggiornamenti della raccolta, la versione della patch in ciascun ruolo verrà aggiornata in modo da indicare l'ultima versione di BeeGFS disponibile per tale ramo di release (esempio: 7.2.8). Ogni versione della raccolta viene testata e supportata anche con specifiche distribuzioni e versioni di Linux, attualmente Red Hat per i file node e RedHat e Ubuntu per i client. L'esecuzione di altre distribuzioni non è supportata e l'esecuzione di altre versioni (in particolare altre versioni principali) non è consigliata.</block>
   <block id="ff58765d6c48f433685b2f9354c057ed" category="section-title">Nodo di controllo Ansible</block>
   <block id="267dc210028d3a563bde0eb07ca563a0" category="paragraph">Questo nodo conterrà l'inventario e i playbook utilizzati per gestire BeeGFS. Richiede:</block>
   <block id="fa364b2fe46e5e06529d637ca126add1" category="list-text">Ansible 6.x (ansible-core 2.13)</block>
@@ -1234,7 +1222,6 @@
   <block id="8486bce50d4152772da3c4531a015ab8" category="paragraph">Si consiglia inoltre di impostare SSH senza password dal nodo di controllo a tutti i nodi di file e client BeeGFS.</block>
   <block id="5bca534f5a45c18ffc0306e63b306c62" category="section-title">Nodi di file BeeGFS</block>
   <block id="676b08aacbe937f16d558f23d90b29da" category="section-title">Nodi client BeeGFS</block>
-  <block id="dc203cff346fc33ab19584264833d533" category="paragraph">È disponibile un ruolo Ansible del client BeeGFS per installare il pacchetto client BeeGFS e gestire i mount BeeGFS. Questo ruolo è stato testato con RedHat 8.4 e Ubuntu 22.04.</block>
   <block id="2e0da5c1c3cbd1cda1312f57209c96e4" category="inline-link-macro">BeeGFS supporta la distribuzione e il kernel Linux</block>
   <block id="b44b294130612c32e5f179fb81f347ec" category="paragraph">Se non si utilizza Ansible per configurare il client BeeGFS e montare BeeGFS, qualsiasi <block ref="ed8f85054917a214583881f0e58e2825" category="inline-link-macro-rx"></block> può essere utilizzato.</block>
   <block id="03a96e493f11c9bdee76520257a1462d" category="summary">Specificare la configurazione per i singoli nodi di file utilizzando le variabili host (host_vars).</block>
@@ -1297,7 +1284,6 @@
   <block id="8cb3e998c7b1e4cbe36289f2177363b5" category="list-text">Selezionare e configurare un agente di scherma:</block>
   <block id="bc6b3ed04c45895c341d99b6765c1caa" category="list-text">OPZIONE 1: Per abilitare la recinzione utilizzando le PDU (Power Distribution Unit) APC:</block>
   <block id="94ebb967d1a890978b9758e3f2aac3bb" category="list-text">OPZIONE 2: Per abilitare la scherma utilizzando le API Redfish fornite da Lenovo XCC (e da altri BMC):</block>
-  <block id="7f2e85da597afbbb84c30c58c72fc4a2" category="inline-link-macro">Documentazione RedHat</block>
   <block id="1242eea64a7ebfd7464359e597a4ec62" category="inline-link-macro">parametri di ottimizzazione delle performance</block>
   <block id="e535abe8b416a666cd34177ff6bbe395" category="list-text">Per garantire che gli indirizzi IP mobili (talvolta noti come interfacce logiche) utilizzati per i servizi BeeGFS possano eseguire il failover tra i nodi di file, tutte le interfacce di rete devono essere denominate in modo coerente. Per impostazione predefinita, i nomi delle interfacce di rete vengono generati dal kernel, che non è garantito per generare nomi coerenti, anche su modelli di server identici con adattatori di rete installati negli stessi slot PCIe. Ciò è utile anche quando si creano inventari prima dell'implementazione dell'apparecchiatura e si conoscono i nomi delle interfacce generate. Per garantire nomi di dispositivi coerenti, in base a un diagramma a blocchi del server o.<block ref="6efa276570b668a53eaf7bf29c69d544" prefix=" " category="inline-code"></block> Output, specificare il mapping indirizzo PCIe desiderato per l'interfaccia logica come segue:</block>
   <block id="b577b9bc7da15f148c6521018b1c26f7" category="list-text">Per le interfacce di rete InfiniBand (IPoIB):</block>
@@ -1450,8 +1436,6 @@
   <block id="f9fa015b01242f44a7319213f0a01ff2" category="section-title">Mettere a punto le impostazioni di sistema</block>
   <block id="93f3e5d94e30643aac7f8755a6dcfeb4" category="inline-link-macro">modelli di file node verificati</block>
   <block id="b9a7b8c50025e62b9e91f9baf3ba2304" category="section-title">Installare un sistema operativo</block>
-  <block id="a82007c47b25723539a00ff94e8b3d27" category="section-title">RedHat</block>
-  <block id="5ab261ccc77c613b4430d72688133ef7" category="paragraph">Utilizza RedHat Subscription Manager per registrare e sottoscrivere il sistema per consentire l'installazione dei pacchetti richiesti dai repository ufficiali Red Hat e per limitare gli aggiornamenti alla versione supportata di Red Hat:<block ref="77a4421cc9f01b777ceaeda595865c3c" prefix=" " category="inline-code"></block>. Per istruzioni, vedere<block ref="2e2e1be81972e19947d90393d5319b6e" category="inline-link-rx"></block> e. <block ref="bbd834e2960f33a50fb102fd4d31a6d9" category="inline-link-rx"></block>.</block>
   <block id="9a7877d2d6f43233661b52c31362cb32" category="paragraph">Abilitare il repository Red Hat contenente i pacchetti richiesti per l'alta disponibilità:</block>
   <block id="5ea84babe2cd259121a70aff2652769b" category="section-title">Configurare la rete di gestione</block>
   <block id="45f7cb03ff15b64d9405b68be6bdcc97" category="paragraph">Configurare le interfacce di rete necessarie per consentire la gestione in banda del sistema operativo. I passaggi esatti dipendono dalla distribuzione e dalla versione di Linux in uso.</block>
@@ -1547,9 +1531,7 @@
   <block id="e8c7ab07a88c53743d909983583625f9" category="paragraph">Ad esempio, in questo file di esempio<block ref="d28e452e49fc926f32af1d87afcff3ce" prefix=" " category="inline-code"></block> , beegfs_01 è il nodo file preferito per eseguire il servizio di gestione BeeGFS:</block>
   <block id="cb7c9e260fba17d2ffcc93361a0eab2e" category="paragraph">L'inversione dell'ordine causerebbe la preferenza dei servizi di gestione su beegfs_02:</block>
   <block id="958b8a27f957bef8700299f8cafb9b9a" category="admonition">Non specificare singole risorse o il gruppo di risorse. Specificare sempre il nome del monitor per il servizio BeeGFS che si desidera trasferire. Ad esempio, per spostare il servizio di gestione BeeGFS in beegfs_02 eseguire:<block ref="ad6bdcc4dd95b7dbe9e00b9894a08e42" prefix=" " category="inline-code"></block>. Questo processo può essere ripetuto per spostare uno o più servizi lontano dai nodi preferiti. Verificare che l'utilizzo dei<block ref="fcad1c87c23363c990849a7aaf9d6cd9" prefix=" " category="inline-code"></block> servizi sia stato ricollocato/avviato sul nuovo nodo.</block>
-  <block id="de752721186f0ef334b71ac4b3fe9cb5" category="paragraph">I file node devono eseguire RedHat 9.3 e avere accesso al repository ha contenente i pacchetti richiesti (pacemaker, corosync, fence-agents-all, resource-agents). Ad esempio, è possibile eseguire il seguente comando per abilitare il repository appropriato su RedHat 9:</block>
   <block id="aaf17f2a8cba647c8702de94c1bef112" category="list-text">Nota se necessario, è anche possibile specificare qui tutti i supporti <block ref="f4efc844d4401fa0cd59f82e6a720d5a" category="inline-link-macro-rx"></block> . La regolazione di questi non è tipicamente necessaria, poiché il ruolo di BeeGFS ha viene fornito con un certo numero di ben testati <block ref="62cb44c0555eaba8953c22f475d751a4" category="inline-link-macro-rx"></block>.</block>
-  <block id="064f7cc76dc5afb2fb3aa165873ba871" category="list-text">Per ulteriori informazioni sulla configurazione di altri agenti di scherma, fare riferimento alla <block ref="1e76955e0560eaf6ce328d55fb062eeb" category="inline-link-macro-rx"></block>.</block>
   <block id="b611c6838bc0b80a5b542ae4d720301f" category="list-text">Il ruolo BeeGFS ha può applicare diversi parametri di tuning per ottimizzare ulteriormente le performance. Questi includono l'ottimizzazione dell'utilizzo della memoria del kernel e l'i/o dei dispositivi a blocchi, tra gli altri parametri. Il ruolo viene fornito con una serie ragionevole di <block ref="e3e5af180e2cd561ad9b935d8101ce4e" category="inline-link-macro-rx"></block> in base al test con i nodi di blocco NetApp E-Series, ma per impostazione predefinita questi non vengono applicati a meno che non si specifichi:</block>
   <block id="7353e78ee2c3bb2136aa1b29915ccf4b" category="list-text">Se necessario, specificare qui eventuali modifiche all'ottimizzazione predefinita delle prestazioni. Per ulteriori informazioni, consultare la documentazione completa <block ref="df0e33f301a426939663a0f2db36079c" category="inline-link-macro-rx"></block> .</block>
   <block id="37fa384fbce35691f87f5108b23924df" category="list-text">Specificare facoltativamente la configurazione da applicare a tutti i servizi BeeGFS nel cluster. È possibile trovare i valori di configurazione predefiniti <block ref="cb8aac20b4c821ca121d5c55cc4298ed" category="inline-link-macro-rx"></block>e specificare altrove la configurazione per servizio:</block>
@@ -1656,8 +1638,6 @@
   <block id="8e4e4dc9d710c035afcec16817c6b5a3" category="paragraph">Quando si utilizzano cavi splitter per collegare lo switch di archiviazione ai nodi file, un cavo deve diramarsi dallo switch e connettersi alle porte indicate in verde chiaro. Un altro cavo splitter deve diramarsi dallo switch e collegarsi alle porte indicate in verde scuro.</block>
   <block id="5059e1c6d859e6d2e881b28d0a939639" category="paragraph">Inoltre, per le reti di storage con switch ridondanti, le porte indicate in verde chiaro devono essere collegate a uno switch, mentre le porte in verde scuro devono essere collegate a un altro switch.</block>
   <block id="0f7c31137702c2d677a474d55058637d" category="paragraph">Per informazioni su come configurare la rete per i nodi file Lenovo SR665 V3 convalidati, vedere la<block ref="05277b4b7d004e546ac1f238e66dd4bf" category="inline-link-rx"></block>.</block>
-  <block id="b8d06d76e2eaa67bfafbce3081ab48f5" category="list-text">Installare Red Hat 9.3 e configurare il nome host e la porta di rete utilizzati per gestire il sistema operativo, inclusa la connettività SSH dal nodo di controllo Ansible.</block>
-  <block id="7568449700f7c3e03b4500285c69b82f" category="list-text">USA RedHat Subscription Manager per registrare e sottoscrivere il sistema per consentire l'installazione dei pacchetti richiesti dai repository ufficiali di Red Hat e per limitare gli aggiornamenti alla versione supportata di Red Hat:<block ref="085c7e75df5d271759849f369fa065a7" prefix=" " category="inline-code"></block>. Per istruzioni, vedere<block ref="2e2e1be81972e19947d90393d5319b6e" category="inline-link-rx"></block> e <block ref="bbd834e2960f33a50fb102fd4d31a6d9" category="inline-link-rx"></block>.</block>
   <block id="b52d8b061d9ea3d197fbe8093a3eec3f" category="admonition">Quando si utilizzano cavi splitter per collegare lo switch di archiviazione ai nodi file, un cavo deve diramarsi e connettersi alle porte indicate in verde chiaro. Un altro cavo dovrebbe diramarsi e collegarsi alle porte delineate in verde scuro. Inoltre, per le reti di storage con switch ridondanti, le porte indicate in verde chiaro devono essere collegate a uno switch, mentre le porte in verde scuro devono essere collegate a un altro switch.</block>
   <block id="dcc608d1c76fed74a96f75915bc6561f" category="paragraph">Per sfruttare l'intera larghezza di banda bidirezionale PCIe, assicurarsi che una porta di ciascun adattatore InfiniBand si colleghi al fabric di storage e l'altra porta si colleghi a un nodo a blocchi.</block>
   <block id="0a31efbdaa47f7da5564c0e43b03e7ea" category="paragraph">È possibile ignorare le impostazioni predefinite per i parametri di configurazione in base alle esigenze. Per i parametri che è possibile regolare per carichi di lavoro specifici o casi di utilizzo, vedere la<block ref="986eca0f3f99dd3e8d8640fddbc137d2" category="inline-link-rx"></block>.</block>
@@ -1690,7 +1670,6 @@
   <block id="c618fd1e9213f6ba6e4961e3d1165110" category="list-text">Porta 1GbE per la gestione del sistema operativo in banda</block>
   <block id="db812d54d604d8c71ffd5e4be563e3e5" category="list-text">1GbE BMC con API Redfish per la gestione fuori banda dei server</block>
   <block id="15cf8b6d2674b1d9c9b0383ecfee8929" category="list-text">Doppi alimentatori hot swap e ventole ad alte prestazioni</block>
-  <block id="1e36a3ec484f8d613eabadcfb7010a41" category="paragraph">Gli adattatori della scheda host variano in base al modello di server utilizzato per il nodo file. I consigli per i nodi file verificati includono:</block>
   <block id="22d9c94f9f4ead6ee028aeb105c59845" category="list-text">*Lenovo ThinkSystem SR665 V3 Server:*</block>
   <block id="6ea32d47808c9a0a8b4ad8ce7c3d46a8" category="list-text">MCX755106AS-HEAT ConnectX-7, NDR200, QSFP112, 2 porte, PCIe Gen5 x16, adattatore InfiniBand</block>
   <block id="b74051cf2ad1a189f8a05453712ca47a" category="cell">Switch della rete di storage</block>
@@ -1711,10 +1690,7 @@
   <block id="f3b15dfb9c8e8d6298034f5cc32a59cd" category="cell">NVIDIA MQM8700</block>
   <block id="30657be0f3a2fdc8c171bce10af72efc" category="cell">MFS1S00-H003E (cavo NVIDIA in fibra attiva, InfiniBand 200GB GB/s, QSFP56 m)</block>
   <block id="c1850fdcdcbbaf2fb48f3055382d5a41" category="cell">MCP1650-H002E26 (cavo in rame passivo NVIDIA, InfiniBand 200GB GB/s, QSFP56 m)</block>
-  <block id="099646c88bdb63cce0ec389f4c842fed" category="cell">5.14.0-362.24.1.el9_3.x86_64</block>
-  <block id="de4e152f23f311bbd0da3bd3cc07390d" category="cell">MLNX_OFED_LINUX-23,10-3,2.2,0-LTS</block>
   <block id="8c21a74db8c25bd18866fe78a889642f" category="paragraph">Firmware HCA</block>
-  <block id="141a8d7da406be785ba26084a46e1c00" category="cell">7.4.4</block>
   <block id="1f6e93b1ea11aa12e871822a2cabfc76" category="cell">Encryption-43,0.0, netaddr-1,3.0, ipaddr-2.2.0</block>
   <block id="7af6b9890b6c8ce699616c59f48b5248" category="cell">Raccolta Ansible BeeGFS NetApp E-Series</block>
   <block id="070afde0274dc6039a8a8949d12a15cd" category="cell">3.2.0</block>
@@ -1946,14 +1922,9 @@
   <block id="53fff94cbca4161cd31d168451033f2e" category="cell">MFP7E20-Nxxx (cavo in fibra splitter multimodale da 4 canali a due a 2 canali)</block>
   <block id="804e83e6974e7f6076f940326b985a83" category="cell">MMA1Z00-NS400 (multimodale, IB/ETH, QSFP-112 a una porta da 400GB GB/s)</block>
   <block id="b2f1f9abf8117b3cde0475d1adf7a64f" category="cell">MCP7Y40-N002 (cavo splitter in rame passivo NVIDIA, da InfiniBand 800GB GB/s a 4x 200GB GB/s, da OSFP a 4x QSFP112)</block>
-  <block id="fbe7b2959f641c0a45951417fc744ba8" category="paragraph">*ConnectX-7 HCA firmware* FW: 28.42.1000 + PXE: 3.7.0500 + UEFI: 14.35.0015</block>
-  <block id="63c2d436fc11f0bcdd598c38560aca3f" category="paragraph">*ConnectX-6 HCA firmware* FW: 20.43.1014 + PXE: 3.7.0500 + UEFI: 14.36.0016</block>
   <block id="0d665a6c7072af8fddd1f64d9c741762" category="cell">11.90R1</block>
   <block id="6c3a5f2fbe0e1eb20af96ccd813c89b0" category="cell">N6000-890834-D02.dlp</block>
-  <block id="2c31ce9dbdba754d30ac4980d7d504df" category="cell">3.1.7-1</block>
-  <block id="fec83cb9bb84cd6342be622a93d94a1b" category="cell">2.1.6-10</block>
   <block id="088914339db9effda3ac57ec2e9439b6" category="cell">Agenti di recinzione (scorfano rosso/apc)</block>
-  <block id="f726fcf5784fc25f630a32e650f8b5a0" category="cell">4.10.0-55</block>
   <block id="f8b6aa2ae96c25a05a0cc6e26a9236d7" category="sidebar">Aggiornare i pacchetti pacemaker e Corosync</block>
   <block id="5a2c09ccb6952069726dcfb2e92a5573" category="paragraph">Una macchina fisica o virtuale utilizzata per eseguire l'interfaccia a riga di comando Ansible.</block>
   <block id="91587c91e5cdb42cedda71e8eeb8c25b" category="paragraph">Nodi di blocco</block>
@@ -1973,7 +1944,6 @@
   <block id="6d8fa04177add6fae81330f784f2ec28" category="paragraph">Per configurare un nodo di controllo Ansible, è necessario designare una macchina virtuale o fisica con accesso alla rete a tutti i nodi di file e blocchi implementati per la soluzione BeeGFS su NetApp.</block>
   <block id="95b6926dc09df085df3f516ff202c9b3" category="paragraph">Per un elenco delle versioni dei pacchetti consigliate, consultare la<block ref="1048598744d9ad3deb64b0d833d9a48d" category="inline-link-macro-rx"></block>. I seguenti passaggi sono stati testati su Ubuntu 22,04. Per i passaggi specifici della distribuzione Linux preferita, vedere<block ref="34c856f227a1cab1577af9d235784d24" category="inline-link-rx"></block>.</block>
   <block id="ac80ffa19a9be958e8c0594639394b8a" category="list-text">Dal nodo di controllo Ansible, installare i seguenti pacchetti Python e Python Virtual Environment.</block>
-  <block id="f2d8e2d7eabbfe72bc89df39fa8ede41" category="list-text">Creare un ambiente virtuale Python</block>
   <block id="44bf2f842c54b0fad1167e3efd65cf55" category="list-text">Attivare l'ambiente virtuale.</block>
   <block id="3f6f2236da97e94c248453e2c9ca404a" category="list-text">Installare i pacchetti Python richiesti nell'ambiente virtuale attivato.</block>
   <block id="f866bd2f581df9353b6db613e08d0aaf" category="list-text">Installare la raccolta BeeGFS utilizzando Ansible Galaxy.</block>
@@ -1986,9 +1956,42 @@
   <block id="4e667bcd22eef3e9620c534781a563ea" category="paragraph">L'impostazione di un nome può semplificare il riferimento a ciascun sistema nelle sezioni successive. Per istruzioni sull'impostazione del nome della matrice, vedere<block ref="2617f8aa7c55cffc3912e0de8d2af7d2" category="inline-link-rx"></block> .</block>
   <block id="3c5c0f41bab0c547cd353ca56b505d33" category="section-title">Requisiti software e firmware</block>
   <block id="d72c6977d4f8f0d9276e0483c1e643ab" category="paragraph">Per garantire prestazioni e affidabilità prevedibili, le versioni della soluzione BeeGFS on NetApp vengono testate con versioni specifiche dei componenti software e firmware. Queste versioni sono necessarie per l'implementazione della soluzione.</block>
-  <block id="c3b7a5332543327934ec8e70a424791c" category="cell">RedHat 9.3 Server Physical con alta disponibilità (2 socket). IMPORTANTE: I nodi di file richiedono un abbonamento a RedHat Enterprise Linux Server valido e il componente aggiuntivo Red Hat Enterprise Linux High Availability.</block>
   <block id="6b5b0d6dfb6af2b4c98938bb01cbeea1" category="cell">10.x</block>
   <block id="f82f58377452476d1d96442db364a64d" category="cell">Ansible-core</block>
   <block id="f850f5faa66f6a7ca2ac7f33f7eba944" category="cell">&gt;= 2.13.0</block>
   <block id="bd03200a597eed96961a6907dc36cfbd" category="cell">3,10</block>
+  <block id="48858ce4570016a1f8e1d1a8b871d328" category="admonition">Questa impostazione verrà sovrascritta alla successiva esecuzione del playbook Ansible.</block>
+  <block id="49b54ab3b1445f79ca94c7085cad41ef" category="list-text">Riavviare il <block ref="00e28a828e75d362a33f4cdabec833b1" prefix=" " category="inline-code"></block> .</block>
+  <block id="08386a651a8ef93e4bc0df7cf35d9b70" category="list-text">Verificare che i volumi dell'array di archiviazione E-Series siano presenti.</block>
+  <block id="5f6ac3389caa4915b5df5ea4e23cdf3b" category="inline-link-macro">Documentazione di Red Hat</block>
+  <block id="e23b89b2436ee8628b20e83d26aee328" category="list-text">Per ulteriori informazioni sulla configurazione di altri agenti di scherma, fare riferimento alla <block ref="b5a65513b4cf0cb857e9a978ad85d6c7" category="inline-link-macro-rx"></block>.</block>
+  <block id="12480c55a74bca08cc08d5569c8ad1f6" category="paragraph">BeeGFS è dotato di versioni che seguono uno schema di controllo delle versioni di &lt;major&gt;.&lt;minor&gt;.&lt;patch&gt; e l'insieme mantiene i ruoli per ogni versione supportata di &lt;major&gt;.&lt;minor&gt; di BeeGFS, ad esempio BeeGFS 7.2 o BeeGFS 7.3. Man mano che vengono rilasciati gli aggiornamenti della raccolta, la versione della patch in ciascun ruolo verrà aggiornata in modo da indicare l'ultima versione di BeeGFS disponibile per tale ramo di release (esempio: 7.2.8). Ogni versione della raccolta è inoltre testata e supportata con specifiche distribuzioni e versioni di Linux, attualmente Red Hat per i nodi di file e Red Hat e Ubuntu per i client. L'esecuzione di altre distribuzioni non è supportata e l'esecuzione di altre versioni (in particolare altre versioni principali) non è consigliata.</block>
+  <block id="e94491cd11fe554e65f37c3f4814481e" category="paragraph">I nodi file devono eseguire Red Hat Enterprise Linux (RHEL) 9.4 e avere accesso al repository HA contenente i pacchetti richiesti (pacemaker, corosync, fence-agents-all, resource-agents). Ad esempio, è possibile eseguire il seguente comando per abilitare il repository appropriato su RHEL 9:</block>
+  <block id="5bf759a5edebb5bbc68e8d351c1c554b" category="paragraph">È disponibile un ruolo Ansible del client BeeGFS per installare il pacchetto client BeeGFS e gestire i mount BeeGFS. Questo ruolo è stato testato con RHEL 9.4 e Ubuntu 22.04.</block>
+  <block id="1d9fc183665bd1e195391190be506894" category="section-title">Red Hat</block>
+  <block id="855d885c7444df898005dfe2db0e40e1" category="paragraph">, vedere <block ref="2e2e1be81972e19947d90393d5319b6e" category="inline-link-rx"></block> E <block ref="bbd834e2960f33a50fb102fd4d31a6d9" category="inline-link-rx"></block> .</block>
+  <block id="1ae0775acb1129f4f759e0e1e7b114a1" category="admonition">Per la dimensione corretta da utilizzare, vedere <block ref="152d8bea233357f34ffa00ccf219bae3" category="inline-link-macro-rx"></block> ..</block>
+  <block id="cd4dceecb80c781af21386aee259b338" category="admonition">Per la dimensione corretta da utilizzare, vedere <block ref="152d8bea233357f34ffa00ccf219bae3" category="inline-link-macro-rx"></block> .</block>
+  <block id="6020c636b1383570fbebcb5aab51f557" category="paragraph">Il firmware di sistema del server Lenovo SR665 V3 contiene numerosi parametri di ottimizzazione che possono essere impostati tramite l'interfaccia UEFI. Questi parametri di tuning possono influire su tutti gli aspetti del funzionamento del server e sulle prestazioni del server.</block>
+  <block id="5b8e3679ad73d51db58f86f62a85eb54" category="admonition">Anche se le fasi di implementazione tentano di fornire dettagli sufficienti per evitare che l'esperienza precedente con Ansible sia un prerequisito, si dovrebbe avere una certa familiarità con Ansible e la terminologia correlata.</block>
+  <block id="7ca16c43fa8e0a0d0effb1d7cbf40f48" category="paragraph">Le procedure di implementazione includono diversi esempi in cui il testo deve essere copiato in un file. Prestare molta attenzione a tutti i commenti in linea contrassegnati dai caratteri "#" o "//" per qualsiasi cosa che possa o debba essere modificata per una distribuzione specifica. Ad esempio:</block>
+  <block id="1151df05b81541e1eed601453364e0b7" category="list-text">Crea un ambiente virtuale Python.</block>
+  <block id="dc234f020e97683d09b699c70e009f30" category="paragraph">Per informazioni su come configurare le impostazioni di sistema per i nodi di file Lenovo SR665 V3 convalidati, vedere <block ref="dbe1843153b6696d3dd846d3a25ea7b2" category="inline-link-macro-rx"></block> .</block>
+  <block id="fc891ddcf642031b14500d5761030e91" category="list-text">Installa Red Hat Enterprise Linux (RHEL) 9.4 e configura il nome host e la porta di rete utilizzati per gestire il sistema operativo, inclusa la connettività SSH dal nodo di controllo Ansible.</block>
+  <block id="a0db142b527f78501de6b4acdba9d576" category="list-text">Utilizzare Red Hat Subscription Manager per registrare e sottoscrivere il sistema per consentire l'installazione dei pacchetti richiesti dai repository ufficiali di Red Hat e per limitare gli aggiornamenti alla versione supportata di Red Hat: <block ref="cb1f5d026a59f18bc71d16899248bf06" prefix=" " category="inline-code"></block> . Per istruzioni, vedere<block ref="2e2e1be81972e19947d90393d5319b6e" category="inline-link-rx"></block> e <block ref="bbd834e2960f33a50fb102fd4d31a6d9" category="inline-link-rx"></block>.</block>
+  <block id="7efcb442cda3c6a9d2e39278301df6f2" category="paragraph">Le impostazioni di sistema variano a seconda del modello di server utilizzato come nodo di file. Le impostazioni devono essere configurate manualmente in base al modello di server in uso. Per informazioni su come configurare le impostazioni di sistema per i nodi di file Lenovo SR665 V3 convalidati, vedere <block ref="891cfd1f8dbb99c09432be0144a5be81" category="inline-link-macro-rx"></block> .</block>
+  <block id="8e22d5f83cc5d97bd5e5cfcebeca5f15" category="paragraph">Gli adattatori della scheda host possono variare in base al modello di server del nodo file. I consigli per i nodi file verificati includono:</block>
+  <block id="eb13ea1edb52f2f7cdf4b15544892c06" category="cell">Red Hat Enterprise Linux (RHEL)</block>
+  <block id="33b7125f0da71f5f4c0d1adb2490c32d" category="cell">Server RHEL 9.4 fisico con elevata disponibilità (2 socket). *Nota:* i nodi file richiedono un abbonamento valido a Red Hat Enterprise Linux Server e il componente aggiuntivo Red Hat Enterprise Linux High Availability.</block>
+  <block id="6e2ccf2574232a4db553354b8bf2b912" category="cell">5.14.0-427.42.1.el9_4.x86_64</block>
+  <block id="1e921a460cdb78aac6c0658f56a63429" category="paragraph">*ConnectX-7 HCA firmware* FW: 28.43.1014 + PXE: 3.7.0500 + UEFI: 14.36.0016</block>
+  <block id="564eb0bfa4895a5fed3372708aea6e59" category="paragraph">*ConnectX-6 HCA firmware* FW: 20.43.2566 + PXE: 3.7.0500 + UEFI: 14.37.0013</block>
+  <block id="7670b29ec4dc7aed23b236d72df9dc4e" category="cell">Più recente disponibile per i modelli di unità in uso. Consultare la <block ref="dc6c914f008159d5969a25304ddfb479" category="inline-link-macro-rx"></block>.</block>
+  <block id="90a84b80b2ae4bb2a14bb18a1c790012" category="cell">7.4.6</block>
+  <block id="06ee37e4e06f2a68feca0b0922e9af9e" category="cell">3.1.8-1</block>
+  <block id="3bbfa6ddcf5f2fb724a35ef7dc4b370a" category="cell">2.1.7-5,2</block>
+  <block id="ffa9c6553bd093c43628899a2b5008b0" category="cell">PCS</block>
+  <block id="23df4986c6f31aaed7db4752a96b620b" category="cell">0.11.7-2</block>
+  <block id="ddf60efdd8bc8468bc0a5502f1b51c47" category="cell">4.10.0-62</block>
+  <block id="c83be155e8adea701991eeba59a9d048" category="cell">MLNX_OFED_LINUX-23,10-3,2.2,1-LTS</block>
 </blocks>

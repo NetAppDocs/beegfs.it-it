@@ -24,7 +24,7 @@ Per un elenco delle versioni dei pacchetti consigliate, consultare lalink:beegfs
 ----
 sudo apt-get install python3 python3-pip python3-setuptools python3.10-venv
 ----
-. Creare un ambiente virtuale Python
+. Crea un ambiente virtuale Python.
 +
 [source, console]
 ----
@@ -74,4 +74,4 @@ ssh-copy-id <ip_or_hostname>
 
 
 
-IMPORTANT: Non impostare * SSH senza password sui nodi di blocco. Questo non è supportato né richiesto.
+CAUTION: Non impostare * SSH senza password sui nodi di blocco. Questo non è supportato né richiesto.

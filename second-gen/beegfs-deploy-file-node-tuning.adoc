@@ -22,7 +22,7 @@ Le impostazioni di sistema variano a seconda del modello di server utilizzato co
 
 == Utilizzare l'interfaccia UEFI per regolare le impostazioni di sistema
 
-Il firmware di sistema del server Lenovo SR665 contiene numerosi parametri di tuning che possono essere impostati tramite l'interfaccia UEFI. Questi parametri di tuning possono influire su tutti gli aspetti del funzionamento del server e sulle prestazioni del server.
+Il firmware di sistema del server Lenovo SR665 V3 contiene numerosi parametri di ottimizzazione che possono essere impostati tramite l'interfaccia UEFI. Questi parametri di tuning possono influire su tutti gli aspetti del funzionamento del server e sulle prestazioni del server.
 
 In *UEFI Setup > System Settings* (Configurazione UEFI > Impostazioni di sistema), regolare le seguenti impostazioni di sistema:
 

@@ -62,4 +62,5 @@ Fasi:
 . Per attivare la funzione di scherma: `pcs property set stonith-enabled=true`
 
 
-Nota: Questa impostazione verrà ignorata alla prossima esecuzione del playbook Ansible.
+
+CAUTION: Questa impostazione verrà sovrascritta alla successiva esecuzione del playbook Ansible.

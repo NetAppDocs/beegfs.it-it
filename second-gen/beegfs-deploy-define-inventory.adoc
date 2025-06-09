@@ -424,7 +424,7 @@ beegfs_targets:
 ....
 +
 
-NOTE: Per le dimensioni corrette da utilizzare, vedere link:beegfs-deploy-recommended-volume-percentages.html["Percentuali consigliate di overprovisioning del pool di storage"]..
+NOTE: Per la dimensione corretta da utilizzare, vedere link:beegfs-deploy-recommended-volume-percentages.html["Percentuali consigliate di overprovisioning del pool di storage"] ..
 
 +
 |===
@@ -528,7 +528,7 @@ beegfs_targets:
 ....
 +
 
-NOTE: Per le dimensioni corrette da utilizzare, vedere link:beegfs-deploy-recommended-volume-percentages.html["Percentuali consigliate di overprovisioning del pool di storage"].
+NOTE: Per la dimensione corretta da utilizzare, vedere link:beegfs-deploy-recommended-volume-percentages.html["Percentuali consigliate di overprovisioning del pool di storage"] .
 
 +
 |===

@@ -69,12 +69,17 @@ L'implementazione prevede le seguenti attività di alto livello:
 . link:beegfs-deploy-configure-clients.html["Configurare i client BeeGFS"].
 
 
+[NOTE]
+====
+Le procedure di implementazione includono diversi esempi in cui il testo deve essere copiato in un file. Prestare molta attenzione a tutti i commenti in linea contrassegnati dai caratteri "#" o "//" per qualsiasi cosa che possa o debba essere modificata per una distribuzione specifica. Ad esempio:
 
-NOTE: Le procedure di implementazione includono diversi esempi in cui il testo deve essere copiato in un file. Prestare particolare attenzione a eventuali commenti inline contrassegnati da " n." o "//" per qualsiasi elemento che debba o possa essere modificato per un'implementazione specifica. Ad esempio:
+[source, yaml]
+----
 `beegfs_ha_ntp_server_pools:  # THIS IS AN EXAMPLE OF A COMMENT!
   - "pool 0.pool.ntp.org iburst maxsources 3"
   - "pool 1.pool.ntp.org iburst maxsources 3"`
-
+----
+====
 Architetture derivate con variazioni nelle raccomandazioni di implementazione:
 
 * link:beegfs-design-high-capacity-building-block.html["Building Block ad alta capacità"]

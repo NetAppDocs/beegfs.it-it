@@ -89,7 +89,7 @@ all:
 ----
 +
 
-IMPORTANT: Non memorizzare le password in testo normale. Utilizzare invece il vault Ansible (vedere la link:https://docs.ansible.com/ansible/latest/user_guide/vault.html["Documentazione Ansible"^] Per crittografare il contenuto con Ansible Vault) o utilizzare `--ask-become-pass` quando si esegue il playbook.
+NOTE: Non memorizzare le password in testo normale. Utilizzare invece il vault Ansible (vedere la link:https://docs.ansible.com/ansible/latest/user_guide/vault.html["Documentazione Ansible"^] Per crittografare il contenuto con Ansible Vault) o utilizzare `--ask-become-pass` quando si esegue il playbook.
 
 . In `client_inventory.yml` File, elenca tutti gli host che devono essere configurati come client BeeGFS in `beegfs_clients` Fare riferimento ai commenti inline e rimuovere eventuali commenti aggiuntivi necessari per creare il modulo del kernel del client BeeGFS sul sistema:
 +
