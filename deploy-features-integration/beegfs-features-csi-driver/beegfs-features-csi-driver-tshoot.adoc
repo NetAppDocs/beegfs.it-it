@@ -1,0 +1,294 @@
+---
+sidebar: sidebar 
+permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html 
+keywords: BeeGFS Features, CSI, Driver, Troubleshoot, Troubleshooting 
+summary: Risoluzione dei problemi relativi alla distribuzione del driver CSI BeeGFS. 
+---
+= Risoluzione dei problemi di distribuzione del driver CSI BeeGFS
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ../media/
+
+
+[role="lead"]
+Durante la risoluzione dei problemi relativi alla distribuzione del driver BeeGFS CSI, assicurarsi che:
+
+* Sono stati soddisfatti tutti i prerequisiti, inclusa l'installazione e la configurazione del client BeeGFS.
+* Il driver BeeGFS CSI è stato distribuito utilizzando le sovrapposizioni corrette.
+* La distribuzione è stata verificata e tutti gli errori, come ad esempio le contaminazioni dei nodi o l'abilitazione dello swap, sono stati risolti.
+* Sono state implementate e convalidate applicazioni di esempio per confermarne la funzionalità.
+
+
+Per una risoluzione dei problemi approfondita, fare riferimento alink:https://github.com/ThinkParQ/beegfs-csi-driver["Driver CSI BeeGFS GitHub"] .
+
+
+
+== Configurazione di Kubernetes - Scenari di errore comuni
+
+Esempio di errore durante il tentativo di recuperare tutti i pod attualmente in esecuzione sul nodo:
+
+[source, console]
+----
+kubectl get pods
+----
+**Esempio di output di un errore:**
+
+[listing]
+----
+root@node@1:~# kubectl get pods
+E0829 14:30:28.644318 5617 memcache.go:265)] "Unhandled Error" err="couldn't get current server API group list: Get \"https://XX.YYY.ZZ.CC:644
+3: connect: connection refused"
+...
+ The connection to the server XX.YYY.ZZ.CC:6443 was refused - did you specify the right host or port?
+----
+Quando si affrontano questioni come queste, ci sono diversi ambiti chiave da indagare.  Si consiglia di iniziare esaminando ciascuna delle aree elencate di seguito.
+
+
+
+== Errore in containerd
+
+Controllare lo stato del demone containerd:
+
+[source, console]
+----
+systemctl status containerd
+----
+**Risultato previsto:**
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# systemctl status containerd
+o containerd.service - containerd container runtime
+     Loaded: loaded (/lib/systemd/system/containerd.service; enabled; vendor preset: enabled)
+     Active: inactive (dead)
+     Docs: https://containerd.io
+----
+Se il demone non è in esecuzione(`Active: inactive (dead)` ), riavviarlo.  Se rimane inattivo dopo il riavvio, controllare i registri di sistema per eventuali errori:
+
+[source, console]
+----
+systemctl restart containerd
+journalctl -u containerd
+----
+
+
+== Errore in kubelet
+
+Controlla lo stato del servizio kubelet:
+
+[source, console]
+----
+systemctl status kubelet
+----
+**Risultato previsto:**
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# systemctl status kubelet
+o kubelet.service - kubelet: The Kubernetes Node Agent
+    Loaded: loaded (/lib/systemd/system/kubelet.service; enabled; vendor preset: enabled)
+    Drop-In: /usr/lib/systemd/system/kubelet.service.d
+             └─10-kubeadm.conf
+    Active: activating (auto-restart) (Result: exit-code) since Fri 2025-08-29 14:34:25 CDT; 6s ago
+      Docs: https://kubernetes.io/docs/
+     Process: 6636 ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG ARGS $KUBELET CONFIG ARGS $KUBELET KUBEADM ARGS
+     $KUBELET_EXTRA ARGS (code=exited, status=1/FAILURE)
+     Main PID: 6636 (code=exited, status=1/FAILURE)
+----
+Se il servizio non è in esecuzione, riavviarlo:
+
+[source, console]
+----
+systemctl restart kubelet
+----
+Se il problema persiste, controlla il syslog per eventuali errori:
+
+[source, console]
+----
+tail -f /var/log/syslog | grep kubelet
+----
+
+
+== Problema di scambio
+
+Se si verificano errori relativi a "swap", disabilitare lo swap e riavviare il kubelet.
+
+[source, console]
+----
+swapoff -a
+----
+[source, console]
+----
+systemctl restart kubelet
+----
+**Risultato previsto:**
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# systemctl status kubelet
+● kubelet.service - kubelet: The Kubernetes Node Agent
+    Loaded: loaded (/lib/systemd/system/kubelet.service; enabled; vendor preset: enabled)
+    Drop-In: /usr/lib/systemd/system/kubelet.service.d
+             └─10-kubeadm.conf
+     Active: active (running) since Tue 2025-10-07 18:11:05 CDT; 5 days ago
+       Docs: https://kubernetes.io/docs/
+   Main PID: 1302401 (kubelet)
+      Tasks: 58 (limit: 231379)
+     Memory: 63.0M
+     CGroup: /system.slice/kubelet.service
+             └─1302401 /usr/bin/kubelet --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml conta>
+----
+
+NOTE: Lo swap è solitamente abilitato per impostazione predefinita durante l'installazione del sistema operativo ed è elencato in `/etc/fstab` Kubernetes non supporta l'esecuzione con lo swap abilitato.  Per evitare che lo swap venga riattivato dopo un riavvio, commentare tutte le voci di swap in `/etc/fstab` .
+
+
+
+== Risoluzione dei problemi di configurazione del client BeeGFS e Helperd
+
+. Rivedere la configurazione in `/etc/beegfs/beegfs-client.conf` .
++
+Per impostazione predefinita, l'autenticazione della connessione BeeGFS dovrebbe essere **abilitata** per gli ambienti sicuri.  Assicurare il `connDisableAuthentication` la bandiera è impostata su `false` e il percorso corretto per il `connAuthFile` è specificato:
+
++
+[source, console]
+----
+connDisableAuthentication = false
+connAuthFile=/etc/beegfs/XXX.X.XX.X_connAuthFile
+----
++
+
+NOTE: Se si desidera intenzionalmente consentire al file system BeeGFS di connettersi **senza autenticazione**, impostare `connDisableAuthentication = true` e rimuovere o commentare il `connAuthFile` parametro.
+
+. Verificare l'indirizzo IP per il servizio di gestione in `sysMgmtdHost` il parametro è impostato correttamente.
+. Aggiorna i percorsi per `connRDMAInterfacesFile` E `connInterfacesFile` .  Questi file specificano le interfacce di rete utilizzate per l'archiviazione o la comunicazione tra nodi. Per esempio:
++
+[source, shell]
+----
+ibs1f0
+ibs1f1
+----
+. Aggiorna il percorso per `connAuthFile` parametro **se l'autenticazione è abilitata**.
++
+**Configurazione di esempio:**
+
++
+[listing]
+----
+connDisableAuthentication = false
+connAuthFile=/etc/beegfs/XXX.X.XX.X_connAuthFile
+connClientPortUDP=8004
+connMaxInternodeNum=128
+connMaxConcurrentAttempts=4
+connRDMABufNum=36
+connRDMABufSize=65536
+tuneFileCacheType=native
+tuneFileCacheBufSize=2097152
+connFallbackExpirationSecs=90
+connCommRetrySecs=600
+sysSessionChecksEnabled=False
+connRDMAInterfacesFile=/etc/beegfs/XXX.X.XX.X_8004_connInterfaces.conf
+sysMountSanityCheckMS=11000
+connRDMAKeyType=dma
+sysMgmtdHost=XXX.X.XX.X
+connInterfacesFile=/etc/beegfs/XXX.X.XX.X_8004_connInterfaces.conf
+----
+. Rivedere la configurazione in `/etc/beegfs/beegfs-helperd.conf` .
++
+Come per la configurazione del client, l'autenticazione della connessione dovrebbe essere **abilitata** per impostazione predefinita.  Assicurare il `connDisableAuthentication` la bandiera è impostata su `false` e il percorso corretto per il `connAuthFile` è specificato:
+
++
+[source, console]
+----
+connDisableAuthentication = false
+connAuthFile=/etc/beegfs/XXX.X.XX.X_connAuthFile
+----
++
+
+NOTE: Se si desidera intenzionalmente consentire al file system BeeGFS di connettersi **senza autenticazione**, impostare `connDisableAuthentication = true` e rimuovere o commentare il `connAuthFile` parametro.
+
++
+**Esempio di configurazione helperd:**
+
++
+[listing]
+----
+# --- Section 1: [Settings] ---
+#
+connDisableAuthentication     = false
+connAuthFile                  = /etc/beegfs/XXX.X.XX.X_connAuthFile
+connHelperdPortTCP            = 8006
+connPortShift                 = 0
+logNoDate                     = false
+logNumLines                   = 50000
+logNumRotatedFiles            = 5
+logStdFile                    = /var/log/beegfs-client.log
+runDaemonized                 = true
+tuneNumWorkers                = 2
+----
+
+
+
+
+== Risoluzione dei problemi del controller BeeGFS
+
+Dopo aver distribuito gli overlay, potresti vedere alcune risorse con lo stato PENDING nell'output di kubectl get all.
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# kubectl get all -n beegfs-csi
+NAME                          READY   STATUS    RESTARTS   AGE
+pod/csi-beegfs-controller-0   0/3     Pending   0          59s
+----
+Baccelli in `Pending` lo stato può essere causato da anomalie nei nodi, vincoli di risorse, immagini mancanti o requisiti di pianificazione non soddisfatti.  Per maggiori dettagli, consultare gli eventi e i registri del pod.  Se lo stato appare come mostrato sopra, procedere all'ispezione dei pod creati utilizzando il comando describe.
+
+[source, shell]
+----
+kubectl describe pod csi-beegfs-controller-0 -n beegfs-csi
+----
+Se vedi errori di estrazione delle immagini o pod bloccati `ImagePullBackOff` , verificare che tutte le immagini richieste siano presenti in containerd (offline) o accessibili dal registro (online).  Verificare con:
+
+[source, console]
+----
+kubectl describe pod <pod-name> -n beegfs-csi | grep -i image
+----
+
+
+=== Controllo dei registri del pod
+
+Se un pod non si avvia o è in un `CrashLoopBackOff` stato, controlla i suoi registri per maggiori dettagli:
+
+[source, console]
+----
+kubectl logs <pod-name> -n beegfs-csi
+----
+Se si verificano errori relativi a "untolerated taint" (visibili nell'output di kubectl describe) come di seguito:
+
+[listing]
+----
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  84s   default-scheduler  0/1 nodes are available: 1 node(s) had untolerated taint {node.kubernetes.io/disk-pressure: }. preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+----
+Rimuovere la contaminazione dal nodo utilizzando il seguente comando:
+
+[source, shell]
+----
+kubectl taint nodes node01 node-role.kubernetes.io/control-plane:NoSchedule-
+----
+**Risultato previsto:**
+
+[listing]
+----
+root@node01:/home/user_id/beegfs-csi-driver# kubectl taint nodes node01 node-role.kubernetes.io/control-plane:NoSchedule-
+error: taint "node-role.kubernetes.io/control-plane:NoSchedule" not found
+----
+Dopo aver rimosso la macchia, riapplicare le sovrapposizioni.  Questo dovrebbe risolvere il problema:
+
+[source, shell]
+----
+kubectl apply -k deploy/k8s/overlays/default
+----

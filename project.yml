@@ -123,6 +123,20 @@ sidebar:
         url: "/custom/architectures-deploy-beegfs-clients.html"
       - title: Verificare l'implementazione di BeeGFS
         url: "/custom/architectures-deploy-verify.html"
+  - title: Distribuisci funzionalità e integrazioni
+    entries:
+    - title: Driver CSI BeeGFS
+      entries:
+      - title: Panoramica
+        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-overview.html"
+      - title: Prerequisiti
+        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-prereqs.html"
+      - title: Distribuzione
+        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-deploy.html"
+      - title: Verifica
+        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-verify.html"
+      - title: Risoluzione dei problemi
+        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html"
   - title: Amministrare i cluster BeeGFS
     entries:
     - title: Panoramica, concetti chiave e terminologia
