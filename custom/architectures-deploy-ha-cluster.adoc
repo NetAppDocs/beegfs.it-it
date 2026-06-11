@@ -120,7 +120,7 @@ NOTE: Viene mantenuto un ruolo BeeGFS ha per ciascuna versione principale.minore
 . Facoltativo: Se si desidera definire attività aggiuntive, tenere presente se le attività devono essere indirizzate a. `all` Host (inclusi i sistemi storage e-Series) o solo i nodi di file. Se necessario, definire un nuovo gioco specifico per i nodi di file utilizzando `- hosts: ha_cluster`.
 
 
-Fare clic su link:https://github.com/netappeseries/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/playbook.yml["qui"^] per un esempio di un file di playbook completo.
+Fai clic link:https://github.com/NetApp/beegfs/blob/master/getting_started/beegfs_on_netapp/gen2/H2_DAC_IB_A2_EF600/beegfs_cluster_building_blocks/beegfs_ha_playbook.yml["qui"^] per un esempio di file playbook completo.
 
 
 
