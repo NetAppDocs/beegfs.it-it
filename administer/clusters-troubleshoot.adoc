@@ -18,16 +18,19 @@ Risoluzione dei problemi di un cluster BeeGFS ha.
 
 
 
+[[overview]]
 == Panoramica
 
 Questa sezione illustra come analizzare e risolvere i problemi di vari guasti e altri scenari che potrebbero verificarsi quando si utilizza un cluster BeeGFS ha.
 
 
 
+[[troubleshooting-guides]]
 == Guide per la risoluzione dei problemi
 
 
 
+[[investigating-unexpected-failovers]]
 === Analisi di guasti imprevisti
 
 Quando un nodo viene inaspettatamente recintato e i relativi servizi vengono spostati in un altro nodo, il primo passo dovrebbe essere vedere se il cluster indica eventuali guasti alle risorse nella parte inferiore di `pcs status`. In genere, se la scherma è stata completata correttamente e le risorse sono state riavviate su un altro nodo, non sarà presente nulla.
@@ -135,6 +138,7 @@ Se l'azione di scherma non è riuscita per qualche motivo, i servizi BeeGFS non 
 
 
 
+[[address-failed-resource-actions-found-at-the-bottom-of-pcs-status]]
 === Address Failed Resource Actions (azioni risorsa indirizzo non riuscito) (trovato in fondo allo stato di pcs)
 
 Se una risorsa richiesta per eseguire un servizio BeeGFS non riesce, il monitor BeeGFS attiva un failover. In questo caso, è probabile che nella parte inferiore di non siano elencate "azioni di risorsa non riuscite" `pcs status` e che sia necessario fare riferimento alla procedura descritta in link:clusters-failover-failback.html["failback dopo un failover non pianificato"^].
@@ -211,10 +215,12 @@ Procedura per la risoluzione:
 
 
 
+[[common-issues]]
 == Problemi comuni
 
 
 
+[[beegfs-services-dont-failover-or-failback-when-requested]]
 === I servizi BeeGFS non eseguono il failover o il failback quando richiesto
 
 *Probabile problema:* il `pcs resource relocate` il comando run è stato eseguito, ma non è mai stato completato correttamente.
@@ -225,6 +231,7 @@ Procedura per la risoluzione:
 
 
 
+[[one-node-in-pcs-status-shows-standby-on-fail-when-fencing-is-disabled]]
 === Un nodo nello stato di PC mostra "standby (on-fail)" quando la scherma è disattivata
 
 *Probabile problema:* pacemaker non è riuscito a confermare che tutte le risorse sono state interrotte sul nodo che ha avuto esito negativo.
@@ -237,6 +244,7 @@ Procedura per la risoluzione:
 
 
 
+[[after-an-unexpected-failover-resources-show-started-on-fail-in-pcs-status-when-fencing-is-enabled]]
 === Dopo un failover imprevisto, le risorse mostrano "Started (on-fail)" (avviato (on-fail)) in stato PC quando la scherma è attivata
 
 *Probabile problema:* si è verificato Un problema che ha attivato un failover, ma Pacemaker non è riuscito a verificare che il nodo sia stato recintato. Questo potrebbe verificarsi a causa di una configurazione errata del recinto o di un problema con l'agente di recinzione (ad esempio: La PDU è stata disconnessa dalla rete).
@@ -255,10 +263,12 @@ A questo punto i servizi dovrebbero terminare il failover e essere riavviati su 
 
 
 
+[[common-troubleshooting-tasks]]
 == Attività comuni di risoluzione dei problemi
 
 
 
+[[restart-individual-beegfs-services]]
 === Riavviare i singoli servizi BeeGFS
 
 In genere, se un servizio BeeGFS deve essere riavviato (ad esempio per facilitare una modifica della configurazione), questa operazione deve essere eseguita aggiornando l'inventario Ansible e rieseguendo il manuale. In alcuni scenari potrebbe essere consigliabile riavviare singoli servizi per facilitare la risoluzione dei problemi più rapida, ad esempio per modificare il livello di registrazione senza dover attendere l'esecuzione dell'intero playbook.

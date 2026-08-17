@@ -18,12 +18,14 @@ Scopri come amministrare i cluster BeeGFS ha dopo che sono stati implementati.
 
 
 
+[[overview]]
 == Panoramica
 
 Questa sezione è destinata agli amministratori dei cluster che devono gestire i cluster BeeGFS ha dopo la loro implementazione. Anche coloro che hanno familiarità con i cluster ha Linux dovrebbero leggere attentamente questa guida, poiché esistono diverse differenze nella gestione del cluster, in particolare per quanto riguarda la riconfigurazione dovuta all'utilizzo di Ansible.
 
 
 
+[[key-concepts]]
 == Concetti chiave
 
 Anche se alcuni di questi concetti sono stati introdotti nella link:../get-started/beegfs-terms.html["termini e concetti"]pagina principale, è utile reintrodurli nel contesto di un cluster BeeGFS ha:
@@ -50,6 +52,7 @@ Anche se alcuni di questi concetti sono stati introdotti nella link:../get-start
 
 
 
+[[common-terminology]]
 == Terminologia comune
 
 **Failover:** ciascun servizio BeeGFS dispone di un nodo di file preferito su cui verrà eseguito, a meno che tale nodo non si guasti. Quando un servizio BeeGFS viene eseguito su un nodo di file non preferito/secondario, si dice che sia in failover.

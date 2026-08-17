@@ -18,12 +18,14 @@ Specificare quali nodi di file possono eseguire ciascun servizio BeeGFS utilizza
 
 
 
+[[overview]]
 == Panoramica
 
 In questa sezione viene illustrato come creare `inventory.yml` file. Ciò include l'elenco di tutti i nodi a blocchi e la specifica dei nodi di file che possono eseguire ciascun servizio BeeGFS.
 
 
 
+[[steps]]
 == Fasi
 
 Creare il file `inventory.yml` e compilarlo come segue:

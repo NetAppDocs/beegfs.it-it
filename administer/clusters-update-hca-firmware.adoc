@@ -18,12 +18,14 @@ Per aggiornare gli adattatori ConnectX-7 del nodo file al firmware più recente,
 
 
 
+[[overview]]
 == Panoramica
 
 Potrebbe essere necessario aggiornare il firmware della scheda ConnectX-7 per supportare un nuovo driver MLNX_OFED, abilitare nuove funzioni o correggere bug. Questa guida utilizzerà l'utilità di NVIDIA `mlxfwmanager` per gli aggiornamenti delle schede, grazie alla sua facilità d'uso ed efficienza.
 
 
 
+[[upgrade-considerations]]
 == Considerazioni sull'upgrade
 
 In questa guida vengono descritti due approcci per l'aggiornamento del firmware della scheda ConnectX-7: Un aggiornamento in corso e un aggiornamento del cluster a due nodi. Scegliere l'approccio di aggiornamento appropriato in base alle dimensioni del cluster. Prima di eseguire gli aggiornamenti del firmware, verificare che:
@@ -35,6 +37,7 @@ In questa guida vengono descritti due approcci per l'aggiornamento del firmware 
 
 
 
+[[firmware-update-preparation]]
 == Preparazione dell'aggiornamento del firmware
 
 Si consiglia di utilizzare l'utilità di NVIDIA `mlxfwmanager` per aggiornare il firmware dell'adattatore di un nodo, fornito con il driver MLNX_OFED di NVIDIA. Prima di avviare gli aggiornamenti, scaricare l'immagine del firmware della scheda da link:https://network.nvidia.com/support/firmware/firmware-downloads/["Sito di supporto di NVIDIA"^] e memorizzarla su ciascun nodo file.
@@ -44,6 +47,7 @@ TIP: Per gli adattatori Lenovo ConnectX-7, utilizzare `mlxfwmanager_LES` lo stru
 
 
 
+[[rolling-update-approach]]
 == Approccio di aggiornamento continuo
 
 Questo approccio è consigliato per qualsiasi cluster ha con più di due nodi. Questo approccio implica l'aggiornamento del firmware dell'adattatore su un file nodo alla volta, consentendo al cluster ha di mantenere le richieste di assistenza, anche se durante questo periodo si consiglia di non eseguire interventi di i/O.
@@ -80,7 +84,7 @@ Tenere presente `PCI Device Name` per ciascun adattatore che riceve gli aggiorna
 . Ripristinare ciascuna scheda di rete utilizzando l' `mlxfwreset`utilità per applicare il nuovo firmware.
 +
 
-NOTE: Alcuni aggiornamenti del firmware potrebbero richiedere un riavvio per applicare l'aggiornamento. Fare riferimento alla link:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["Le limitazioni di mlxfwreset di NVIDIA"^] per le istruzioni. Se è necessario riavviare il sistema, riavviare il sistema invece di reimpostare gli adattatori.
+NOTE: Alcuni aggiornamenti del firmware potrebbero richiedere un riavvio per applicare l'aggiornamento. Consulta link:https://networking-docs.nvidia.com/mftswum/4201/mlxfwreset-loading-firmware-on-5th-generation-devices-tool#id-(4.20.1)mlxfwreset–LoadingFirmwareon5thGenerationDevicesTool-mlxfwresetLimitations["Le limitazioni di mlxfwreset di NVIDIA"^] per indicazioni. Se è necessario un riavvio, riavvia invece di resettare gli adattatori.
 
 +
 .. Arrestare il servizio opensm:
@@ -146,6 +150,7 @@ Ripetere questi passaggi per ciascun nodo file nel cluster fino a quando tutte l
 
 
 
+[[two-node-cluster-update-approach]]
 == Approccio all'update del cluster a due nodi
 
 Questo approccio è consigliato per i cluster ha con solo due nodi. Questo approccio è simile a un aggiornamento in corso, ma include passaggi aggiuntivi per evitare tempi di inattività del servizio quando i servizi cluster di un nodo vengono arrestati.
@@ -188,7 +193,7 @@ Tenere presente `PCI Device Name` per ciascun adattatore che riceve gli aggiorna
 . Ripristinare ciascuna scheda di rete utilizzando l' `mlxfwreset`utilità per applicare il nuovo firmware.
 +
 
-NOTE: Alcuni aggiornamenti del firmware potrebbero richiedere un riavvio per applicare l'aggiornamento. Fare riferimento alla link:https://docs.nvidia.com/networking/display/mftv4310/mlxfwreset+%E2%80%93+loading+firmware+on+5th+generation+devices+tool#src-3566627427_safe-id-bWx4ZndyZXNldOKAk0xvYWRpbmdGaXJtd2FyZW9uNXRoR2VuZXJhdGlvbkRldmljZXNUb29sLW1seGZ3cmVzZXRMaW1pdGF0aW9ucw["Le limitazioni di mlxfwreset di NVIDIA"^] per le istruzioni. Se è necessario riavviare il sistema, riavviare il sistema invece di reimpostare gli adattatori.
+NOTE: Alcuni aggiornamenti del firmware potrebbero richiedere un riavvio per applicare l'aggiornamento. Consulta link:https://networking-docs.nvidia.com/mftswum/4201/mlxfwreset-loading-firmware-on-5th-generation-devices-tool#id-(4.20.1)mlxfwreset–LoadingFirmwareon5thGenerationDevicesTool-mlxfwresetLimitations["Le limitazioni di mlxfwreset di NVIDIA"^] per indicazioni. Se è necessario un riavvio, riavvia invece di resettare gli adattatori.
 
 +
 .. Arrestare il servizio opensm:

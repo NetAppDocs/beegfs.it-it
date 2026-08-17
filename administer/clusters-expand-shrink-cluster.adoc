@@ -18,16 +18,19 @@ Aggiungere o rimuovere i building block dal cluster.
 
 
 
+[[overview]]
 == Panoramica
 
 Questa sezione descrive varie considerazioni e opzioni per regolare le dimensioni del cluster BeeGFS ha. In genere, la dimensione del cluster viene regolata aggiungendo o rimuovendo gli elementi di base, che in genere sono due nodi di file configurati come coppia ha. È inoltre possibile aggiungere o rimuovere singoli nodi di file (o altri tipi di nodi di cluster), se necessario.
 
 
 
+[[adding-a-building-block-to-the-cluster]]
 == Aggiunta di un building block al cluster
 
 
 
+[[considerations]]
 === Considerazioni
 
 La crescita del cluster mediante l'aggiunta di ulteriori building block è un processo semplice. Prima di iniziare, tenere presenti le restrizioni relative al numero minimo e massimo di nodi del cluster in ciascun cluster ha singolo e determinare se è necessario aggiungere nodi al cluster ha esistente o creare un nuovo cluster ha. In genere, ciascun building block è costituito da due nodi di file, ma tre nodi sono il numero minimo di nodi per cluster (per stabilire il quorum) e dieci sono il numero massimo consigliato (testato). Per gli scenari avanzati è possibile aggiungere un singolo nodo "Tiebreaker" che non esegue alcun servizio BeeGFS durante l'implementazione di un cluster a due nodi. Contatta il supporto NetApp se stai prendendo in considerazione un'implementazione di questo tipo.
@@ -39,6 +42,7 @@ TIP: Tenere presente che un singolo file system BeeGFS può essere costituito da
 
 
 
+[[steps]]
 === Fasi
 
 Quando si aggiunge un building block al cluster, sarà necessario creare `host_vars` i file per ogni nuovo nodo di file e nodo dei blocchi (array E-Series). I nomi di questi host devono essere aggiunti all'inventario, insieme alle nuove risorse da creare. I `group_vars` file corrispondenti dovranno essere creati per ogni nuova risorsa. Per link:../custom/architectures-overview.html["utilizzo di architetture personalizzate"^]ulteriori informazioni, vedere la sezione.
@@ -51,6 +55,7 @@ ansible-playbook -i <inventory>.yml <playbook>.yml
 ----
 
 
+[[removing-a-building-block-from-the-cluster]]
 == Rimozione di un Building Block dal cluster
 
 È necessario tenere presente una serie di considerazioni quando è necessario dismettere un building block, ad esempio:

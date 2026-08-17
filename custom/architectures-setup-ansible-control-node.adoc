@@ -18,6 +18,7 @@ Impostare un nodo di controllo Ansible per implementare e gestire il file system
 
 
 
+[[overview]]
 == Panoramica
 
 Un nodo di controllo Ansible è una macchina Linux fisica o virtuale utilizzata per gestire il cluster. Deve soddisfare i seguenti requisiti:

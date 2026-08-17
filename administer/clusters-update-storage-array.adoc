@@ -18,6 +18,7 @@ Per aggiornare i componenti dello storage array e-Series del cluster ha, procede
 
 
 
+[[overview]]
 == Panoramica
 
 Mantenere aggiornati gli array di storage NetApp E-Series del cluster ha con il firmware più recente garantisce prestazioni ottimali e maggiore sicurezza. Gli aggiornamenti del firmware per l'array di storage vengono applicati attraverso il sistema operativo SANtricity, l'NVSRAM e i file del firmware del disco.
@@ -27,6 +28,7 @@ NOTE: Durante gli upgrade degli storage array con il cluster ha online, si consi
 
 
 
+[[block-node-upgrade-steps]]
 == Passaggi di aggiornamento del nodo a blocchi
 
 I seguenti passaggi descrivono come aggiornare il firmware degli storage array utilizzando la `Netapp_Eseries.Santricity` raccolta Ansible. Prima di continuare, consultare link:https://docs.netapp.com/us-en/e-series/upgrade-santricity/overview-upgrade-consider-task.html["Considerazioni sull'upgrade"^]per l'aggiornamento dei sistemi E-Series.

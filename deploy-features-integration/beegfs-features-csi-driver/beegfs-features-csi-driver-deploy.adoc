@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-deploy.html 
+permalink: deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-deploy.html 
 keywords: BeeGFS Features, CSI, Driver 
 summary: Istruzioni per la distribuzione del driver CSI BeeGFS. 
 ---
@@ -18,12 +18,14 @@ Istruzioni per la distribuzione del driver BeeGFS CSI in un ambiente Kubernetes.
 
 
 
+[[air-gapped-deployment]]
 == Dispiegamento con intercapedine d'aria
 
 Per eseguire una distribuzione Air-Gapped (offline), è necessario scaricare in anticipo sia i file di configurazione YAML di Kubernetes sia le immagini dei container richieste su un sistema con accesso a Internet.  Questi file devono quindi essere trasferiti al/ai nodo/i di destinazione in cui verrà installato il driver CSI.
 
 
 
+[[retrieve-the-driver-and-images]]
 === Recupera il driver e le immagini
 
 Per distribuire il driver CSI BeeGFS in un ambiente air-gapped, procedere come segue.
@@ -83,6 +85,7 @@ Ripetere questo comando di esportazione per ogni immagine richiesta, sostituendo
 
 
 
+[[import-the-required-images]]
 === Importa le immagini richieste
 
 . Vai al `/home/<User>/beegfs-csi-images` directory in cui vengono salvate le immagini e importare ciascuna immagine utilizzando containerd. Per esempio:
@@ -105,6 +108,7 @@ crictl images
 
 
 
+[[configure-and-deploy-the-csi-driver-overlays]]
 === Configurare e distribuire le sovrapposizioni del driver CSI
 
 . Vai al `/home/<User>/beegfs-csi-driver` elenco.
@@ -189,6 +193,7 @@ NOTE: IL `patchesStrategicMerge` sezione consente di applicare patch personalizz
 
 
 
+[[install-the-beegfs-csi-driver]]
 === Installa il driver CSI BeeGFS
 
 . Installa il driver BeeGFS CSI utilizzando la tua sovrapposizione personalizzata.  Questo passaggio applica tutte le modifiche alla configurazione, incluso l'uso di immagini importate localmente e la policy di estrazione delle immagini aggiornata.
@@ -205,12 +210,14 @@ kubectl apply -k deploy/k8s/overlays/beegfs-overlay
 
 
 
+[[online-deployment]]
 == Distribuzione online
 
 Se i nodi Kubernetes hanno accesso a Internet, è possibile distribuire direttamente il driver BeeGFS CSI senza dover scaricare o trasferire manualmente le immagini dei container.  Una volta distribuiti, i pod scaricheranno automaticamente le immagini da image-hub e attiveranno i servizi richiesti.
 
 
 
+[[retrieve-the-driver-repository]]
 === Recupera il repository dei driver
 
 . Clona il repository GitHub del driver CSI BeeGFS sul tuo sistema locale:
@@ -223,6 +230,7 @@ git clone https://github.com/ThinkParQ/beegfs-csi-driver.git
 
 
 
+[[configure-the-driver]]
 === Configurare il driver
 
 . Passare alla directory del repository clonato e, se necessario, aggiornare i file di configurazione nella directory di overlay predefinita:
@@ -258,6 +266,7 @@ NOTE: Il driver CSI richiede che il file di configurazione si trovi in `/etc/bee
 
 
 
+[[install-the-beegfs-csi-driver]]
 === Installa il driver CSI BeeGFS
 
 . Installa l'overlay predefinito utilizzando `kubectl` .  In questo modo verranno automaticamente estratte le immagini richieste dai rispettivi registri e create tutte le risorse Kubernetes necessarie:
@@ -298,12 +307,14 @@ NOTE: Utilizzo `kubectl apply -k` per sovrapposizioni (directory contenenti un `
 
 
 
+[[deploy-example-application]]
 == Distribuisci l'applicazione di esempio
 
 Dopo aver installato il driver BeeGFS CSI (Air-Gapped o Online), è possibile distribuire l'applicazione di esempio per convalidare la configurazione.  Questo esempio include StorageClass, PersistentVolumeClaim (PVC) e un pod che utilizza il driver BeeGFS CSI.
 
 
 
+[[before-deploying]]
 === Prima della distribuzione:
 
 . Ottieni l'indirizzo IP del nodo di gestione BeeGFS:
@@ -355,6 +366,7 @@ allowVolumeExpansion: true
 
 
 
+[[deploy]]
 === Distribuire
 
 . Distribuisci i file dell'applicazione di esempio:

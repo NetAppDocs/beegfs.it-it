@@ -18,6 +18,7 @@ Sebbene la maggior parte delle attività di configurazione del software sia auto
 
 
 
+[[set-up-file-nodes]]
 == Configurare i nodi di file
 
 . Configurare il networking sul BMC (Baseboard Management Controller) di ciascun server.
@@ -54,6 +55,7 @@ subscription-manager repo-override --repo=rhel-9-for-x86_64-highavailability-rpm
 
 
 
+[[set-up-block-nodes]]
 == Impostare i nodi a blocchi
 
 Configurare i nodi a blocchi EF600 configurando la porta di gestione su ciascun controller.

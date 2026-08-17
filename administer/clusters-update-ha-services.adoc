@@ -18,12 +18,14 @@ Per aggiornare i pacchetti pacemaker e Corosync in un cluster ha, procedere come
 
 
 
+[[overview]]
 == Panoramica
 
 L'aggiornamento di Pacemaker e Corosync garantisce al cluster i vantaggi derivanti da nuove funzioni, patch di sicurezza e miglioramenti delle prestazioni.
 
 
 
+[[upgrade-approach]]
 == Approccio all'upgrade
 
 Ci sono due approcci consigliati per aggiornare un cluster: Un aggiornamento in corso o un arresto completo del cluster. Ogni approccio ha i propri vantaggi e svantaggi. La procedura di aggiornamento può variare a seconda della versione del pacemaker in uso. Fare riferimento alla documentazione di ClusterLabs link:https://clusterlabs.org/projects/pacemaker/doc/3.0/Pacemaker_Administration/html/upgrading.html["Aggiornamento di un quadro pacemaker"^]per determinare l'approccio da utilizzare. Prima di adottare un approccio all'aggiornamento, verificare che:
@@ -35,6 +37,7 @@ Ci sono due approcci consigliati per aggiornare un cluster: Un aggiornamento in 
 
 
 
+[[rolling-upgrade]]
 === Rolling upgrade
 
 Questo metodo prevede la rimozione di ciascun nodo dal cluster, l'aggiornamento e la reintroduzione nel cluster fino a quando tutti i nodi non eseguono la nuova versione. Questo approccio mantiene operativo il cluster, ideale per cluster ha di maggiori dimensioni, con il rischio di eseguire versioni miste durante il processo. Questo approccio deve essere evitato in un cluster a due nodi.
@@ -129,6 +132,7 @@ NOTE: Se il `Current DC` report "versione fissa", un nodo nel quadro strumenti �
 
 
 
+[[complete-cluster-shutdown]]
 === Arresto completo del cluster
 
 Con questo approccio, tutti i nodi e le risorse del cluster vengono arrestati, i nodi vengono aggiornati e il cluster viene riavviato. Questo approccio è necessario se le versioni Pacemaker e Corosync non supportano una configurazione a versione mista.

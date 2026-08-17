@@ -18,12 +18,14 @@ Verificare l'implementazione del file system prima di mettere il sistema in prod
 
 
 
+[[overview]]
 == Panoramica
 
 Prima di mettere il file system BeeGFS in produzione, eseguire alcuni controlli di verifica.
 
 
 
+[[steps]]
 === Fasi
 
 . Accedere a qualsiasi client ed eseguire quanto segue per assicurarsi che tutti i nodi previsti siano presenti/raggiungibili e che non siano segnalate incoerenze o altri problemi:

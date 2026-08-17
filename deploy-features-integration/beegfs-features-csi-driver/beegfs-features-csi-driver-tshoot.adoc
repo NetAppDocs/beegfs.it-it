@@ -1,6 +1,6 @@
 ---
 sidebar: sidebar 
-permalink: deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html 
+permalink: deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-tshoot.html 
 keywords: BeeGFS Features, CSI, Driver, Troubleshoot, Troubleshooting 
 summary: Risoluzione dei problemi relativi alla distribuzione del driver CSI BeeGFS. 
 ---
@@ -26,6 +26,7 @@ Per una risoluzione dei problemi approfondita, fare riferimento alink:https://gi
 
 
 
+[[kubernetes-setup-common-error-scenarios]]
 == Configurazione di Kubernetes - Scenari di errore comuni
 
 Esempio di errore durante il tentativo di recuperare tutti i pod attualmente in esecuzione sul nodo:
@@ -48,6 +49,7 @@ Quando si affrontano questioni come queste, ci sono diversi ambiti chiave da ind
 
 
 
+[[error-in-containerd]]
 == Errore in containerd
 
 Controllare lo stato del demone containerd:
@@ -75,6 +77,7 @@ journalctl -u containerd
 ----
 
 
+[[error-in-kubelet]]
 == Errore in kubelet
 
 Controlla lo stato del servizio kubelet:
@@ -112,6 +115,7 @@ tail -f /var/log/syslog | grep kubelet
 ----
 
 
+[[swap-issue]]
 == Problema di scambio
 
 Se si verificano errori relativi a "swap", disabilitare lo swap e riavviare il kubelet.
@@ -146,6 +150,7 @@ NOTE: Lo swap è solitamente abilitato per impostazione predefinita durante l'in
 
 
 
+[[troubleshooting-beegfs-client-and-helperd-configuration]]
 == Risoluzione dei problemi di configurazione del client BeeGFS e Helperd
 
 . Rivedere la configurazione in `/etc/beegfs/beegfs-client.conf` .
@@ -232,6 +237,7 @@ tuneNumWorkers                = 2
 
 
 
+[[troubleshooting-beegfs-controller-issues]]
 == Risoluzione dei problemi del controller BeeGFS
 
 Dopo aver distribuito gli overlay, potresti vedere alcune risorse con lo stato PENDING nell'output di kubectl get all.
@@ -256,6 +262,7 @@ kubectl describe pod <pod-name> -n beegfs-csi | grep -i image
 ----
 
 
+[[checking-pod-logs]]
 === Controllo dei registri del pod
 
 Se un pod non si avvia o è in un `CrashLoopBackOff` stato, controlla i suoi registri per maggiori dettagli:

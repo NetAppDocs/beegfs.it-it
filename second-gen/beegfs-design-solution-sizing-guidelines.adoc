@@ -22,6 +22,7 @@ Tenere presente che queste stime sono le migliori performance del caso. Le appli
 
 
 
+[[performance-sizing]]
 == Dimensionamento delle performance
 
 La seguente tabella fornisce il dimensionamento delle performance consigliato.
@@ -41,6 +42,7 @@ L'utilizzo di funzionalità come gli elenchi di controllo degli accessi e il num
 
 
 
+[[capacity-sizing-for-metadata-storage-building-blocks]]
 == Dimensionamento della capacità per metadati + building block dello storage
 
 La seguente tabella fornisce il dimensionamento della capacità consigliato per i metadati e gli elementi di base dello storage.
@@ -65,6 +67,7 @@ NOTE: Quando si ridimensionano i metadati e gli elementi di base dello storage, 
 
 
 
+[[capacity-sizing-for-storage-only-building-blocks]]
 == Dimensionamento della capacità per gli elementi di base solo per lo storage
 
 La seguente tabella fornisce il dimensionamento della capacità a regola d'uso per gli elementi di base solo per lo storage.

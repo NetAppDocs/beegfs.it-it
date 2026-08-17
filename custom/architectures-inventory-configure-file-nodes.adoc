@@ -18,6 +18,7 @@ Specificare la configurazione per i singoli nodi di file utilizzando le variabil
 
 
 
+[[overview]]
 == Panoramica
 
 In questa sezione viene illustrata la compilazione di un `host_vars/<FILE_NODE_HOSTNAME>.yml` per ogni nodo di file nel cluster. Questi file devono contenere solo configurazioni univoche per un particolare nodo di file. Ciò comprende in genere:
@@ -33,6 +34,7 @@ In questa sezione viene illustrata la compilazione di un `host_vars/<FILE_NODE_H
 
 
 
+[[steps]]
 == Fasi
 
 Facendo riferimento allo schema di indirizzamento IP definito nella link:architectures-plan-file-system.html["Pianificare il file system"]sezione, per ogni nodo file nel cluster creare un file `host_vars/<FILE_NODE_HOSTNAME>/yml` e compilarlo come segue:
@@ -141,9 +143,10 @@ Fai clic link:https://github.com/NetApp/beegfs/blob/master/getting_started/beegf
 
 
 
+[[advanced-toggling-nvidia-connectx-vpi-adapters-between-ethernet-and-infiniband-mode]]
 === Advanced (Avanzate): Passaggio tra le modalità Ethernet e InfiniBand degli adattatori VPI NVIDIA ConnectX
 
-Gli adattatori NVIDIA ConnectX-Virtual Protocol Interconnect&reg; (VPI) supportano sia InfiniBand che Ethernet come layer di trasporto. Il passaggio da una modalità all'altra non viene negoziato automaticamente e deve essere configurato utilizzando `mstconfig` lo strumento incluso in `mstflint`, un pacchetto open source che fa parte di link:https://docs.nvidia.com/networking/display/mftv4270/mft+supported+configurations+and+parameters["Strumenti per la firma NVIDIA (MFT)"^]. La modifica della modalità degli adattatori deve essere eseguita una sola volta. Questa operazione può essere eseguita manualmente o inclusa nell'inventario Ansible come parte di qualsiasi interfaccia configurata utilizzando la `eseries-[ib|ib_iser|ipoib|nvme_ib|nvme_roce|roce]_interfaces:` sezione dell'inventario, per farla controllare/applicare automaticamente.
+Gli adattatori NVIDIA ConnectX-Virtual Protocol Interconnect® (VPI) supportano sia InfiniBand che Ethernet come livello di trasporto. Il passaggio tra le modalità non viene negoziato automaticamente e deve essere configurato utilizzando lo strumento  `mstconfig` incluso in  `mstflint`, un pacchetto open source che fa parte di link:https://network.nvidia.com/products/adapter-software/firmware-tools/["Strumenti per la firma NVIDIA (MFT)"^]. La modifica della modalità degli adattatori deve essere eseguita solo una volta. Questa operazione può essere eseguita manualmente oppure inclusa nell'inventario Ansible come parte di qualsiasi interfaccia configurata utilizzando la sezione  `eseries-[ib|ib_iser|ipoib|nvme_ib|nvme_roce|roce]_interfaces:` dell'inventario, così che venga verificata/applicata automaticamente.
 
 Ad esempio, per modificare una corrente di interfaccia in modalità InfiniBand su Ethernet in modo che possa essere utilizzata per RoCE:
 

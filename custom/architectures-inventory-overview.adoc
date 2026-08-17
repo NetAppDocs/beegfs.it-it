@@ -18,6 +18,7 @@ L'inventario Ansible è un insieme di file di configurazione che definiscono il 
 
 
 
+[[overview]]
 == Panoramica
 
 Si consiglia di seguire le procedure standard di Ansible per organizzare il link:https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html["inventario"], incluso l'utilizzo di link:https://docs.ansible.com/ansible/latest/inventory_guide/intro_inventory.html#organizing-host-and-group-variables["sottodirectory/file"] invece di memorizzare l'intero inventario in un file.
@@ -31,6 +32,7 @@ NOTE: Poiché un singolo file system BeeGFS può comprendere più cluster ha, è
 
 
 
+[[steps]]
 == Fasi
 
 . Nel nodo di controllo Ansible creare una directory vuota contenente l'inventario Ansible per il cluster BeeGFS che si desidera implementare.

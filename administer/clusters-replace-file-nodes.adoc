@@ -18,12 +18,14 @@ Sostituzione di un nodo di file se il server originale è guasto.
 
 
 
+[[overview]]
 == Panoramica
 
 Di seguito viene fornita una panoramica dei passaggi necessari per sostituire un nodo di file nel cluster. Questi passaggi presumono che il nodo del file non sia riuscito a causa di un problema hardware ed è stato sostituito con un nuovo nodo del file identico.
 
 
 
+[[steps]]
 == Fasi:
 
 . Sostituire fisicamente il nodo del file e ripristinare tutti i cavi al nodo a blocchi e alla rete di storage.

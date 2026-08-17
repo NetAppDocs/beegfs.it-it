@@ -20,6 +20,7 @@ Sebbene BeeGFS fornisca performance ragionevoli, NetApp ha sviluppato una serie 
 
 
 
+[[performance-tuning-for-file-nodes]]
 == Ottimizzazione delle performance per i file node
 
 I parametri di tuning disponibili che è possibile configurare includono:
@@ -79,6 +80,7 @@ Le impostazioni predefinite sono state utilizzate per validare la soluzione BeeG
 
 
 
+[[performance-tuning-for-block-nodes]]
 == Ottimizzazione delle performance per i nodi a blocchi
 
 In base ai profili di configurazione applicati a un particolare building block BeeGFS, i gruppi di volumi configurati sui nodi a blocchi cambiano leggermente. Ad esempio, con un nodo a blocchi EF600 a 24 dischi:

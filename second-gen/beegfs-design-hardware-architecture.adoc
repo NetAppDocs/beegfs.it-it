@@ -18,6 +18,7 @@ La configurazione hardware per BeeGFS su NetApp include nodi di file e cablaggio
 
 
 
+[[file-node-configuration]]
 == Configurazione del nodo del file
 
 I file node hanno due socket CPU configurati come zone NUMA separate, che includono l'accesso locale a un numero uguale di slot PCIe e memoria.
@@ -32,6 +33,7 @@ I processi BeeGFS vengono bloccati in una particolare zona NUMA per garantire ch
 
 
 
+[[network-cabling-configuration]]
 == Configurazione del cablaggio di rete
 
 All'interno di un building block, ogni nodo di file è connesso a due nodi a blocchi utilizzando un totale di quattro connessioni InfiniBand ridondanti. Inoltre, ciascun nodo di file dispone di quattro connessioni ridondanti alla rete di storage InfiniBand.

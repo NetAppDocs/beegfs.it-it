@@ -18,6 +18,7 @@ Specificare la configurazione del nodo a blocchi comune utilizzando le variabili
 
 
 
+[[overview]]
 == Panoramica
 
 La configurazione che deve essere utilizzata per tutti i nodi a blocchi è definita in `group_vars/eseries_storage_systems.yml`. In genere include:
@@ -32,6 +33,7 @@ NOTE: Le opzioni impostate in questo file possono essere definite anche su singo
 
 
 
+[[steps]]
 == Fasi
 
 Creare il file `group_vars/eseries_storage_systems.yml` e compilarlo come segue:

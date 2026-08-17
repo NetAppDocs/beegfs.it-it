@@ -18,16 +18,19 @@ Spostamento dei servizi BeeGFS tra nodi cluster.
 
 
 
+[[overview]]
 == Panoramica
 
 I servizi BeeGFS possono eseguire il failover tra i nodi del cluster per garantire che i client possano continuare ad accedere al file system in caso di guasto di un nodo o se è necessario eseguire una manutenzione pianificata. In questa sezione vengono descritti i vari modi in cui gli amministratori possono riparare il cluster dopo il ripristino da un errore o spostare manualmente i servizi tra i nodi.
 
 
 
+[[steps]]
 == Fasi
 
 
 
+[[failover-and-failback]]
 === Failover e failover
 
 
@@ -89,6 +92,7 @@ pcs resource relocate run
 ----
 
 
+[[moving-individual-beegfs-services-to-alternate-file-nodes]]
 === Spostamento di singoli servizi BeeGFS in nodi di file alternativi
 
 

@@ -48,7 +48,7 @@ image:driveslots.png["EF600 slot per unità disco"]
 
 
 
-. Collegare i nodi di blocco e di file utilizzando link:beegfs-technology-requirements.html#block-file-cables["1m cavi in rame con collegamento diretto HDR 200GB InfiniBand"], in modo che corrispondano alla topologia mostrata nella figura seguente.
+. Collega i nodi blocco e file utilizzando il link:beegfs-technology-requirements.html#file-node-requirements["1m cavi in rame con collegamento diretto HDR 200GB InfiniBand"], in modo che corrispondano alla topologia mostrata nella figura seguente.
 +
 image:directattachcable-sr665v3.png["Cavo di collegamento diretto SR665V3"]
 
@@ -56,7 +56,7 @@ image:directattachcable-sr665v3.png["Cavo di collegamento diretto SR665V3"]
 
 NOTE: I nodi di più building block non sono mai connessi direttamente. Ogni building block deve essere trattato come un'unità standalone e tutte le comunicazioni tra building block avvengono tramite switch di rete.
 
-. Collegare le restanti porte InfiniBand sul file node allo switch InfiniBand della rete di storage tramite lo specifico switch InfiniBand link:beegfs-technology-requirements.html#file-switch-cables["2m cavi InfiniBand"] storage.
+. Collega le restanti porte InfiniBand sul nodo file allo switch InfiniBand della rete di storage usando il link:beegfs-technology-requirements.html#storage-network-switch-requirements["2m cavi InfiniBand"] specifico per il tuo switch di storage InfiniBand.
 +
 Quando si utilizzano cavi splitter per collegare lo switch di archiviazione ai nodi file, un cavo deve diramarsi dallo switch e connettersi alle porte indicate in verde chiaro. Un altro cavo splitter deve diramarsi dallo switch e collegarsi alle porte indicate in verde scuro.
 

@@ -128,15 +128,15 @@ sidebar:
     - title: Driver CSI BeeGFS
       entries:
       - title: Panoramica
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-overview.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-overview.html"
       - title: Prerequisiti
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-prereqs.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-prereqs.html"
       - title: Distribuzione
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-deploy.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-deploy.html"
       - title: Verifica
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-verify.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-verify.html"
       - title: Risoluzione dei problemi
-        url: "/deploy-features-integration/beegfs-csi-driver/csi-driver-tshoot.html"
+        url: "/deploy-features-integration/beegfs-features-csi-driver/beegfs-features-csi-driver-tshoot.html"
     - title: Configura la crittografia TLS per BeeGFS 8
       url: "/deploy-features-integration/beegfs-tls/beegfs-tls-deploy.html"
   - title: Amministrare i cluster BeeGFS
