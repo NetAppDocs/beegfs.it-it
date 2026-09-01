@@ -10,7 +10,7 @@ summary: Configura la crittografia TLS per la comunicazione sicura tra i servizi
 :nofooter: 
 :icons: font
 :linkattrs: 
-:imagesdir: ../../media/
+:imagesdir: ../media/
 
 
 [role="lead"]
