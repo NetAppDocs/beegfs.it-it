@@ -25,7 +25,7 @@ La configurazione hardware e software per l'building block ad alta capacità è 
 
 I clienti che implementano una progettazione di building block ad alta capacità probabilmente utilizzeranno solo la configurazione di base basata su building block, costituita da servizi di gestione, metadati e storage BeeGFS per ciascun nodo. Per un'efficienza dei costi, i nodi di storage ad alta capacità devono eseguire il provisioning dei volumi di metadati sui dischi NVMe nell'enclosure di controller EF300 e fornire i volumi di storage ai dischi NL-SAS nei vassoi di espansione.
 
-image:high-capacity-rack-diagram.png[""]
+image:high-capacity-rack-diagram.png["Un diagramma che mostra un rack BeeGFS ad elevata capacità con vassoi di espansione EF300 NVMe e NL-SAS IOM"]
 
 
 
