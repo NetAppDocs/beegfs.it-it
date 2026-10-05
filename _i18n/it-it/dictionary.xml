@@ -2305,4 +2305,5 @@
   <block id="c6c1a150fe2c0ea553b51e7aa7980236" category="list-text">Collega le restanti porte InfiniBand sul nodo file allo switch InfiniBand della rete di storage usando il <block ref="6641f55c02ab74028026a655dbf4927b" category="inline-link-macro-rx"></block> specifico per il tuo switch di storage InfiniBand.</block>
   <block id="bba78d7694815dc44320a2e751daa486" category="inline-image-macro">Un diagramma che mostra un rack BeeGFS ad elevata capacità con vassoi di espansione EF300 NVMe e NL-SAS IOM</block>
   <block id="1155b61fff96aa3c1a731c367cdcc208" category="paragraph"><block ref="1155b61fff96aa3c1a731c367cdcc208" category="inline-image-macro-rx" type="image"></block></block>
+  <block id="5d19eac40cba34daeadf75a699707ab3" category="summary">Decidi quando utilizzare Ansible o lo strumento da riga di comando pcs per gestire un cluster BeeGFS HA. Usa Ansible per la distribuzione e le modifiche della configurazione e pcs per le modifiche temporanee dello stato del cluster.</block>
 </blocks>
