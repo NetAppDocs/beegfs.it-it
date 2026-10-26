@@ -51,7 +51,7 @@ ansible_become_password: <PASSWORD>
 ----
 +
 
-WARNING: In particolare per gli ambienti di produzione, non memorizzare le password in testo normale. Utilizzare invece Ansible Vault (vedere link:https://docs.ansible.com/ansible/latest/vault_guide/index.html["Crittografia del contenuto con Ansible Vault"^]) o il `--ask-become-pass` quando si esegue il playbook. Se il `ansible_ssh_user` è già root, quindi è possibile omettere il `ansible_become_password`.
+WARNING: In particolare negli ambienti di produzione, non memorizzare le password in chiaro. Utilizza invece Ansible Vault (vedi link:https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html["Crittografia del contenuto con Ansible Vault"^]) o l' `--ask-become-pass`opzione durante l'esecuzione del playbook. Se  `ansible_ssh_user` è già root, puoi facoltativamente omettere  `ansible_become_password`.
 
 . Se si configurano IP statici sulle interfacce ethernet o InfiniBand (ad esempio gli IP del cluster) e più interfacce si trovano nella stessa subnet IP (ad esempio se ib0 utilizza 192.168.1.10/24 e ib1 utilizza 192.168.1.11/24), Per il corretto funzionamento del supporto multi-homed, è necessario configurare ulteriori tabelle e regole di routing IP. È sufficiente attivare il gancio di configurazione dell'interfaccia di rete fornito come segue:
 +
