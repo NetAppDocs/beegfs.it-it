@@ -51,7 +51,7 @@ ansible-galaxy collection install netapp_eseries.santricity --upgrade
 ansible-galaxy collection install netapp_eseries-santricity-<VERSION>.tar.gz --upgrade
 ----
 +
-Vedere link:https://docs.ansible.com/ansible/latest/collections_guide/collections_installing.html["Installazione delle raccolte"^] per ulteriori informazioni.
+Per ulteriori informazioni, consulta link:https://docs.ansible.com/projects/ansible/latest/collections_guide/collections_installing.html["Installazione delle raccolte"^].
 
 
 

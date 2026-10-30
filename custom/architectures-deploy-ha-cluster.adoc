@@ -35,7 +35,7 @@ Questa sezione descrive come assemblare il manuale standard utilizzato per imple
 
 Creare il file `playbook.yml` e compilarlo come segue:
 
-. Per prima cosa, definire una serie di attività (comunemente denominate a. link:https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#playbook-syntax["gioca"^]) Che dovrebbe essere eseguito solo sui nodi a blocchi NetApp e-Series. Viene utilizzata un'attività di pausa per richiedere conferma prima di eseguire l'installazione (per evitare l'esecuzione accidentale di un playbook), quindi importare `nar_santricity_management` ruolo. Questo ruolo gestisce l'applicazione di qualsiasi configurazione generale del sistema definita in `group_vars/eseries_storage_systems.yml` o individuale `host_vars/<BLOCK NODE>.yml` file.
+. Per prima cosa definisci un insieme di attività (comunemente indicate come un link:https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_intro.html#playbook-syntax["gioca"^]) che devono essere eseguite solo sui nodi a blocchi NetApp E-Series. Utilizziamo un'attività di pausa per richiedere conferma prima di avviare l'installazione (per evitare esecuzioni accidentali del playbook), quindi importiamo il `nar_santricity_management` ruolo. Questo ruolo gestisce l'applicazione di qualsiasi configurazione generale del sistema definita in `group_vars/eseries_storage_systems.yml` o nei singoli file `host_vars/<BLOCK NODE>.yml`.
 +
 [source, yaml]
 ----

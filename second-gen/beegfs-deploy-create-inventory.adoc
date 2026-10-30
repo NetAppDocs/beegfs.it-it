@@ -42,7 +42,7 @@ Se non diversamente specificato, tutti i file e le directory creati in questa fa
 +
 `packages`
 
-. Creare una sottodirectory per le password del cluster e proteggere il file crittografandolo con Ansible Vault (vedere https://docs.ansible.com/ansible/latest/user_guide/vault.html["Crittografia del contenuto con Ansible Vault"^]):
+. Crea una sottocartella per le password del cluster e proteggi il file crittografandolo con Ansible Vault (vedi https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html["Crittografia del contenuto con Ansible Vault"^]):
 +
 .. Creare la sottodirectory `group_vars/all`.
 .. Nella `group_vars/all` directory , creare un file di password denominato `passwords.yml`.
@@ -182,7 +182,7 @@ eseries_controller_nvme_ib_port:
 È possibile definire la configurazione comune a un gruppo di host in `group_vars` in un nome di file che corrisponde al gruppo. In questo modo si evita di ripetere una configurazione condivisa in più posizioni.
 
 .A proposito di questa attività
-Gli host possono trovarsi in più di un gruppo e, in fase di esecuzione, Ansible sceglie le variabili da applicare a un determinato host in base alle regole di precedenza delle variabili. Per ulteriori informazioni su queste regole, consultare la documentazione Ansible per https://docs.ansible.com/ansible/latest/user_guide/playbooks_variables.html["Utilizzo delle variabili"^].)
+Gli host possono appartenere a più di un gruppo e, in fase di esecuzione, Ansible sceglie quali variabili applicare a un host specifico in base alle sue regole di precedenza delle variabili. (Per ulteriori informazioni su queste regole, consulta la documentazione di Ansible  https://docs.ansible.com/projects/ansible/latest/playbook_guide/playbooks_variables.html["Utilizzo delle variabili"^].)
 
 Le assegnazioni host-to-group sono definite nel file di inventario Ansible effettivo, creato verso la fine di questa procedura.
 

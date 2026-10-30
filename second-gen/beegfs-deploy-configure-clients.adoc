@@ -49,7 +49,7 @@ The defaults set by the BeeGFS HA role are based on the testing performed as par
 ....
 +
 
-NOTE: Non memorizzare le password in testo normale. Utilizzare invece Ansible Vault (vedere la documentazione Ansible per https://docs.ansible.com/ansible/latest/user_guide/vault.html["Crittografia del contenuto con Ansible Vault"^]) o utilizzare `--ask-become-pass` quando si esegue il playbook.
+NOTE: Non memorizzare le password in chiaro. Utilizza invece Ansible Vault (consulta la documentazione di Ansible per https://docs.ansible.com/projects/ansible/latest/vault_guide/index.html["Crittografia del contenuto con Ansible Vault"^]) oppure usa l' `--ask-become-pass`opzione durante l'esecuzione del playbook.
 
 . In `client_inventory.yml` File, elenca tutti gli host che devono essere configurati come client BeeGFS in `beegfs_clients` E specificare eventuali configurazioni aggiuntive richieste per creare il modulo del kernel del client BeeGFS.
 +
